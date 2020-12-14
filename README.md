@@ -1,11 +1,6 @@
-## My Project
+## AWS Proton Administration Guide
 
-TODO: Fill this README out!
-
-Be sure to:
-
-* Change the title in this README
-* Edit your repository description on GitHub
+The open source version of the AWS Proton Administration Guide. You can submit feedback & requests for changes by submitting issues in this repo or by making proposed changes & submitting a pull request. See the [index](doc_source/index.md) for a summary of content.
 
 ## Security
 
