@@ -14,7 +14,7 @@
 To create a service template bundle, you must create the schema, CloudFormation and manifest files as shown in the following example directories\.
 
 ```
-/schema
+ /schema
    schema.yaml
  /infrastructure
    manifest.yaml
