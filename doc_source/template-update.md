@@ -47,6 +47,7 @@ Response:
         "description": "A single VPC with public access",
         "displayName": "simple-env",
         "lastModifiedAt": "2020-11-29T16:11:18.956000+00:00",
+<<<<<<< HEAD
         "majorVersion": "1",
         "minorVersion": "0",
         "recommendedMinorVersion": "0",
@@ -54,6 +55,10 @@ Response:
         "status": "PUBLISHED",
         "statusMessage": "",
         "templateName": "simple-env"
+=======
+        "name": "simple-env",
+        "recommendedVersion": "1.0"       
+>>>>>>> 42d03d0... GA release markdown documentation
     }
 }
 ```
