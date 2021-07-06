@@ -131,10 +131,14 @@ In the navigation pane, choose **Environments**\.
 
 ## Step 5: Optional \- Create a service and deploy an application<a name="ag-getting-started-step5"></a>
 <<<<<<< HEAD
+<<<<<<< HEAD
 + After the environment is created and **Deployment status** is *Succeeded*, launch a service based on your service template and environment\. To do this, follow the instructions at [Prerequisites](https://docs.aws.amazon.com/proton/latest/userguide/getting-started-prerequisites) and [Create a service](https://docs.aws.amazon.com/proton/latest/userguide/ug-get-started-console.html#getting-started-step2) in the *AWS Proton User Guide*\.
 =======
 + After the environment is created and **Deployment status** is *Succeeded*, launch a service based on your service template and environment\. To do this, follow the instructions at [Create a service](https://docs.aws.amazon.com/proton/latest/userguide/ug-get-started-console.html#getting-started-step2) in the *AWS Proton User Guide*\.
 >>>>>>> 42d03d0... GA release markdown documentation
+=======
++ After the environment is created and **Deployment status** is *Succeeded*, launch a service based on your service template and environment\. To do this, follow the instructions at [Prerequisites](https://docs.aws.amazon.com/proton/latest/userguide/getting-started-prerequisites) and [Create a service](https://docs.aws.amazon.com/proton/latest/userguide/ug-get-started-console.html#getting-started-step2) in the *AWS Proton User Guide*\.
+>>>>>>> 3c95f18... update redirects per https://t.corp.amazon.com/V391818570
 
 ## Step 6: Clean up\.<a name="ag-getting-started-step6"></a>
 

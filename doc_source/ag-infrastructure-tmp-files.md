@@ -629,10 +629,14 @@ Resources:
         - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # These output values are available to service templates, when given the 
 =======
 # These output values are will be available to service templates, given the 
 >>>>>>> 42d03d0... GA release markdown documentation
+=======
+# These output values are available to service templates, when given the 
+>>>>>>> 3c95f18... update redirects per https://t.corp.amazon.com/V391818570
 # the 'environment' namespace, for example, environment.outputs.ClusterName.
 Outputs:
   ClusterName:

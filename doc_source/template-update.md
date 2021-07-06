@@ -48,6 +48,9 @@ Response:
         "displayName": "simple-env",
         "lastModifiedAt": "2020-11-29T16:11:18.956000+00:00",
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3c95f18... update redirects per https://t.corp.amazon.com/V391818570
         "majorVersion": "1",
         "minorVersion": "0",
         "recommendedMinorVersion": "0",
@@ -55,10 +58,13 @@ Response:
         "status": "PUBLISHED",
         "statusMessage": "",
         "templateName": "simple-env"
+<<<<<<< HEAD
 =======
         "name": "simple-env",
         "recommendedVersion": "1.0"       
 >>>>>>> 42d03d0... GA release markdown documentation
+=======
+>>>>>>> 3c95f18... update redirects per https://t.corp.amazon.com/V391818570
     }
 }
 ```
