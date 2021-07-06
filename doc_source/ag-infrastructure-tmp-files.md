@@ -628,7 +628,7 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
 
-# These output values are will be available to service templates, given the 
+# These output values are available to service templates, when given the 
 # the 'environment' namespace, for example, environment.outputs.ClusterName.
 Outputs:
   ClusterName:

@@ -93,8 +93,7 @@ As an administrator, ensure that your provisioned and managed infrastructure and
               "description": "VPC with public access",
               "displayName": "VPC",
               "lastModifiedAt": "2020-11-11T23:02:45.336000+00:00",
-              "name": "simple-env",
-              "status": "DRAFT"        
+              "name": "simple-env"
           }
       }
       ```
@@ -118,8 +117,7 @@ As an administrator, ensure that your provisioned and managed infrastructure and
               "displayName": "VPC",
               "lastModifiedAt": "2020-11-11T23:02:45.336000+00:00",
               "name": "simple-env",
-              "provisioning": "CUSTOMER_MANAGED",
-              "status": "DRAFT"
+              "provisioning": "CUSTOMER_MANAGED"
           }
       }
       ```
@@ -128,36 +126,12 @@ As an administrator, ensure that your provisioned and managed infrastructure and
 
 **This and the remaining steps are the same for both the *standard* and *customer managed* environment templates\.**
 
-   Create the first major version 1 of the environment template as shown in the following command and response\.
+   Create a minor version 0 of major version 1 of the environment template by including the template name, major version and the S3 bucket *name* and *key* for the bucket that contains your environment template bundle as shown in the following command and response\.
 
    Command:
 
    ```
-   aws proton create-environment-template-version --template-name "simple-env" --description "Version 1"
-   ```
-
-   Response:
-
-   ```
-   {
-       "environmentTemplateVersion": {
-           "arn": "arn:aws:proton:region-id:123456789012:environment-template/simple-env:1",
-           "createdAt": "2020-11-11T23:02:45.915000+00:00",
-           "description": "Version 1",
-           "lastModifiedAt": "2020-11-11T23:02:45.915000+00:00",
-           "majorVersion": "1",
-           "status": "DRAFT",
-           "templateName": "simple-env"
-       }
-   }
-   ```
-
-1. Create a minor version 0 of major version 1 of the environment template by including the template name, major version and the S3 bucket *name* and *key* for the bucket that contains your environment template bundle as shown in the following command and response\.
-
-   Command:
-
-   ```
-   aws proton create-environment-template-version --template-name "simple-env" --description "Version 1" --major-version "1" --source "s3="bucket=$source_s3_bucket, key=$source_s3_key""
+   aws proton create-environment-template-version --template-name "simple-env" --description "Version 1" --source s3="{bucket=$source_s3_bucket, key=$source_s3_key}"
    ```
 
    Response:
@@ -177,12 +151,32 @@ As an administrator, ensure that your provisioned and managed infrastructure and
    }
    ```
 
-1. Ask AWS Proton to wait on the creation of minor version 0 of major version 1 of the environment template as shown in the following command\.
+1. Use the *get* command to check the registrations status\.
 
    Command:
 
    ```
-   aws proton wait environment-template-registration-complete --template-name "simple-env" --major-version "1" --minor-version "0"
+   aws proton get-environment-template-version --template-name "simple-env" --major-version "1" --minor-version "0"
+   ```
+
+   Response:
+
+   ```
+   {
+       "environment": {
+           "arn": "arn:aws:proton:region-id:123456789012:environment-template/simple-env:1.0",
+           "createdAt": "2020-11-11T23:02:47.763000+00:00",
+           "description": "Version 1",
+           "lastModifiedAt": "2020-11-11T23:02:47.763000+00:00",
+           "majorVersion": "1",
+           "minorVersion": "0",
+           "recommendedMinorVersion": "0",
+           "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  environment_input_type: \"MyEnvironmentInputType\"\n  types:\n    MyEnvironmentInputType:\n      type: object\n      description: \"Input properties for my environment\"\n      properties:\n        my_sample_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_other_sample_input:\n          type: string\n          description: \"Another sample input\"\n      required:\n        - my_other_sample_input\n",
+           "status": "DRAFT",
+           "statusMessage": "",
+           "templateName": "simple-env"
+       }
+   }
    ```
 
 1. Publish of minor version 0 of major version 1 of the environment template by providing the template name and the major and minor version as shown in the following command and response\. This version is the `Recommended` version\.
@@ -250,7 +244,6 @@ You can create and publish a service template with or without a service pipeline
            "description": "Fargate-based Service",
            "displayName": "Fargate",
            "lastModifiedAt": "2020-11-11T23:02:55.551000+00:00",
-           "status": "DRAFT",
            "name": "fargate-service"
        }
    }
@@ -274,44 +267,18 @@ You can create and publish a service template with or without a service pipeline
            "description": "Fargate-based Service",
            "displayName": "Fargate",
            "lastModifiedAt": "2020-11-11T23:02:55.551000+00:00",
-           "status": "DRAFT",
            "name": "fargate-service",
            "pipelineProvisioning": "CUSTOMER_MANAGED"
        }
    }
    ```
 
-1. Add the compatible environment templates for the service template by including the template name and an array of compatible major versions of the environment template as shown in the following example command and response\. This creates the first major version 1 of the service template\.
+1. Create a minor version 0 of major version 1 of the service template by including the template name, compatible environment templates, major version, and the S3 bucket *name* and *key* for the bucket that contains your service template bundle as shown in the following command and response\.
 
    Command:
 
    ```
-   aws proton create-service-template-version --template-name "fargate-service" --description "Version 1" --compatible-environment-templates "majorVersion=1, templateName=simple-env"
-   ```
-
-   Response:
-
-   ```
-   {
-       "serviceTemplateVersion": {
-           "arn": "arn:aws:proton:region-id:123456789012:service-template/fargate-service:1",
-           "compatibleEnvironmentTemplates": [{"majorVersion": "1", "templateName": "simple-env"}],
-           "createdAt": "2020-11-11T23:02:56.134000+00:00",
-           "description": "Version 1",
-           "lastModifiedAt": "2020-11-11T23:02:56.134000+00:00",
-           "majorVersion": "1",
-           "status": "DRAFT",
-           "templateName": "fargate-service"
-       }
-   }
-   ```
-
-1. Create a minor version 0 of major version 1 of the service template by including the template name, major version, and the S3 bucket *name* and *key* for the bucket that contains your service template bundle as shown in the following command and response\.
-
-   Command:
-
-   ```
-   aws proton create-service-template-version --template-name "fargate-service" --description "Version 1" --major-version "1" --source "s3="bucket=$source_s3_bucket", key=$source_s3_key""
+   aws proton create-service-template-version --template-name "fargate-service" --description "Version 1" --source s3="{bucket=$source_s3_bucket, key=$source_s3_key}" --compatible-environment-templates '[{"templateName":"simple-env","majorVersion":"1"}]'
    ```
 
    Response:
@@ -320,6 +287,12 @@ You can create and publish a service template with or without a service pipeline
    {
        "serviceTemplateMinorVersion": {
            "arn": "arn:aws:proton:region-id:123456789012:service-template/fargate-service:1.0",
+           "compatibleEnvironmentTemplates": [
+               {
+                   "majorVersion": "1",
+                   "templateName": "simple-env"
+               }
+           ],
            "createdAt": "2020-11-11T23:02:57.912000+00:00",
            "description": "Version 1",
            "lastModifiedAt": "2020-11-11T23:02:57.912000+00:00",
@@ -331,12 +304,39 @@ You can create and publish a service template with or without a service pipeline
    }
    ```
 
-1. Ask AWS Proton to wait for minor version 0 \(of major version 1\) of the service template to be created as shown in the following example command\.
+   
+
+1. Use the *get* command to check the registrations status\.
 
    Command:
 
    ```
-   aws proton wait service-template-registration-complete --template-name "fargate-service" --major-version "1" --minor-version "0"
+   aws proton get-service-template-version --template-name "fargate-service" --major-version "1" --minor-version "0"
+   ```
+
+   Response:
+
+   ```
+   {
+       "serviceTemplateMinorVersion": {
+           "arn": "arn:aws:proton:us-west-2:123456789012:service-template/fargate-service:1.0",
+           "compatibleEnvironmentTemplates": [
+               {
+                   "majorVersion": "1",
+                   "templateName": "simple-env"
+               }
+           ],
+           "createdAt": 1613087544.189,
+           "description": "Version 1",
+           "lastModifiedAt": 1613087546.101,
+           "majorVersion": "1",
+           "minorVersion": "0",
+           "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  pipeline_input_type: \"MyPipelineInputType\"\n  service_input_type: \"MyServiceInstanceInputType\"\n\n  types:\n    MyPipelineInputType:\n      type: object\n      description: \"Pipeline input properties\"\n      required:\n        - my_sample_pipeline_required_input\n      properties:\n        my_sample_pipeline_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_sample_pipeline_required_input:\n          type: string\n          description: \"Another sample input\"\n\n    MyServiceInstanceInputType:\n      type: object\n      description: \"Service instance input properties\"\n      required:\n        - my_sample_service_instance_required_input\n      properties:\n        my_sample_service_instance_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_sample_service_instance_required_input:\n          type: string\n          description: \"Another sample input\"",
+           "status": "DRAFT",
+           "statusMessage": "",
+           "templateName": "fargate-service"
+       }
+   }
    ```
 
 1. Publish the service template by using the update command to change the status to `"PUBLISHED"` as shown in the following example command and response\.
@@ -353,7 +353,12 @@ You can create and publish a service template with or without a service pipeline
    {
        "serviceTemplateVersion": {
            "arn": "arn:aws:proton:region-id:123456789012:service-template/fargate-service:1.0",
-           "compatibleEnvironmentTemplates": [{"majorVersion": "1", "templateName": "simple-env"}],
+           "compatibleEnvironmentTemplates": [
+               {
+                   "majorVersion": "1",
+                   "templateName": "simple-env"
+               }
+           ],
            "createdAt": "2020-11-11T23:02:57.912000+00:00",
            "description": "Version 1",
            "lastModifiedAt": "2020-11-11T23:03:04.767000+00:00",
@@ -366,7 +371,7 @@ You can create and publish a service template with or without a service pipeline
    }
    ```
 
-1. Check that AWS Proton has published version 1\.0 by using the get command to retrieve service template detail data as shown in the following example command and response\.
+1. Check that AWS Proton has published version 1\.0 by using the *get* command to retrieve service template detail data as shown in the following example command and response\.
 
    Command:
 
@@ -380,17 +385,21 @@ You can create and publish a service template with or without a service pipeline
    {
        "serviceTemplateMinorVersion": {
            "arn": "arn:aws:proton:us-west-2:123456789012:service-template/fargate-service:1.0",
-           "compatibleEnvironmentTemplates": [{"majorVersion": "1", "templateName": "simple-env"}],
-           "createdAt": 1613087544.189,
+           "compatibleEnvironmentTemplates": [
+               {
+                   "majorVersion": "1",
+                   "templateName": "simple-env"
+               }
+           ],
+           "createdAt": "2020-11-11T23:02:57.912000+00:00",
            "description": "Version 1",
-           "lastModifiedAt": 1613087546.101,
-           "majorVersion": "1",        
+           "lastModifiedAt": "2020-11-11T23:03:04.767000+00:00",
+           "majorVersion": "1",
            "minorVersion": "0",
            "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  pipeline_input_type: \"MyPipelineInputType\"\n  service_input_type: \"MyServiceInstanceInputType\"\n\n  types:\n    MyPipelineInputType:\n      type: object\n      description: \"Pipeline input properties\"\n      required:\n        - my_sample_pipeline_required_input\n      properties:\n        my_sample_pipeline_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_sample_pipeline_required_input:\n          type: string\n          description: \"Another sample input\"\n\n    MyServiceInstanceInputType:\n      type: object\n      description: \"Service instance input properties\"\n      required:\n        - my_sample_service_instance_required_input\n      properties:\n        my_sample_service_instance_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_sample_service_instance_required_input:\n          type: string\n          description: \"Another sample input\"",
-           "status": "DRAFT",
-           "statusMessage": "",        
+           "status": "PUBLISHED",
+           "statusMessage": "",
            "templateName": "fargate-service"
-           
        }
    }
    ```

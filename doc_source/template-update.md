@@ -47,8 +47,13 @@ Response:
         "description": "A single VPC with public access",
         "displayName": "simple-env",
         "lastModifiedAt": "2020-11-29T16:11:18.956000+00:00",
-        "name": "simple-env",
-        "recommendedVersion": "1.0"       
+        "majorVersion": "1",
+        "minorVersion": "0",
+        "recommendedMinorVersion": "0",
+        "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  environment_input_type: \"MyEnvironmentInputType\"\n  types:\n    MyEnvironmentInputType:\n      type: object\n      description: \"Input properties for my environment\"\n      properties:\n        my_sample_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_other_sample_input:\n          type: string\n          description: \"Another sample input\"\n      required:\n        - my_other_sample_input\n",
+        "status": "PUBLISHED",
+        "statusMessage": "",
+        "templateName": "simple-env"
     }
 }
 ```
