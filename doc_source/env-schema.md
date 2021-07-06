@@ -9,10 +9,31 @@
 
 --------
 
-# IAM Roles<a name="env-permissions"></a>
+# The schema file<a name="env-schema"></a>
 
-With Proton, you supply the IAM roles and KMS keys for the AWS resources that you own and manage\. These are later applied to and used by resources owned and managed by developers\. You create an IAM role to control your developer team's access to the Proton API\. For more information on developer service access roles, see [Developer AWS Proton access roles](ag-controlling-access.md#env-dev-permissions)\.
+In the environment templates bundle's input definition schema\.yaml file, specify the inputs and outputs for the CloudFormation file\. The schema file uses the [OpenAPI](https://swagger.io/docs/specification/data-models/) format\. In the following example, an environment input type is defined with a description and input and output properties\. 
 
-## Proton service role<a name="env-arrow-svc-permissions"></a>
-
-When you create a new environment, you must apply an IAM service role that Proton needs to assume in order to deploy to the environment\. You define the role\. The role must contain all permissions necessary for Proton to update all underlying infrastructure defined both in the environment templates and the service templates\. For more information, see [Controlling access with IAM](ag-controlling-access.md)\.
+```
+schema:
+  format:
+    openapi: "3.0.0"
+  environment_input_type: "MyEnvironmentInputType"
+  types:
+    MyEnvironmentInputType:
+      type: object
+      description: "Input properties for my environment"
+      properties:
+        my_sample_input:
+          type: string
+          description: "This is a sample input"
+          default: "hello world"
+        my_other_sample_input:
+          type: string
+          description: "Another sample input"
+        another_optional_input:
+          type: string
+          description: "Another optional input"
+          default: "!"
+      required:
+        - my_other_sample_input
+```

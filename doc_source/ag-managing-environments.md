@@ -9,10 +9,12 @@
 
 --------
 
-# IAM Roles<a name="env-permissions"></a>
+# Deploying and managing environments<a name="ag-managing-environments"></a>
 
-With Proton, you supply the IAM roles and KMS keys for the AWS resources that you own and manage\. These are later applied to and used by resources owned and managed by developers\. You create an IAM role to control your developer team's access to the Proton API\. For more information on developer service access roles, see [Developer AWS Proton access roles](ag-controlling-access.md#env-dev-permissions)\.
+This section describes how to manage environments using create, view, update and delete operations\.
 
-## Proton service role<a name="env-arrow-svc-permissions"></a>
-
-When you create a new environment, you must apply an IAM service role that Proton needs to assume in order to deploy to the environment\. You define the role\. The role must contain all permissions necessary for Proton to update all underlying infrastructure defined both in the environment templates and the service templates\. For more information, see [Controlling access with IAM](ag-controlling-access.md)\.
+**Topics**
++ [Create an environment](ag-create-env.md)
++ [View environment data](ag-env-view.md)
++ [Update an environment](ag-env-update.md)
++ [Delete an environment](ag-env-delete.md)

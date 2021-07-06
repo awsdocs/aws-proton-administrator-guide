@@ -9,10 +9,13 @@
 
 --------
 
-# IAM Roles<a name="env-permissions"></a>
+# Creating and managing environment templates<a name="ag-env-templates"></a>
 
-With Proton, you supply the IAM roles and KMS keys for the AWS resources that you own and manage\. These are later applied to and used by resources owned and managed by developers\. You create an IAM role to control your developer team's access to the Proton API\. For more information on developer service access roles, see [Developer AWS Proton access roles](ag-controlling-access.md#env-dev-permissions)\.
+In this section, you can learn about the difference between major and minor template versions\. You also learn how to register a new template and version, how to register minor and major versions of an existing service template, and how to delete versions\.
 
-## Proton service role<a name="env-arrow-svc-permissions"></a>
-
-When you create a new environment, you must apply an IAM service role that Proton needs to assume in order to deploy to the environment\. You define the role\. The role must contain all permissions necessary for Proton to update all underlying infrastructure defined both in the environment templates and the service templates\. For more information, see [Controlling access with IAM](ag-controlling-access.md)\.
+**Topics**
++ [Template versions](env-template-versions.md)
++ [Register and publish the first version of an environment template](env-template-v1.md)
++ [View environment template data](env-template-view.md)
++ [Update an environment template](env-template-updates.md)
++ [Delete an environment template](env-template-delete.md)
