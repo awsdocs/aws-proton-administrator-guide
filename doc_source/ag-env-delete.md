@@ -41,15 +41,16 @@ Response:
 ```
 {
     "environment": {
-        "arn": "arn:aws:proton:region-id:123456789012:environment/MySimpleEnv",        
+        "arn": "arn:aws:proton:region-id:123456789012:environment/MySimpleEnv",
         "createdAt": "2021-04-02T17:29:55.472000+00:00",
-        "deploymentStatus": "DELETE_IN_PROGRESS",       
+        "deploymentStatus": "DELETE_IN_PROGRESS",
         "lastDeploymentAttemptedAt": "2021-04-02T17:48:26.307000+00:00",
         "lastDeploymentSucceededAt": "2021-04-02T17:48:26.307000+00:00",
         "name": "MySimpleEnv",
         "protonServiceRoleArn": "arn:aws:iam::123456789012:role/ProtonServiceRole",
         "templateMajorVersion": "1",
-        "templateMinorVersion": "1"
+        "templateMinorVersion": "1",
+        "templateName": "simple-env"
     }
 }
 ```

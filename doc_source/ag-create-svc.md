@@ -21,7 +21,7 @@ You can use the `get-service-template-minor-version` command to view the schema 
    Command:
 
    ```
-   aws proton update-account-settings --account-settings pipelineServiceRoleArn=arn:aws:iam::account-id:role/AWS ProtonServiceRole
+   aws proton update-account-settings --pipeline-service-role-arn "arn:aws:iam::123456789012:role/AWSProtonServiceRole"
    ```
 
 1. The following shows an example spec, based on the service template schema, that includes the service pipeline and instance inputs\.
@@ -48,7 +48,7 @@ You can use the `get-service-template-minor-version` command to view the schema 
    Command:
 
    ```
-   aws proton create-service --name "MySimpleService" --branch-name "mainline" --major-version "1" --template-name fargate-service --repository-connection-arn arn:aws:proton:region-id:account-id --repository-id "myorg/myapp" --spec file://spec.yaml
+   aws proton create-service --name "MySimpleService" --branch-name "mainline" --template-major-version "1" --template-name "fargate-service" --repository-connection-arn "arn:aws:codestar-connections:region-id:123456789012:connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111" --repository-id "myorg/myapp" --spec "file://spec.yaml"
    ```
 
    Response:
@@ -60,6 +60,8 @@ You can use the `get-service-template-minor-version` command to view the schema 
            "createdAt": "2020-11-18T19:50:27.460000+00:00",
            "lastModifiedAt": "2020-11-18T19:50:27.460000+00:00",
            "name": "MySimpleService",
+           "repositoryConnectionArn": "arn:aws:codestar-connections:region-id:123456789012:connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+           "repositoryId": "myorg/myapp",
            "status": "CREATE_IN_PROGRESS",
            "templateName": "fargate-service"
        }
@@ -88,7 +90,7 @@ To create a service *without* a provisioned service pipeline, you provide the pa
 Command:
 
 ```
-aws proton create-service --name "MySimpleServiceNoPipeline" --major-version "1" --template-name fargate-service --spec file://spec-no-pipeline.yaml
+aws proton create-service --name "MySimpleServiceNoPipeline" --template-major-version "1" --template-name "fargate-service" --spec "file://spec-no-pipeline.yaml"
 ```
 
 Response:

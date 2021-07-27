@@ -182,7 +182,7 @@ A wait condition is included in the template used for this example so that the c
 Command: to cancel
 
 ```
-aws proton cancel-environment-deployment --name "MySimpleEnv"
+aws proton cancel-environment-deployment --environment-name "MySimpleEnv"
 ```
 
 Response:

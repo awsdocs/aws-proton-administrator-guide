@@ -60,7 +60,7 @@ Create an environment as shown in the following example CLI command and response
 Command:
 
 ```
-aws proton create-environment --name "MySimpleEnv" --template-name simple-env --template-major-version 1 --proton-service-role-arn arn:aws:iam::account-id:role/AWS ProtonServiceRole --spec file://env-spec.yaml
+aws proton create-environment --name "MySimpleEnv" --template-name simple-env --template-major-version 1 --proton-service-role-arn "arn:aws:iam::123456789012:role/AWSProtonServiceRole" --spec "file://env-spec.yaml"
 ```
 
 Response:
@@ -84,7 +84,7 @@ After you create a new environment, you can view a list of AWS and customer mana
 Command:
 
 ```
-aws proton list-tags-for-resource --resource-arn "arn:aws:proton:region-id:account-id:environment/MySimpleEnv"
+aws proton list-tags-for-resource --resource-arn "arn:aws:proton:region-id:123456789012:environment/MySimpleEnv"
 ```
 
 ## Create an environment in one account and provision in another account<a name="ag-create-env-deploy-other"></a>
@@ -154,7 +154,7 @@ In the environment account, create an environment account connection and request
 Command:
 
 ```
-aws proton create-environment-account-connection --environment-name "simple-env-connected" --role-arn "arn:aws:iam::111222333:role/service-role/env-account-proton-service-role" --management-account-id "123456789012"
+aws proton create-environment-account-connection --environment-name "simple-env-connected" --role-arn "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role" --management-account-id "123456789111"
 ```
 
 Response:
@@ -162,15 +162,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
-        "status": "PENDING",
-        "environmentAccountId": "111122223333",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-connected",
-        "id": "abcdef01234567890",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:13:50.847000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role",
+        "status": "PENDING"
     }
 }
 ```
@@ -180,7 +180,7 @@ In the management account, accept the environment account connection request as 
 Command:
 
 ```
-aws proton accept-environment-account-connection --id "abcdef01234567890"
+aws proton accept-environment-account-connection --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
 Response:
@@ -188,15 +188,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
-        "status": "CONNECTED",
-        "environmentAccountId": "111122223333",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-connected",
-        "id": "abcdef01234567890",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:15:33.486000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role",
+        "status": "CONNECTED"
     }
 }
 ```
@@ -206,7 +206,7 @@ View your environment account connection by using the *get* as shown in the foll
 Command:
 
 ```
-aws proton get-environment-account-connection --id "abcdef01234567890"
+aws proton get-environment-account-connection --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
 Response:
@@ -214,15 +214,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
-        "status": "CONNECTED",
-        "environmentAccountId": "111122223333",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-connected",
-        "id": "abcdef01234567890",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:15:33.486000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role",
+        "status": "CONNECTED"
     }
 }
 ```
@@ -232,7 +232,7 @@ In the management account, create an environment as shown in the following examp
 Command:
 
 ```
-aws proton create-environment --name "simple-env-connected" --template-name simple-env-template --template-major-version "1" --template-minor-version "1" --spec "file:///simple-env-template/specs/original.yaml" --environment-account-connection-id "abcdef01234567890"
+aws proton create-environment --name "simple-env-connected" --template-name simple-env-template --template-major-version "1" --template-minor-version "1" --spec "file://simple-env-template/specs/original.yaml" --environment-account-connection-id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
 Response:
@@ -240,13 +240,13 @@ Response:
 ```
 {
     "environment": {
-        "arn": "arn:aws:proton:us-east-1:123456789012:environment/simple-env-connected",
+        "arn": "arn:aws:proton:us-east-1:123456789111:environment/simple-env-connected",
         "createdAt": "2021-04-28T23:02:57.944000+00:00",
         "deploymentStatus": "IN_PROGRESS",
-        "environmentAccountConnectionId": "021345abcdef6789",
-        "environmentAccountId": "111122223333",
-        "name": "simple-env-connected",
+        "environmentAccountConnectionId": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "lastDeploymentAttemptedAt": "2021-04-28T23:02:57.944000+00:00",
+        "name": "simple-env-connected",
         "templateName": "simple-env-template"
     }
 }

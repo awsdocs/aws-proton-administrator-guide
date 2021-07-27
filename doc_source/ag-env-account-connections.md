@@ -107,7 +107,7 @@ Decide on a name for the environment that you plan to create in your management 
 Command:
 
 ```
-aws proton create-environment-account-connection --environment-name "simple-env-connected" --role-arn "arn:aws:iam::111222333:role/service-role/env-account-proton-service-role" --management-account-id "123456789012"
+aws proton create-environment-account-connection --environment-name "simple-env-connected" --role-arn "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role" --management-account-id "123456789111"
 ```
 
 Response:
@@ -115,15 +115,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
-        "status": "PENDING",
-        "environmentAccountId": "111122223333",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-connected",
-        "id": "abcdef01234567890",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:13:50.847000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role",
+        "status": "PENDING"
     }
 }
 ```
@@ -140,7 +140,7 @@ If you specify **Accept**, the status changes from *pending* to *connected*\.
 Command to accept:
 
 ```
-aws proton accept-environment-account-connection --id "abcdef01234567890"
+aws proton accept-environment-account-connection --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
 Response:
@@ -148,15 +148,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
-        "status": "CONNECTED",
-        "environmentAccountId": "111122223333",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-connected",
-        "id": "abcdef01234567890",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:15:33.486000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role",
+        "status": "CONNECTED"
     }
 }
 ```
@@ -164,7 +164,7 @@ Response:
 Command to reject:
 
 ```
-aws proton reject-environment-account-connection --id "abcdef01234567890"
+aws proton reject-environment-account-connection --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
 Response:
@@ -172,15 +172,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "status": "REJECTED",
-        "environmentAccountId": "111122223333",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-reject",
-        "id": "021345abcdef6789",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:13:50.847000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role"
     }
 }
 ```
@@ -190,7 +190,7 @@ Response:
 Command:
 
 ```
-aws proton get-environment-account-connection --id "abcdef01234567890"
+aws proton get-environment-account-connection --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
 Response:
@@ -198,15 +198,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
-        "status": "CONNECTED",
-        "environmentAccountId": "111122223333",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-connected",
-        "id": "abcdef01234567890",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:15:33.486000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role",
+        "status": "CONNECTED"
     }
 }
 ```
@@ -219,7 +219,7 @@ If you delete this environment account connection, AWS Proton *won’t* be able 
 Command:
 
 ```
-aws proton delete-environment-account-connection --id "abcdef01234567890"
+aws proton delete-environment-account-connection --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
 Response:
@@ -227,15 +227,15 @@ Response:
 ```
 {
     "environmentAccountConnection": {
-        "arn": "arn:aws:proton:us-east-1:111122223333:environment-account-connection/abcdef01234567890",
-        "status": "CONNECTED",
-        "environmentAccountId": "111122223333",
+        "arn": "arn:aws:proton:us-east-1:123456789222:environment-account-connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
+        "environmentAccountId": "123456789222",
         "environmentName": "simple-env-connected",
-        "id": "abcdef01234567890",
+        "id": "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111",
         "lastModifiedAt": "2021-04-28T23:13:50.847000+00:00",
-        "managementAccountId": "123456789012",
+        "managementAccountId": "123456789111",
         "requestedAt": "2021-04-28T23:13:50.847000+00:00",
-        "roleArn": "arn:aws:iam::111122223333:role/service-role/env-account-proton-service-role"
+        "roleArn": "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role",
+        "status": "CONNECTED"
     }
 }
 ```

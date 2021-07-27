@@ -131,7 +131,7 @@ As an administrator, ensure that your provisioned and managed infrastructure and
    Command:
 
    ```
-   aws proton create-environment-template-version --template-name "simple-env" --description "Version 1" --source s3="{bucket=$source_s3_bucket, key=$source_s3_key}"
+   aws proton create-environment-template-version --template-name "simple-env" --description "Version 1" --source s3="{bucket=your_s3_bucket, key=your_s3_key}"
    ```
 
    Response:
@@ -198,6 +198,8 @@ As an administrator, ensure that your provisioned and managed infrastructure and
            "lastModifiedAt": "2020-11-11T23:02:54.610000+00:00",
            "majorVersion": "1",
            "minorVersion": "0",
+           "recommendedMinorVersion": "0",
+           "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  environment_input_type: \"MyEnvironmentInputType\"\n  types:\n    MyEnvironmentInputType:\n      type: object\n      description: \"Input properties for my environment\"\n      properties:\n        my_sample_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_other_sample_input:\n          type: string\n          description: \"Another sample input\"\n      required:\n        - my_other_sample_input\n",
            "status": "PUBLISHED",
            "statusMessage": "",
            "templateName": "simple-env"
@@ -210,7 +212,7 @@ After creating a new template using the AWS CLI, you can view a list of AWS and 
 Command:
 
 ```
-aws proton list-tags-for-resource --resource-arn "arn:aws:proton:region-id:account-id:environment-template/simple-env"
+aws proton list-tags-for-resource --resource-arn "arn:aws:proton:region-id:123456789012:environment-template/simple-env"
 ```
 
 ## Register and publish service templates<a name="svc-template-v1"></a>
@@ -278,7 +280,7 @@ You can create and publish a service template with or without a service pipeline
    Command:
 
    ```
-   aws proton create-service-template-version --template-name "fargate-service" --description "Version 1" --source s3="{bucket=$source_s3_bucket, key=$source_s3_key}" --compatible-environment-templates '[{"templateName":"simple-env","majorVersion":"1"}]'
+   aws proton create-service-template-version --template-name "fargate-service" --description "Version 1" --source s3="{bucket=your_s3_bucket, key=your_s3_key}" --compatible-environment-templates '[{"templateName":"simple-env","majorVersion":"1"}]'
    ```
 
    Response:
@@ -326,9 +328,9 @@ You can create and publish a service template with or without a service pipeline
                    "templateName": "simple-env"
                }
            ],
-           "createdAt": 1613087544.189,
+           "createdAt": "2020-11-11T23:02:57.912000+00:00",
            "description": "Version 1",
-           "lastModifiedAt": 1613087546.101,
+           "lastModifiedAt": "2020-11-11T23:02:57.912000+00:00",
            "majorVersion": "1",
            "minorVersion": "0",
            "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  pipeline_input_type: \"MyPipelineInputType\"\n  service_input_type: \"MyServiceInstanceInputType\"\n\n  types:\n    MyPipelineInputType:\n      type: object\n      description: \"Pipeline input properties\"\n      required:\n        - my_sample_pipeline_required_input\n      properties:\n        my_sample_pipeline_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_sample_pipeline_required_input:\n          type: string\n          description: \"Another sample input\"\n\n    MyServiceInstanceInputType:\n      type: object\n      description: \"Service instance input properties\"\n      required:\n        - my_sample_service_instance_required_input\n      properties:\n        my_sample_service_instance_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_sample_service_instance_required_input:\n          type: string\n          description: \"Another sample input\"",
@@ -361,9 +363,11 @@ You can create and publish a service template with or without a service pipeline
            ],
            "createdAt": "2020-11-11T23:02:57.912000+00:00",
            "description": "Version 1",
-           "lastModifiedAt": "2020-11-11T23:03:04.767000+00:00",
+           "lastModifiedAt": "2020-11-11T23:02:57.912000+00:00",
            "majorVersion": "1",
            "minorVersion": "0",
+           "recommendedMinorVersion": "0",
+           "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  pipeline_input_type: \"MyPipelineInputType\"\n  service_input_type: \"MyServiceInstanceInputType\"\n\n  types:\n    MyPipelineInputType:\n      type: object\n      description: \"Pipeline input properties\"\n      required:\n        - my_sample_pipeline_required_input\n      properties:\n        my_sample_pipeline_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello pipeline\"\n        my_sample_pipeline_required_input:\n          type: string\n          description: \"Another sample input\"\n\n    MyServiceInstanceInputType:\n      type: object\n      description: \"Service instance input properties\"\n      required:\n        - my_sample_service_instance_required_input\n      properties:\n        my_sample_service_instance_optional_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_sample_service_instance_required_input:\n          type: string\n          description: \"Another sample input\"\n",
            "status": "PUBLISHED",
            "statusMessage": "",
            "templateName": "fargate-service"

@@ -58,7 +58,7 @@ When you delete a major version of a template, you also delete the minor version
 
 AWS CLI template delete operations *don't* include the deletion of other versions of a template\. When using the AWS CLI, delete templates with the following conditions\.
 + Delete an entire template if no minor or major versions of the template exist\.
-+ Delete a major version of a template if no minor versions of the template exist\.
++ Delete a major version when you delete the last remaining minor version\.
 + Delete a minor version of a template if there are no AWS Proton resources deployed to that version\.
 + Delete the recommended minor version of a template if no other minor versions of the template exist and there are no AWS Proton resources deployed to that version\.
 
@@ -91,28 +91,6 @@ Response:
 Command:
 
 ```
-aws proton delete-environment-template-version --template-name "simple-env" --major-version "1"
-```
-
-Response:
-
-```
-{
-    "environmentTemplateVersion": {
-        "arn": "arn:aws:proton:region-id:123456789012:environment-template/simple-env:1",
-        "createdAt": "2020-11-11T23:02:45.915000+00:00",
-        "description": "major version for you",
-        "lastModifiedAt": "2020-11-12T00:17:53.228000+00:00",
-        "majorVersion": "1",
-        "status": "PUBLISHED",
-        "templateName": "simple-env"
-    }
-}
-```
-
-Command:
-
-```
 aws proton delete-environment-template --name "simple-env"
 ```
 
@@ -120,17 +98,14 @@ Response:
 
 ```
 {
-    "environmentTemplateVersion": {
-        "arn": "arn:aws:proton:region-id:123456789012:environment-template/simple-env:1.0",
-        "createdAt": "2020-11-10T18:35:08.293000+00:00",
-        "description": "Version 1",
-        "lastModifiedAt": "2020-11-10T18:35:11.162000+00:00",
-        "majorVersion": "1",
-        "minorVersion": "0",
-        "schema": "schema:\n  format:\n    openapi: \"3.0.0\"\n  environment_input_type: \"MyEnvironmentInputType\"\n  types:\n    MyEnvironmentInputType:\n      type: object\n      description: \"Input properties for my environment\"\n      properties:\n        my_sample_input:\n          type: string\n          description: \"This is a sample input\"\n          default: \"hello world\"\n        my_other_sample_input:\n          type: string\n          description: \"Another sample input\"\n      required:\n        - my_other_sample_input\n",
-        "status": "DRAFT",
-        "statusMessage": "",
-        "templateName": "simple-env"
+    "environmentTemplate": {
+        "arn": "arn:aws:proton:region-id:123456789012:environment-template/simple-env",
+        "createdAt": "2020-11-11T23:02:45.336000+00:00",
+        "description": "VPC with Public Access",
+        "displayName": "VPC",
+        "lastModifiedAt": "2020-11-12T00:23:22.339000+00:00",
+        "name": "simple-env",
+        "recommendedVersion": "1.0"
     }
 }
 ```

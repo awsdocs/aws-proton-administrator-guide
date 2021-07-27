@@ -32,7 +32,8 @@ Response:
         "protonServiceRoleArn": "arn:aws:iam::123456789012:role/ProtonServiceRole",
         "spec": "proton: EnvironmentSpec\nspec:\n  my_sample_input: \"the first\"\n  my_other_sample_input: \"the second\"\n",
         "templateMajorVersion": "1",
-        "templateMinorVersion": "0"
+        "templateMinorVersion": "0",
+        "templateName": "simple-env"
     }
 }
 ```

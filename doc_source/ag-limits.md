@@ -12,9 +12,8 @@ The following table lists AWS Proton quotas\.
 | Maximum length of each template name | 100 characters | 
 | Maximum number of template files per bundle | 10 | 
 | Maximum number of registered templates per account, service and environment templates combined | 100 | 
-| Maximum number of template major versions registered for each template | 9 | 
-| Maximum number of template minor versions registered for each major version | 100 | 
-| Maximum number of environments for each account | 100 | 
-| Maximum number of services for each account | 1000 | 
-| Maximum number of service instances for each service | 100 | 
-| Maximum number of environment account connections for each environment account | 5 | 
+| Maximum number of template versions registered per template | 500 | 
+| Maximum number of environments per account | 100 | 
+| Maximum number of services per account | 1000 | 
+| Maximum number of service instances per service | 100 | 
+| Maximum number of environment account connections per environment account | 5 | 
