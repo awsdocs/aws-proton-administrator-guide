@@ -1,6 +1,6 @@
 # AWS Proton templates<a name="ag-templates"></a>
 
-To add your template bundle to your AWS Proton template repository, create a template minor version and register it with AWS Proton\. When creating the template, provide the name of the Amazon S3 bucket and path for your template bundle\. After templates are published, they can be selected by platform team members and developers\. After they're selected, AWS Proton uses the template to create and provision infrastructure and applications\.
+To add your template bundle to your AWS Proton template library, create a template minor version and register it with AWS Proton\. When creating the template, provide the name of the Amazon S3 bucket and path for your template bundle\. After templates are published, they can be selected by platform team members and developers\. After they're selected, AWS Proton uses the template to create and provision infrastructure and applications\.
 
 As an administrator, you can create and register an environment template with AWS Proton\. This environment template can then be used to deploy multiple environments\. For example, it can be used to deploy "dev," "staging," and "prod" environments\. The "dev" environment might include a VPC with private subnets and a restrictive access policy to all resources\. Environment outputs can be used as inputs for services\.
 

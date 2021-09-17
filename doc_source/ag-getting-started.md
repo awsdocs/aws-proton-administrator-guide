@@ -1,12 +1,16 @@
 # Getting started with AWS Proton<a name="ag-getting-started"></a>
 
-**Get started with AWS Proton**
-+ Create and view an environment template\.
-+ Create, view, and publish a service template that uses the environment template that you just created\.
-+ Create an environment and service \(optional\)\.
-+ Delete the service template, environment template, environment and service, if created\.
+Before getting started, get [set up](ag-setting-up.md) to use AWS Proton and verify you have met the [Getting started preqrequisites](getting-started-prerequisites.md)\.
+
+**Get started with AWS Proton by choosing one or more of the following paths:**
++ Follow a guided [example console or CLI workflow](ag-admin-workflow.md) through documention links\.
++ Run through a guided [example console workflow](ag-getting-started-console.md)\.
++ Run through a variety of AWS Proton [CLI examples](ag-getting-started-cli.md) that are posted on GitHub\.
+
+
 
 **Topics**
 + [Prerequisites](getting-started-prerequisites.md)
++ [Getting started workflow](ag-admin-workflow.md)
 + [Getting started with the AWS Management Console](ag-getting-started-console.md)
 + [Getting started with the AWS Proton AWS CLI](ag-getting-started-cli.md)

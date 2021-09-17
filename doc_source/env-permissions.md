@@ -1,6 +1,6 @@
 # IAM Roles<a name="env-permissions"></a>
 
-With AWS Proton, you supply the IAM roles and KMS keys for the AWS resources that you own and manage\. These are later applied to and used by resources owned and managed by developers\. You create an IAM role to control your developer team's access to the AWS Proton API\.
+With AWS Proton, you supply the IAM roles and AWS KMS keys for the AWS resources that you own and manage\. These are later applied to and used by resources owned and managed by developers\. You create an IAM role to control your developer team's access to the AWS Proton API\.
 
 ## AWS Proton service role<a name="env-proton-svc-permissions"></a>
 

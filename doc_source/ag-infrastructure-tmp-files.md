@@ -1,31 +1,35 @@
-# Infrastructure template files<a name="ag-infrastructure-tmp-files"></a>
+# AWS Proton infrastructure as code files<a name="ag-infrastructure-tmp-files"></a>
 
-The primary components of the template bundle are infrastructure template files or configuration files that define the infrastructure resources and properties that you want to provision\. AWS CloudFormation and other infrastructure\-as\-code engines use these types of files to provision infrastructure resources\.
+The primary components of the template bundle are *infrastructure as code \(IaC\) YAML files* that define the infrastructure resources and properties that you want to provision\. AWS CloudFormation and other infrastructure as code engines use these types of files to provision infrastructure resources\.
 
-## Start with established infrastructure\-as\-code templates<a name="iac-tmp-files"></a>
+AWS Proton currently supports CloudFormation IaC files\. To learn more about CloudFormation, see [What is AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) in *the AWS CloudFormation User Guide*\.
 
-To familiarize yourself with established infrastructure\-as\-code template files, examine the following example CloudFormation templates\. CloudFormation can use these templates to create two different CloudFormation stacks\. To learn more about CloudFormation, see [What is AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) in *the AWS CloudFormation User Guide*\.
+## Start with your own existing infrastructure as code files<a name="iac-tmp-files"></a>
 
-The first example template is configured to provision infrastructure to be shared among container applications\. In this example, customization parameters are added so that you can use the same infrastructure template file to create multiple sets of provisioned infrastructure\. Each set can have different names along with a different set of VPC and subnet CIDR values\. As either administrator or a developer, you provide values for these parameters when you use the template file to provision infrastructure resources with CloudFormation\. For your convenience, these customization parameters are marked with comments and referenced multiple times in the example\. Resource\-based *output* parameters are defined at the end of the template\. They can be referenced in other CloudFormation templates\.
+You can build template bundles by adapting *your own existing* infrastructure as code \(IaC\) files for use with AWS Proton\.
 
-The second example template is configured to deploy an application to the infrastructure that's provisioned from the first example template\. The parameters are also commented for your convenience\.
+The following AWS CloudFormation examples, [Example 1](#ag-env-cfn-example), and [Example 2](#ag-svc-cfn-example), represent *your own existing* CloudFormation IaC files\. CloudFormation can use these files to create two different CloudFormation stacks\.
 
-## Example 1: CloudFormation template<a name="ag-env-cfn-example"></a>
+In [Example 1](#ag-env-cfn-example), the CloudFormation IaC file is configured to provision infrastructure to be shared among container applications\. In this example, input parameters are added so that you can use the same IaC file to create multiple sets of provisioned infrastructure\. Each set can have different names along with a different set of VPC and subnet CIDR values\. As either administrator or a developer, you provide values for these parameters when you use an IaC file to provision infrastructure resources with CloudFormation\. For your convenience, these input parameters are marked with comments and referenced multiple times in the example\. The *outputs* are defined at the end of the template\. They can be referenced in other CloudFormation IaC files\.
+
+In [Example 2](#ag-svc-cfn-example), the CloudFormation IaC file is configured to deploy an application to the infrastructure that's provisioned from *Example 1*\. The parameters are commented for your convenience\.
+
+## Example 1: CloudFormation IaC file<a name="ag-env-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS Fargate cluster running containers in a public subnet. Only supports
              public facing load balancer, and public service discovery namespaces.
-Parameters:  # customization parameters
-   VpcCIDR:  # customization parameter
+Parameters:
+   VpcCIDR:       # input parameter
         Description: CIDR for VPC
         Type: String
         Default: "10.0.0.0/16"
-   SubnetOneCIDR: # customization parameter
+   SubnetOneCIDR: # input parameter
         Description: CIDR for SubnetOne
         Type: String
         Default: "10.0.0.0/24"
-   SubnetTwoCIDR: # customization parameters
+   SubnetTwoCIDR: # input parameters
         Description: CIDR for SubnetTwo
         Type: String
         Default: "10.0.1.0/24"
@@ -124,37 +128,37 @@ Resources:
 
 # These output values will be available to other templates to use.
 Outputs:
-  ClusterName:
+  ClusterName:                                               # output
     Description: The name of the ECS cluster
     Value: !Ref 'ECSCluster'
     Export:
       Name:
         Fn::Sub: "${AWS::StackName}-ECSCluster"
-  ECSTaskExecutionRole:
+  ECSTaskExecutionRole:                                       # output
     Description: The ARN of the ECS role
     Value: !GetAtt 'ECSTaskExecutionRole.Arn'
     Export: 
       Name:
         Fn::Sub: "${AWS::StackName}-ECSTaskExecutionRole"
-  VpcId:
+  VpcId:                                                      # output
     Description: The ID of the VPC that this stack is deployed in
     Value: !Ref 'VPC'
     Export: 
       Name: 
         Fn::Sub: "${AWS::StackName}-VPC"
-  PublicSubnetOne:
+  PublicSubnetOne:                                            # output
     Description: Public subnet one
     Value: !Ref 'PublicSubnetOne'
     Export: 
       Name:
         Fn::Sub: "${AWS::StackName}-PublicSubnetOne"
-  PublicSubnetTwo:
+  PublicSubnetTwo:                                            # output
     Description: Public subnet two
     Value: !Ref 'PublicSubnetTwo'
     Export: 
       Name:
         Fn::Sub: "${AWS::StackName}-PublicSubnetTwo"
-  ContainerSecurityGroup:
+  ContainerSecurityGroup:                                     # output
     Description: A security group used to allow Fargate containers to receive traffic
     Value: !Ref 'ContainerSecurityGroup'
     Export: 
@@ -162,33 +166,33 @@ Outputs:
         Fn::Sub: "${AWS::StackName}-ContainerSecurityGroup"
 ```
 
-## Example 2: CloudFormation template<a name="ag-svc-cfn-example"></a>
+## Example 2: CloudFormation IaC file<a name="ag-svc-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Deploy a service on AWS Fargate, hosted in a public subnet, and accessible via a public load balancer.
-Parameters:  # customization parameters
-    ContainerPortInput:
+Parameters:
+    ContainerPortInput:  # input parameter
         Description: The port to route traffic to
         Type: Number
         Default: 80
-    TaskCountInput:
+    TaskCountInput:      # input parameter
         Description: The default number of Fargate tasks you want running
         Type: Number
         Default: 1
-    TaskSizeInput:
+    TaskSizeInput:       # input parameter
         Description: The size of the task you want to run
         Type: String
         Default: x-small
-    ContainerImageInput:
+    ContainerImageInput: # input parameter
         Description: The name/url of the container image
         Type: String
         Default: "public.ecr.aws/z9d2n7e1/nginx:1.19.5"
-    TaskNameInput:
+    TaskNameInput:       # input parameter
         Description: Name for your task
         Type: String
         Default: "my-fargate-instance"
-    StackName:
+    StackName:           # input parameter
         Description: Name of the environment stack to deploy to
         Type: String
         Default: "my-fargate-environment"
@@ -215,7 +219,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName:
-        Ref: 'TaskNameInput' # customization parameter
+        Ref: 'TaskNameInput' # input parameter
 
   # The task definition. This is a simple metadata description of what
   # container to run, and what resource requirements it has.
@@ -230,20 +234,7 @@ Resources:
         - FARGATE
       ExecutionRoleArn:
         Fn::ImportValue:
-          !Sub "${StackName}-ECSTaskExecutionRole"  # imported resource parameter
-      TaskRoleArn: !Ref "AWS::NoValue"
-      ContainerDefinitions:        
-        - Name: !Ref 'TaskNameInput'
-          Cpu: !FindInMap [TaskSizeMap, !Ref 'TaskSizeInput', cpu]
-          Memory: !FindInMap [TaskSizeMap, !Ref 'TaskSizeInput', memory]
-          Image: !Ref 'ContainerImageInput'  # customization parameter
-          PortMappings:
-            - ContainerPort: !Ref 'ContainerPortInput'  # customization parameter
-          
-          LogConfiguration:
-            LogDriver: 'awslogs'
-            Options:
-              awslogs-group: !Ref 'TaskNameInput'
+          !Sub "${StackName}-ECSTaskExecutionRole"    # output parameter from another CloudFormation template
               awslogs-region: !Ref 'AWS::Region'
               awslogs-stream-prefix: !Ref 'TaskNameInput'
                 
@@ -258,7 +249,7 @@ Resources:
       ServiceName: !Ref 'TaskNameInput'
       Cluster:
         Fn::ImportValue:
-          !Sub "${StackName}-ECSCluster"  # imported resource parameter
+          !Sub "${StackName}-ECSCluster"  # output parameter from another CloudFormation template
       LaunchType: FARGATE
       DeploymentConfiguration:
         MaximumPercent: 200
@@ -269,16 +260,29 @@ Resources:
           AssignPublicIp: ENABLED
           SecurityGroups:
             - Fn::ImportValue:
-                !Sub "${StackName}-ContainerSecurityGroup"  # imported resource parameter
+                !Sub "${StackName}-ContainerSecurityGroup"    # output parameter from another CloudFormation template
           Subnets:
+            - Fn::ImportValue:r CloudFormation template
+      TaskRoleArn: !Ref "AWS::NoValue"
+      ContainerDefinitions:        
+        - Name: !Ref 'TaskNameInput'
+          Cpu: !FindInMap [TaskSizeMap, !Ref 'TaskSizeInput', cpu]
+          Memory: !FindInMap [TaskSizeMap, !Ref 'TaskSizeInput', memory]
+          Image: !Ref 'ContainerImageInput'             # input parameter
+          PortMappings:
+            - ContainerPort: !Ref 'ContainerPortInput'  # input parameter
+          
+          LogConfiguration:
+            LogDriver: 'awslogs'
+            Options:
+              awslogs-group: !Ref 'TaskNameInput'
+                !Sub "${StackName}-PublicSubnetOne"    # output parameter from another CloudFormation template
             - Fn::ImportValue:
-                !Sub "${StackName}-PublicSubnetOne"  # imported resource parameter
-            - Fn::ImportValue:
-                !Sub "${StackName}-PublicSubnetTwo"  # imported resource parameter
+                !Sub "${StackName}-PublicSubnetTwo"    # output parameter from another CloudFormation template
       TaskDefinition: !Ref 'TaskDefinition'
       LoadBalancers:
         - ContainerName: !Ref 'TaskNameInput'
-          ContainerPort: !Ref 'ContainerPortInput'  # customization parameter
+          ContainerPort: !Ref 'ContainerPortInput'  # input parameter
           TargetGroupArn: !Ref 'TargetGroup'
 
   # A target group. This is used for keeping track of all the tasks, and
@@ -301,7 +305,7 @@ Resources:
       UnhealthyThresholdCount: 2
       VpcId:
         Fn::ImportValue:
-          !Sub "${StackName}-VPC"  # imported resource parameter
+          !Sub "${StackName}-VPC"    # output parameter from another CloudFormation template
 
   # Create a rule on the load balancer for routing traffic to the target group
   LoadBalancerRule:
@@ -352,7 +356,7 @@ Resources:
           - '/'
           - - service
             - Fn::ImportValue:
-                !Sub "${StackName}-ECSCluster"
+                !Sub "${StackName}-ECSCluster"  # output parameter from another CloudFormation template
             - !Ref 'TaskNameInput'
       ScalableDimension: 'ecs:service:DesiredCount'
       ServiceNamespace: 'ecs'
@@ -514,30 +518,38 @@ Resources:
       Protocol: HTTP
 # These output values will be available to other templates to use.
 Outputs:
-  ServiceEndpoint:
+  ServiceEndpoint:        # output
     Description: The URL to access the service
     Value: !Sub "http://${PublicLoadBalancer.DNSName}"
 ```
 
-## Bring your infrastructure\-as\-code to AWS Proton<a name="proton-tmp-files"></a>
+You can adapt these files for use with AWS Proton\.
 
-With slight modifications, you can use [Example 1](#ag-env-cfn-example) as an infrastructure template file for an environment template bundle that AWS Proton uses to deploy an environment as shown in the next example\. Instead of using the CloudFormation customization parameters, you use [Jinja](ag-jinja.md) to provide customization parameters that you have defined in an [Open API](https://swagger.io/docs/specification/data-models/) based [schema file](ag-schema.md)\. These customization parameters are commented for your convenience and referenced multiple times in the template\. This way, AWS Proton can audit and check parameter values, as well as match and insert output parameter values in one template file to parameters in another template file\. As administrator, you add the AWS Proton `environment.inputs` name\-space to the customization parameters\. When you reference environment infrastructure template file output parameters in a service infrastructure template file, you add the environment name\-space to the output parameters, such as `environment.outputs.ClusterName` and `environment.outputs.ECSTaskExecutionRole`\. Finally, you surround them with moustache brackets and single quotation marks\.
+## Bring your infrastructure as code to AWS Proton<a name="proton-tmp-files"></a>
 
-## Example 3: AWS Proton environment infrastructure template file<a name="ag-proton-env-cfn-example"></a>
+With slight modifications, you can use [Example 1](#ag-env-cfn-example) as an infrastructure as code \(IaC\) file for an environment template bundle that AWS Proton uses to deploy an environment as shown in [Example 3](#ag-proton-env-cfn-example)\.
+
+Instead of using the CloudFormation parameters, you use [Jinja](https://jinja.palletsprojects.com/en/2.11.x/) syntax to reference parameters that you have defined in an [Open API](https://swagger.io/docs/specification/data-models/) based [schema file](ag-schema.md)\. These input parameters are commented for your convenience and referenced multiple times in the IaC file\. This way, AWS Proton can audit and check parameter values, as well as match and insert output parameter values in one IaC file to parameters in another IaC file\.
+
+As administrator, you can add the AWS Proton `environment.inputs.` namespace to the input parameters\. When you reference environment IaC file outputs in a service IaC file, you can add the `environment.outputs.` namespace to the outputs, such as `environment.outputs.ClusterName` and `environment.outputs.ECSTaskExecutionRole`\. Finally, you surround them with moustache brackets and quotation marks\.
+
+With these modifications, your CloudFormation IaC files can be used by AWS Proton\.
+
+## Example 3: AWS Proton environment infrastructure as code file<a name="ag-proton-env-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
 Description: AWS Fargate cluster running containers in a public subnet. Only supports
-             public facing load balancer, and public service discovery namespaces.
+             public facing load balancer, and public service discovery prefixes.
 Mappings:
   # The VPC and subnet configuration is passed in via the environment spec.
   SubnetConfig:
     VPC:
-      CIDR: '{{ environment.inputs.vpc_cidr}}'        # customization parameter
+      CIDR: '{{ environment.inputs.vpc_cidr}}'        # input parameter
     PublicOne:
-      CIDR: '{{ environment.inputs.subnet_one_cidr}}' # customization parameter
+      CIDR: '{{ environment.inputs.subnet_one_cidr}}' # input parameter
     PublicTwo:
-      CIDR: '{{ environment.inputs.subnet_two_cidr}}' # customization parameter
+      CIDR: '{{ environment.inputs.subnet_two_cidr}}' # input parameter
 Resources:
   VPC:
     Type: AWS::EC2::VPC
@@ -628,34 +640,40 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
 
-# These output values are available to service templates, when given the 
-# the 'environment' namespace, for example, environment.outputs.ClusterName.
+<<<<<<< HEAD
+# These output values are available to service infrastructure as code files as outputs, when given the 
+# the 'environment.outputs' namespace, for example, service_instance.environment.outputs.ClusterName.
+=======
+# These output values are available to service infrastructure files as resource parameters, when given the 
+# the 'environment.outputs' namespace, for example, environment.outputs.ClusterName.
+# In a service infrastructure file, resource parameters refer to resources in a related infrastructure template file.
+>>>>>>> help
 Outputs:
-  ClusterName:
+  ClusterName:                                            # output
     Description: The name of the ECS cluster
     Value: !Ref 'ECSCluster'
-  ECSTaskExecutionRole:
+  ECSTaskExecutionRole:                                   # output
     Description: The ARN of the ECS role
     Value: !GetAtt 'ECSTaskExecutionRole.Arn'
-  VpcId:
+  VpcId:                                                  # output
     Description: The ID of the VPC that this stack is deployed in
     Value: !Ref 'VPC'
-  PublicSubnetOne:
+  PublicSubnetOne:                                        # output
     Description: Public subnet one
     Value: !Ref 'PublicSubnetOne'
-  PublicSubnetTwo:
+  PublicSubnetTwo:                                        # output
     Description: Public subnet two
     Value: !Ref 'PublicSubnetTwo'
-  ContainerSecurityGroup:
+  ContainerSecurityGroup:                                 # output
     Description: A security group used to allow Fargate containers to receive traffic
     Value: !Ref 'ContainerSecurityGroup'
 ```
 
-The templates shown in [Example 1](#ag-env-cfn-example) and [Example 3](#ag-proton-env-cfn-example) produce slightly different CloudFormation stacks in the way that parameters are displayed when using the CloudFormation console to view stack templates\. The original CloudFormation stack template file displays the parameter labels \(keys\) in the stack template view while the AWS Proton CloudFormation infrastructure stack template file displays the parameter values\. AWS Proton schema customization parameters *don’t* appear in the CloudFormation stack parameters view\.
+The IaC files shown in [Example 1](#ag-env-cfn-example) and [Example 3](#ag-proton-env-cfn-example) produce slightly different CloudFormation stacks in the way that parameters are displayed when using the CloudFormation console to view stack templates\. The *Example 1* CloudFormation stack template file displays the parameter labels \(keys\) in the stack template view while the *Example 3* AWS Proton CloudFormation infrastructure stack template file displays the parameter values\. AWS Proton input parameters *don’t* appear in the CloudFormation stack parameters view\.
 
-The following example AWS Proton service infrastructure template file corresponds with [Example 2](#ag-svc-cfn-example)\.
+In [Example 4](#ag-proton-svc-cfn-example), the AWS Proton service IaC file corresponds with [Example 2](#ag-svc-cfn-example)\.
 
-## Example 4: AWS Proton service instance infrastructure template file<a name="ag-proton-svc-cfn-example"></a>
+## Example 4: AWS Proton service instance IaC file<a name="ag-proton-svc-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
@@ -690,12 +708,12 @@ Resources:
     Type: AWS::ECS::TaskDefinition
     Properties:
       Family: '{{service_instance.name}}'
-      Cpu: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, cpu] # customization parameter
+      Cpu: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, cpu] # input parameter
       Memory: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, memory] 
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      ExecutionRoleArn: '{{environment.outputs.ECSTaskExecutionRole}}' # imported parameter
+      ExecutionRoleArn: '{{environment.outputs.ECSTaskExecutionRole}}' # output from an environment infrastructure as code file
       TaskRoleArn: !Ref "AWS::NoValue"
       ContainerDefinitions:
         - Name: '{{service_instance.name}}'
@@ -703,7 +721,7 @@ Resources:
           Memory: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, memory]
           Image: '{{service_instance.inputs.image}}'
           PortMappings:
-            - ContainerPort: '{{service_instance.inputs.port}}' # customization parameter
+            - ContainerPort: '{{service_instance.inputs.port}}' # input parameter
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
@@ -719,19 +737,19 @@ Resources:
     DependsOn: LoadBalancerRule
     Properties:
       ServiceName: '{{service_instance.name}}'
-      Cluster: '{{environment.outputs.ClusterName}}' # imported resource parameter
+      Cluster: '{{environment.outputs.ClusterName}}' # output from an environment infrastructure as code file
       LaunchType: FARGATE
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 75
-      DesiredCount: '{{service_instance.inputs.desired_count}}'# customization parameter
+      DesiredCount: '{{service_instance.inputs.desired_count}}'       # input parameter
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
           SecurityGroups:
-            - '{{environment.outputs.ContainerSecurityGroup}}' # imported resource parameter
+            - '{{environment.outputs.ContainerSecurityGroup}}' # output from an environment infrastructure as code file
           Subnets:
-            - '{{environment.outputs.PublicSubnetOne}}' # imported resource parameter
+            - '{{environment.outputs.PublicSubnetOne}}'        # output from an environment infrastructure as code file
             - '{{environment.outputs.PublicSubnetTwo}}'
       TaskDefinition: !Ref 'TaskDefinition'
       LoadBalancers:
@@ -757,7 +775,7 @@ Resources:
       Port: '{{service_instance.inputs.port}}'
       Protocol: HTTP
       UnhealthyThresholdCount: 2
-      VpcId: '{{environment.outputs.VpcId}}' # imported resource parameter
+      VpcId: '{{environment.outputs.VpcId}}' # output from an environment infrastructure as code file
 
   # Create a rule on the load balancer for routing traffic to the target group
   LoadBalancerRule:
@@ -784,7 +802,7 @@ Resources:
         Fn::Join:
           - '/'
           - - service
-            - '{{environment.outputs.ClusterName}}' # imported resource parameter
+            - '{{environment.outputs.ClusterName}}' # output from an environment infrastructure as code file
             - '{{service_instance.name}}'
       MinCapacity: 1
       MaxCapacity: 10
@@ -958,14 +976,14 @@ Resources:
       Port: 80
       Protocol: HTTP
 Outputs:
-  ServiceEndpoint:
+  ServiceEndpoint:         # output
     Description: The URL to access the service
     Value: !Sub "http://${PublicLoadBalancer.DNSName}"
 ```
 
-The following example AWS Proton pipeline infrastructure template provisions the pipeline infrastructure to support the service instances provisioned by [Example 4](#ag-proton-svc-cfn-example)\.
+In [Example 5](#ag-proton-pipeline-cfn-example), the AWS Proton pipeline IaC file provisions the pipeline infrastructure to support the service instances provisioned by [Example 4](#ag-proton-svc-cfn-example)\.
 
-## Example 5: AWS Proton service pipeline infrastructure template file<a name="ag-proton-pipeline-cfn-example"></a>
+## Example 5: AWS Proton service pipeline IaC file<a name="ag-proton-pipeline-cfn-example"></a>
 
 ```
 Resources:
@@ -988,7 +1006,7 @@ Resources:
           Value: !Ref ECRRepo
         - Name: service_name
           Type: PLAINTEXT
-          Value: '{{ service.name }}'    # resource based parameter
+          Value: '{{ service.name }}'    # resource parameter
       ServiceRole:
         Fn::GetAtt:
           - PublishRole
@@ -1006,10 +1024,7 @@ Resources:
                         "docker": 18
                       },
                       "commands": [
-                        "aws s3 cp s3://aws-proton-preview-public-files/model/proton-2020-07-20.normal.json .",
-                        "aws s3 cp s3://aws-proton-preview-public-files/model/waiters2.json .",
-                        "aws configure add-model --service-model file://proton-2020-07-20.normal.json --service-name proton-preview",
-                        "mv waiters2.json ~/.aws/models/proton-preview/2020-07-20/waiters-2.json",
+                        "pip3 install --upgrade --user awscli",
                         "echo 'f6bd1536a743ab170b35c94ed4c7c4479763356bd543af5d391122f4af852460  yq_linux_amd64' > yq_linux_amd64.sha",
                         "wget https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64",
                         "sha256sum -c yq_linux_amd64.sha",
@@ -1021,7 +1036,7 @@ Resources:
                       "commands": [
                         "cd $CODEBUILD_SRC_DIR",
                         "$(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)",
-                        "{{ pipeline.inputs.unit_test_command }}",    # customization parameter
+                        "{{ pipeline.inputs.unit_test_command }}",    # input parameter
                       ]
                     },
                     "build": {
@@ -1032,14 +1047,14 @@ Resources:
               - Ref: AWS::AccountId
               - >-
                 .dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG",
-                        "docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG -f {{ pipeline.inputs.dockerfile }} .",     # customization parameter
+                        "docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG -f {{ pipeline.inputs.dockerfile }} .",     # input parameter
                         "docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $IMAGE_ID;",
                         "docker push $IMAGE_ID"
                       ]
                     },
                     "post_build": {
                       "commands": [
-                        "aws proton-preview --endpoint-url https://proton.$AWS_DEFAULT_REGION.amazonaws.com --region $AWS_DEFAULT_REGION get-service --service-name $service_name | jq -r .service.spec > service.yaml",
+                        "aws proton --region $AWS_DEFAULT_REGION get-service --name $service_name | jq -r .service.spec > service.yaml",
                         "yq w service.yaml 'instances[*].spec.image' \"$IMAGE_ID\" > rendered_service.yaml"
                       ]
                     }
@@ -1069,10 +1084,10 @@ Resources:
         EnvironmentVariables:
         - Name: service_name
           Type: PLAINTEXT
-          Value:  '{{service.name}}'          # resource based parameter
+          Value:  '{{service.name}}'          # resource parameter
         - Name: service_instance_name
           Type: PLAINTEXT
-          Value: '{{service_instance.name}}'  # resource based parameter
+          Value: '{{service_instance.name}}'  # resource parameter
       ServiceRole:
         Fn::GetAtt:
           - DeploymentRole
@@ -1082,18 +1097,588 @@ Resources:
           {
             "version": "0.2",
             "phases": {
-              "install": {
-                "commands": [
-                  "aws s3 cp s3://aws-proton-preview-public-files/model/proton-2020-07-20.normal.json .",
-                  "aws s3 cp s3://aws-proton-preview-public-files/model/waiters2.json .",
-                  "aws configure add-model --service-model file://proton-2020-07-20.normal.json --service-name proton-preview",
-                  "mv waiters2.json ~/.aws/models/proton-preview/2020-07-20/waiters-2.json"
-                ]
-              },
               "build": {
                 "commands": [
-                  "aws proton-preview --endpoint-url https://proton.$AWS_DEFAULT_REGION.amazonaws.com --region $AWS_DEFAULT_REGION update-service-instance --version-update-type UPDATE_SPEC --service-instance-name $service_instance_name --service-name $service_name --spec file://rendered_service.yaml",
-                  "aws proton-preview --endpoint-url https://proton.$AWS_DEFAULT_REGION.amazonaws.com --region $AWS_DEFAULT_REGION wait service-instance-update-complete --service-instance-name $service_instance_name --service-name $service_name"
+                  "pip3 install --upgrade --user awscli",
+                  "aws proton --region $AWS_DEFAULT_REGION update-service-instance --deployment-type CURRENT_VERSION --name $service_instance_name --service-name $service_name --spec file://rendered_service.yaml",
+                  "aws proton --region $AWS_DEFAULT_REGION wait service-instance-deployed --name $service_instance_name --service-name $service_name"
+                ]
+              }
+            }
+          }
+        Type: CODEPIPELINE
+      EncryptionKey:
+        Fn::GetAtt:
+          - PipelineArtifactsBucketEncryptionKey
+          - Arn
+{% endfor %}
+  # This role is used to build and publish an image to ECR
+  PublishRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: "2012-10-17"
+  PublishRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":logs:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :log-group:/aws/codebuild/
+                    - Ref: BuildProject
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":logs:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :log-group:/aws/codebuild/
+                    - Ref: BuildProject
+                    - :*
+          - Action:
+              - codebuild:CreateReportGroup
+              - codebuild:CreateReport
+              - codebuild:UpdateReport
+              - codebuild:BatchPutTestCases
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":codebuild:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :report-group/
+                  - Ref: BuildProject
+                  - -*
+          - Action:
+              - ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:CompleteLayerUpload
+              - ecr:GetAuthorizationToken
+              - ecr:InitiateLayerUpload
+              - ecr:PutImage
+              - ecr:UploadLayerPart
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - ECRRepo
+                - Arn
+          - Action:
+              - proton:GetService
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+              - s3:PutObject*
+              - s3:Abort*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - PipelineArtifactsBucket
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - PipelineArtifactsBucket
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - PipelineArtifactsBucketEncryptionKey
+                - Arn
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - PipelineArtifactsBucketEncryptionKey
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: PublishRoleDefaultPolicy
+      Roles:
+        - Ref: PublishRole
+
+  DeploymentRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codebuild.amazonaws.com
+        Version: "2012-10-17"
+  DeploymentRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogGroup
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":logs:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :log-group:/aws/codebuild/Deploy*Project*
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":logs:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :log-group:/aws/codebuild/Deploy*Project:*
+          - Action:
+              - codebuild:CreateReportGroup
+              - codebuild:CreateReport
+              - codebuild:UpdateReport
+              - codebuild:BatchPutTestCases
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":codebuild:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :report-group/Deploy*Project
+                  - -*
+          - Action:
+              - proton:UpdateServiceInstance
+              - proton:GetServiceInstance
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - PipelineArtifactsBucket
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - PipelineArtifactsBucket
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - PipelineArtifactsBucketEncryptionKey
+                - Arn
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - PipelineArtifactsBucketEncryptionKey
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: DeploymentRoleDefaultPolicy
+      Roles:
+        - Ref: DeploymentRole
+  PipelineArtifactsBucketEncryptionKey:
+    Type: AWS::KMS::Key
+    Properties:
+      KeyPolicy:
+        Statement:
+          - Action:
+              - kms:Create*
+              - kms:Describe*
+              - kms:Enable*
+              - kms:List*
+              - kms:Put*
+              - kms:Update*
+              - kms:Revoke*
+              - kms:Disable*
+              - kms:Get*
+              - kms:Delete*
+              - kms:ScheduleKeyDeletion
+              - kms:CancelKeyDeletion
+              - kms:GenerateDataKey
+              - kms:TagResource
+              - kms:UntagResource
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - PipelineRole
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - PublishRole
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - PublishRole
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - DeploymentRole
+                  - Arn
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - DeploymentRole
+                  - Arn
+            Resource: "*"
+        Version: "2012-10-17"
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+  PipelineArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              KMSMasterKeyID:
+                Fn::GetAtt:
+                  - PipelineArtifactsBucketEncryptionKey
+                  - Arn
+              SSEAlgorithm: aws:kms
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+  PipelineArtifactsBucketEncryptionKeyAlias:
+    Type: AWS::KMS::Alias
+    Properties:
+      AliasName: 'alias/codepipeline-encryption-key-{{ service.name }}'
+      TargetKeyId:
+        Fn::GetAtt:
+          - PipelineArtifactsBucketEncryptionKey
+          - Arn
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+  PipelineRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: codepipeline.amazonaws.com
+        Version: "2012-10-17"
+  PipelineRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+              - s3:PutObject*
+              - s3:Abort*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - PipelineArtifactsBucket
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - PipelineArtifactsBucket
+                        - Arn
+                    - /*
+          - Action:
+              - kms:Decrypt
+              - kms:DescribeKey
+              - kms:Encrypt
+              - kms:ReEncrypt*
+              - kms:GenerateDataKey*
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - PipelineArtifactsBucketEncryptionKey
+                - Arn
+          - Action: codestar-connections:*
+            Effect: Allow
+            Resource: "*"
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - PipelineBuildCodePipelineActionRole
+                - Arn
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - PipelineDeployCodePipelineActionRole
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: PipelineRoleDefaultPolicy
+      Roles:
+        - Ref: PipelineRole
+  Pipeline:
+    Type: AWS::CodePipeline::Pipeline
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - PipelineRole
+          - Arn
+      Stages:
+        - Actions:
+            - ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Provider: CodeStarSourceConnection
+                Version: "1"
+              Configuration:
+                ConnectionArn: '{{ service.repository_connection_arn }}'
+                FullRepositoryId: '{{ service.repository_id }}'
+                BranchName: '{{ service.branch_name }}'
+              Name: Checkout
+              OutputArtifacts:
+                - Name: Artifact_Source_Checkout
+              RunOrder: 1
+          Name: Source
+        - Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName:
+                  Ref: BuildProject
+              InputArtifacts:
+                - Name: Artifact_Source_Checkout
+              Name: Build
+              OutputArtifacts:
+                - Name: BuildOutput
+              RoleArn:
+                Fn::GetAtt:
+                  - PipelineBuildCodePipelineActionRole
+                  - Arn
+              RunOrder: 1
+          Name: Build {%- for service_instance in service_instances %}
+        - Actions:
+            - ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Provider: CodeBuild
+                Version: "1"
+              Configuration:
+                ProjectName:
+                  Ref: Deploy{{loop.index}}Project
+              InputArtifacts:
+                - Name: BuildOutput
+              Name: Deploy
+              RoleArn:
+                Fn::GetAtt:
+                  - PipelineDeployCodePipelineActionRole
+                  - Arn
+              RunOrder: 1
+          Name: 'Deploy{{service_instance.name}}'
+{%- endfor %}
+      ArtifactStore:
+        EncryptionKey:
+          Id:
+            Fn::GetAtt:
+              - PipelineArtifactsBucketEncryptionKey
+              - Arn
+          Type: KMS
+        Location:
+          Ref: PipelineArtifactsBucket
+        Type: S3
+    DependsOn:
+      - PipelineRoleDefaultPolicy
+      - PipelineRole
+  PipelineBuildCodePipelineActionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+        Version: "2012-10-17"
+  PipelineBuildCodePipelineActionRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - codebuild:BatchGetBuilds
+              - codebuild:StartBuild
+              - codebuild:StopBuild
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - BuildProject
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: PipelineBuildCodePipelineActionRoleDefaultPolicy
+      Roles:
+        - Ref: PipelineBuildCodePipelineActionRole
+  PipelineDeployCodePipelineActionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+        Version: "2012-10-17"
+  PipelineDeployCodePipelineActionRoleDefaultPolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - codebuild:BatchGetBuilds
+              - codebuild:StartBuild
+              - codebuild:StopBuild
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":codebuild:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":project/Deploy*"
+        Version: "2012-10-17"
+      PolicyName: PipelineDeployCodePipelineActionRoleDefaultPolicy
+      Roles:
+        - Ref: PipelineDeployCodePipelineActionRole
+Outputs:
+  PipelineEndpoint:
+    Description: The URL to access the pipeline
+    Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${Pipeline}/view?region=${AWS::Region}"
+
                 ]
               }
             }
@@ -1451,7 +2036,7 @@ Resources:
   PipelineArtifactsBucketEncryptionKeyAlias:
     Type: AWS::KMS::Alias
     Properties:
-      AliasName: 'alias/codepipeline-encryption-key-{{ service.name }}'     # resource based parameter
+      AliasName: 'alias/codepipeline-encryption-key-{{ service.name }}'     # resource parameter
       TargetKeyId:
         Fn::GetAtt:
           - PipelineArtifactsBucketEncryptionKey
@@ -1536,9 +2121,9 @@ Resources:
                 Provider: CodeStarSourceConnection
                 Version: "1"
               Configuration:
-                ConnectionArn: '{{ service.connection_arn }}'   # customization parameter
-                FullRepositoryId: '{{ service.repository }}'    # customization parameter
-                BranchName: '{{ service.branch }}'              # customization parameter
+                ConnectionArn: '{{ service.repository_connection_arn }}'   # resource parameter
+                FullRepositoryId: '{{ service.repository_id }}'            # resource parameter
+                BranchName: '{{ service.branch_name }}'                    # resource parameter
               Name: Checkout
               OutputArtifacts:
                 - Name: Artifact_Source_Checkout
@@ -1581,7 +2166,7 @@ Resources:
                   - PipelineDeployCodePipelineActionRole
                   - Arn
               RunOrder: 1
-          Name: 'Deploy{{service_instance.name}}'         # resource based parameter
+          Name: 'Deploy{{service_instance.name}}'         # resource parameter
 {%- endfor %}
       ArtifactStore:
         EncryptionKey:

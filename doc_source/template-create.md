@@ -217,7 +217,7 @@ aws proton list-tags-for-resource --resource-arn "arn:aws:proton:region-id:12345
 
 ## Register and publish service templates<a name="svc-template-v1"></a>
 
-When you create a service template, you specify a list of compatible environment templates\. That way, when developers select a service template, they have options for which environment to deploy their service to\. Before creating a service from a service template or before publishing a service template, confirm that environments have been deployed from the listed compatible environment templates\.
+When you create a service template version, you specify a list of compatible environment templates\. That way, when developers select a service template, they have options for which environment to deploy their service to\. Before creating a service from a service template or before publishing a service template, confirm that environments have been deployed from the listed compatible environment templates\. To add or remove compatible environment templates for a service template version, you create a new major version of it\. You *can't* update a service to the new major version if it is deployed to an environment that was built from a removed compatible environment template\.
 
 You can register and publish a service template by using the console and following the steps in [Step 3: Create a service template](ag-getting-started-console.md#ag-getting-started-step3)\. If you aren't including a service pipeline definition in your service template, uncheck the **Pipeline \- optional** checkbox at the bottom of the page\. For more information, see [Template bundles](ag-template-bundles.md)\.
 

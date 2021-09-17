@@ -1,47 +1,105 @@
-# Infrastructure template file parameters<a name="parameters"></a>
+# Parameters<a name="parameters"></a>
 
-You can use parameters in your environment and service infrastructure template files\. Verify that the length of each parameter name doesn't exceed 100 characters in length\. Moreover, the length of the name\-space and resource name combined can't exceed the character limit for the resource name\. AWS Proton deployments fails if these quotas are exceeded\.
+To work with different types of infrastructure as code \(IaC\) files, AWS Proton uses parameter *namespaces* and a [schema file](ag-schema.md) for handling parameters\. AWS Proton checks input parameter values against your schema file\. It matches the input parameter values with the parameters that are referenced in your IaC files to inject the input values\. AWS Proton uses [Jinja](https://jinja.palletsprojects.com/en/2.11.x/) syntax with AWS CloudFormation IaC files\.
 
-## Environment template parameters<a name="env-parameters"></a>
+AWS Proton automatically creates AWS Proton resource parameters\. You can reference these resource parameters in all of your template bundle IaC files\. An example of a resource parameter is `environment.name`\.
 
-You can use the following types of parameters in your environment infrastructure template files\.
-+ **Customization parameters**
+You can use parameters in your environment and service IaC files with the following requirements:
++ The length of each parameter name can't exceed 100 characters\.
++ The length of the parameter namespace and *resource name* combined can't exceed the character limit for the resource name\.
 
-  These are the parameters that you add to your infrastructure templates to make them flexible and re\-usable\. In your environment infrastructure template file, you must attach a name\-space to a customization parameter to associate it with an AWS Proton resource\. Customization parameter values can only be provided at the time of environment creation\. The following list includes examples of customization parameters for typical use cases\.
+AWS Proton provisioning fails if these quotas are exceeded\.
+
+To reference an input parameter in an IaC file, you can attach an AWS Proton parameter namespace\. For AWS CloudFormation IaC files, you can use *Jinja* syntax and surround the parameter with pairs of moustache brackets and quotation marks\.
+
+For an input parameter defined as `"VPC"` in your schema, you can reference your input parameter as `"{{ environment.input.VPC }}"` in your CloudFormation environment IaC file\.
+
+The following table lists AWS Proton resource parameters and the namespaces that you can use in your IaC files\.
+
+## AWS Proton parameters and namespaces<a name="param-name-spaces"></a>
+
+[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/proton/latest/adminguide/parameters.html)
+
+For more information and examples, see the following parameter sections for environment and service infrastructure template files\.
+
+**Topics**
++ [AWS Proton parameters and namespaces](#param-name-spaces)
+
+## Environment infrastructure as code file parameter details and examples<a name="env-parameters"></a>
+
+You can use the following types of parameters in your environment infrastructure as code \(IaC\) files\.
++ **Input parameters**
+
+  These are the parameters that you add to your IaC files to make them flexible and re\-usable\. You can define them in your [schema file](ag-schema.md)\. In your environment IaC file, you can attach a namespace to an input parameter to associate it with an AWS Proton resource\. Input parameter values can only be provided when you create the environment\. The following list includes examples of input parameters for typical use cases\.
   + VPC CIDR values
   + Load balancer settings
   + Database settings
-  + Timeout for health check
+  + A health check timeout
 
-  You, as an administrator, provide values for customization parameters when you use an environment template to create an environment\. When you use the console to create an environment, AWS Proton automatically provides a schema based form that you fill out\. When you use the CLI, you provide a spec that provides values for the customization parameters\.
-+ **Resource based parameters**
+  As an administrator, you can provide values for input parameters when you [create an environment](ag-create-env.md):
+  + Use the console to fill out a schema\-based form that AWS Proton provides\.
+  + Use the CLI to provide spec that includes the values\.
 
-  These are parameters that reference output parameters from other infrastructure template files\. Resource\-based metadata name\-spaces that stand on their own, such as `environment.name`, also fit in this category\.
+  To reference an input parameter in an IaC file, you attach a namespace to it\.
 
-  To associate an output parameter with an AWS Proton resource type, you attach a name\-space to it when you reference it in a related template file\.
+  In the following CloudFormation environment IaC file example, the `environment.inputs.` namespace identifies input parameters\.
 
-In the following environment infrastructure template example, the `environment.inputs` name\-space is used to identify custom parameters\.
+  ```
+  Resources:
+    StoreInputValue:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Type: String
+        Value: "{{ environment.inputs.my_sample_input }} {{ environment.inputs.my_other_sample_input}} {{ environment.inputs.another_optional_input }}"
+                 # input parameters
+  Outputs:
+    MyEnvParameterValue:                                       # output
+      Value: !GetAtt StoreInputValue.Value
+    MySampleInputValue:                                        # output
+      Value: "{{ environment.inputs.my_sample_input }}"        # input parameter
+    MyOtherSampleInputValue:                                   # output
+      Value: "{{ environment.inputs.my_other_sample_input }}"  # input parameter
+    AnotherOptionalInputValue:                                 # output
+      Value: "{{ environment.inputs.another_optional_input }}" # input parameter
+  ```
++ **AWS Proton resource parameters**
+
+  AWS Proton automatically creates resource parameters, such as an environment `name`\. You can reference these resource parameters in any of the IaC files that are used for provisioning an environment and the services deployed to it\.
+
+  To refer to an environment `name`, you can use the `environment.` namespace, for example, `environment.name`\.
++ **Output parameters**
+
+  These are parameters that reference outputs from an environment IaC file\.
+
+  To reference an output parameter in a IaC file, you can attach a namespace to it\.
+
+The following example is a snippet from an environment CloudFormation IaC file\. It lists CloudFormation output parameters and their corresponding values\. These are available to service IaC files with the `environment.outputs.` namespace\. For example, the namespace `environment.outputs.ClusterName` is used to designate the value for the output for the parameter `ClusterName`\.
 
 ```
-Resources:
-  StoreInputValue:
-    Type: AWS::SSM::Parameter
-    Properties:
-      Type: String
-      Value: "{{ environment.inputs.my_sample_input }} {{ environment.inputs.my_other_sample_input}} {{ environment.inputs.another_optional_input }}"
-
-Outputs:
-  MyEnvParameterValue:
-    Value: !GetAtt StoreInputValue.Value
-  MySampleInputValue:
-    Value: "{{ environment.inputs.my_sample_input }}"
-  MyOtherSampleInputValue:
-    Value: "{{ environment.inputs.my_other_sample_input }}"
-  AnotherOptionalInputValue:
-    Value: "{{ environment.inputs.another_optional_input }}"
+# These output values are available to service infrastructure as code files as outputs, when given the 
+# the 'environment.outputs' namespace, for example, service_instance.environment.outputs.ClusterName.
+Outputs:  
+  ClusterName:                                    # output
+    Description: The name of the ECS cluster
+    Value: !Ref 'ECSCluster'
+  ECSTaskExecutionRole:                           # output
+    Description: The ARN of the ECS role
+    Value: !GetAtt 'ECSTaskExecutionRole.Arn'
+  VpcId:                                          # output
+    Description: The ID of the VPC that this stack is deployed in
+    Value: !Ref 'VPC'
+  PublicSubnetOne:                                # output
+    Description: Public subnet one
+    Value: !Ref 'PublicSubnetOne'
+  PublicSubnetTwo:                                # output
+    Description: Public subnet two
+    Value: !Ref 'PublicSubnetTwo'
+  ContainerSecurityGroup:                         # output
+    Description: A security group used to allow Fargate containers to receive traffic
+    Value: !Ref 'ContainerSecurityGroup'
 ```
 
-In the following service infrastructure template example snippet, the `environment.outputs` name\-space is used to identify imported environment resource\-based parameters\.
+The following example is a snippet from a service CloudFormation IaC file\. The `environment.outputs.` namespace identifies environment outputs from an environment IaC file\.
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
@@ -75,27 +133,27 @@ Resources:
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
     Properties:
-      Family: '{{service_instance.name}}'
-      Cpu: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, cpu] # customization parameter
+      Family: '{{service_instance.name}}' # resource parameter
+      Cpu: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, cpu] # input parameter
       Memory: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, memory] 
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      ExecutionRoleArn: '{{environment.outputs.ECSTaskExecutionRole}}' # imported parameter
+      ExecutionRoleArn: '{{environment.outputs.ECSTaskExecutionRole}}'  # output from an environment infrastructure code file
       TaskRoleArn: !Ref "AWS::NoValue"
       ContainerDefinitions:
-        - Name: '{{service_instance.name}}'
+        - Name: '{{service_instance.name}}'  # resource parameter
           Cpu: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, cpu]
           Memory: !FindInMap [TaskSize, {{service_instance.inputs.task_size}}, memory]
           Image: '{{service_instance.inputs.image}}'
           PortMappings:
-            - ContainerPort: '{{service_instance.inputs.port}}' # customization parameter
+            - ContainerPort: '{{service_instance.inputs.port}}' # input parameter
           LogConfiguration:
             LogDriver: 'awslogs'
             Options:
-              awslogs-group: '{{service_instance.name}}'
+              awslogs-group: '{{service_instance.name}}' # resource parameter
               awslogs-region: !Ref 'AWS::Region'
-              awslogs-stream-prefix: '{{service_instance.name}}'
+              awslogs-stream-prefix: '{{service_instance.name}}' # resource parameter
 
   # The service_instance. The service is a resource which allows you to run multiple
   # copies of a type of task, and gather up their logs and metrics, as well
@@ -104,39 +162,35 @@ Resources:
     Type: AWS::ECS::Service
     DependsOn: LoadBalancerRule
     Properties:
-      ServiceName: '{{service_instance.name}}'
-      Cluster: '{{environment.outputs.ClusterName}}' # imported resource parameter
+      ServiceName: '{{service_instance.name}}'  # resource parameter
+      Cluster: '{{environment.outputs.ClusterName}}' # output from an environment infrastructure as code file
       LaunchType: FARGATE
       DeploymentConfiguration:
         MaximumPercent: 200
         MinimumHealthyPercent: 75
-      DesiredCount: '{{service_instance.inputs.desired_count}}'# customization parameter
+      DesiredCount: '{{service_instance.inputs.desired_count}}'# input parameter
       NetworkConfiguration:
         AwsvpcConfiguration:
           AssignPublicIp: ENABLED
           SecurityGroups:
-            - '{{environment.outputs.ContainerSecurityGroup}}' # imported resource parameter
+            - '{{environment.outputs.ContainerSecurityGroup}}' # output from an environment infrastructure as code file
           Subnets:
-            - '{{environment.outputs.PublicSubnetOne}}' # imported resource parameter
-            - '{{environment.outputs.PublicSubnetTwo}}'
+            - '{{environment.outputs.PublicSubnetOne}}' # output from an environment infrastructure as code file
+            - '{{environment.outputs.PublicSubnetTwo}}' # output from an environment infrastructure as code file
       TaskDefinition: !Ref 'TaskDefinition'
       LoadBalancers:
-        - ContainerName: '{{service_instance.name}}'
-          ContainerPort: '{{service_instance.inputs.port}}'
+        - ContainerName: '{{service_instance.name}}'  # resource parameter
+          ContainerPort: '{{service_instance.inputs.port}}' # input parameter
           TargetGroupArn: !Ref 'TargetGroup'
 [...]
 ```
 
-The following table lists the name\-spaces that you attach to your environment infrastructure template file parameters\.
+## Service infrastructure as code file parameter details and examples<a name="svc-parameters"></a>
 
-[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/proton/latest/adminguide/parameters.html)
+You can use the following types of parameters in your service and pipeline infrastructure as code \(IaC\) files\.
++ **Input parameters**
 
-## Service template parameters<a name="svc-parameters"></a>
-
-You can use the following types of parameters in your service and pipeline infrastructure template files\.
-+ **Customization parameters**
-
-  These are the parameters that you add to your infrastructure templates to make them flexible and re\-usable\. In your service infrastructure template file, you must attach a name\-space to a customization parameter to associate it with an AWS Proton resource\. Customization parameter values can only be provided when you create the service\. The following list includes examples of customization parameters for typical use cases\.
+  These are the parameters that you add to your IaC files to make them flexible and re\-usable\. You can define them in your [schema file](ag-schema.md)\. In your service IaC file, you can attach a namespace to an input parameter to associate it with an AWS Proton resource\. Input parameter values can only be provided when you create the service\. The following list includes examples of input parameters for typical use cases\.
   + Port
   + Task size
   + Image
@@ -144,14 +198,23 @@ You can use the following types of parameters in your service and pipeline infra
   + Docker file
   + Unit test command
 
-  You, as an administrator or developer, provide values for customization parameters when you use a service template to create a service\. When you use the console to create a service, AWS Proton automatically provides a schema based form that you fill out\. When you use the CLI, you provide a spec that provides values for the customization parameters\.
-+ **Resource\-based parameters**
+  As an administrator, you can provide values for input parameters when you [create a service](ag-create-svc.md):
+  + Use the console to fill out a schema\-based form that AWS Proton provides\.
+  + Use the CLI to provide spec that includes the values\.
 
-  These are parameters that reference output parameters from other infrastructure template files\. Resource\-based metatdata name\-spaces that stand on their own, such as `environment.name` and `service.name`, also fit in this category\.
+  To reference an input parameter in an IaC file, you can attach a namespace to it\.
++ **AWS Proton resource parameters**
 
-  To associate an output parameter with an AWS Proton resource type, attach a name\-space to it when you reference it in a related template file\.
+  AWS Proton automatically creates resource parameters, such as a service `name` that you can reference in all IaC files used for provisioning a service\.
 
-In the following example, the `service_instance.name` name\-space and other resource\-based parameters are used\.
+  To refer to a service or service instance `name`, you can attach the `service.` or `service_instance.` namespace, for example, `service.name` or `service_instance.name`\.
++ **Output parameters**
+
+  These are parameters that reference outputs from an environment IaC file\.
+
+  To reference an output in a service IaC file, you can attach a namespace to it, for example, `environment.outputs.MySampleInputValue`\.
+
+The following example is a snippet from a service CloudFormation IaC file\. The `environment.outputs.` namespace identifies outputs from the environment IaC file\. The `service_instance.inputs.` namespace identifies input parameters\. The `service_instance.name` namespace and property identifies an AWS Proton resource parameter\.
 
 ```
 Resources:
@@ -160,20 +223,16 @@ Resources:
     Properties:
       Type: String
       Value: "{{ service.name }} {{ service_instance.name }} {{ service_instance.inputs.my_sample_service_instance_required_input }} {{ service_instance.inputs.my_sample_service_instance_optional_input }} {{ environment.outputs.MySampleInputValue }} {{ environment.outputs.MyOtherSampleInputValue }}"
-
+              #  resource parameters                          # input parameters                                                                                                                              # outputs from an environment infrastructure as code file                                               
 Outputs:
-  MyServiceInstanceParameter:
+  MyServiceInstanceParameter:                                                         # output
     Value: !Ref StoreServiceInstanceInputValue 
-  MyServiceInstanceRequiredInputValue:
-    Value: "{{ service_instance.inputs.my_sample_service_instance_required_input }}"
-  MyServiceInstanceOptionalInputValue:
-    Value: "{{ service_instance.inputs.my_sample_service_instance_optional_input }}"
-  MyServiceInstancesEnvironmentSampleOutputValue:
-    Value: "{{ environment.outputs.MySampleInputValue }}"
-  MyServiceInstancesEnvironmentOtherSampleOutputValue:
-    Value: "{{ environment.outputs.MyOtherSampleInputValue }}"
+  MyServiceInstanceRequiredInputValue:                                                # output
+    Value: "{{ service_instance.inputs.my_sample_service_instance_required_input }}"  # input parameter
+  MyServiceInstanceOptionalInputValue:                                                # output
+    Value: "{{ service_instance.inputs.my_sample_service_instance_optional_input }}"  # input parameter
+  MyServiceInstancesEnvironmentSampleOutputValue:                                     # output
+    Value: "{{ environment.outputs.MySampleInputValue }}"                             # output from an environment infrastructure as code file
+  MyServiceInstancesEnvironmentOtherSampleOutputValue:                                # output
+    Value: "{{ environment.outputs.MyOtherSampleInputValue }}"                        # output from an environment infrastructure as code file
 ```
-
-The following table lists the name\-spaces that you attach to your service infrastructure template file parameters\.
-
-[\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/proton/latest/adminguide/parameters.html)

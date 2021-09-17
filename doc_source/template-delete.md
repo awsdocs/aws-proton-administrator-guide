@@ -12,13 +12,14 @@ Use the console to delete templates as follows\.
 
 **Note**  
 When you delete the entire template, you also delete the major and minor versions of the template\.
-When you delete a major version of a template, you also delete the minor versions of the template\.
 
 **In the list of \(environment or service\) templates\.**
 
 1. In the [AWS Proton console](https://console.aws.amazon.com/proton/), choose **\(Environment or Service\) Templates**\.
 
 1. In the list of templates, select the radio button to the left of the template you want to delete\.
+
+   You can only delete an entire template if there are no AWS Proton resources deployed to its versions\.
 
 1. Choose **Actions** and then **Delete** to delete the entire template\.
 
@@ -35,6 +36,8 @@ When you delete a major version of a template, you also delete the minor version
 1. 
 
 **To delete the entire template\.**
+
+   You can only delete an entire template if there are no AWS Proton resources deployed to its versions\.
 
    1. Choose **Delete**, top right corner of page\.
 

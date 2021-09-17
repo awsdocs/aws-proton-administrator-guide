@@ -1,8 +1,8 @@
 # Wrap up template bundles for AWS Proton<a name="ag-wrap-up"></a>
 
-After preparing your environment and service infrastructure template files and their associated schema files, you must organize them in directories\. You must also create a manifest file\.
+After preparing your environment and service infrastructure as code \(IaC\) files and their respective schema files, you must organize them in directories\. You must also create a manifest YAML file\.
 
-The manifest file lists the infrastructure files and needs to adhere to the format and content shown in the following example\.
+The manifest file lists the IaC files and needs to adhere to the format and content shown in the following example\.
 
 **Manifest file format:**
 
@@ -21,7 +21,7 @@ When you create a minor version of an environment or a service template that you
 ## Environment template bundle wrap up<a name="environment-wrap-up"></a>
 
 There are two types of environment template bundles that you create for AWS Proton\.
-+ To create an environment template bundle for a *standard* environment template, organize the schema, infrastructure template files and manifest file in directories as shown in the following environment template bundle directory structure\.
++ To create an environment template bundle for a *standard* environment template, organize the schema, infrastructure as code \(IaC\) files and manifest file in directories as shown in the following environment template bundle directory structure\.
 + To create an environment template bundle for a *customer managed* environment template, provide only the schema file and directory\. *Don't* include the infrastructure directory and files\. AWS Proton throws an error if the infrastructure directory and files are included\.
 
 For more information, see [Register and publish templates](template-create.md)\.
@@ -38,7 +38,7 @@ Environment template bundle directory structure:
 
 ## Service template bundle wrap up<a name="service-wrap-up"></a>
 
-To create a service template bundle, you must organize the schema, infrastructure template files, and manifest files into directories as shown in the service template bundle directory structure example\.
+To create a service template bundle, you must organize the schema, infrastructure as code \(IaC\) files, and manifest files into directories as shown in the service template bundle directory structure example\.
 
 If you *don’t* include a service pipeline in your template bundle, *don't* include the pipeline directory and files and set `"pipelineProvisioning": "CUSTOMER_MANAGED"` when you create the service template that is to be associated with this template bundle\.
 

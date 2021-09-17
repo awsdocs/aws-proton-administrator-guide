@@ -1,7 +1,7 @@
 # AWS Proton Administrator Guide
 
 -----
-*****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; 2021 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -14,20 +14,20 @@ Amazon's trademarks and trade dress may not be used in
 
 -----
 ## Contents
-+ [What is AWS Proton](Welcome.md)
-+ [AWS Proton GA API Migration](ga-api-migration.md)
++ [What is AWS Proton?](Welcome.md)
 + [Setting up](ag-setting-up.md)
    + [Setting up with IAM](ag-setting-up-iam.md)
    + [Setting up with AWS Proton](setting-up-for-service.md)
 + [Getting started with AWS Proton](ag-getting-started.md)
    + [Prerequisites](getting-started-prerequisites.md)
+   + [Getting started workflow](ag-admin-workflow.md)
    + [Getting started with the AWS Management Console](ag-getting-started-console.md)
    + [Getting started with the AWS Proton AWS CLI](ag-getting-started-cli.md)
++ [How AWS Proton works](ag-works.md)
 + [Template bundles](ag-template-bundles.md)
-   + [Infrastructure template files](ag-infrastructure-tmp-files.md)
+   + [Parameters](parameters.md)
+   + [AWS Proton infrastructure as code files](ag-infrastructure-tmp-files.md)
    + [Schema file](ag-schema.md)
-   + [Infrastructure template file parameters](parameters.md)
-   + [Jinja templating engine](ag-jinja.md)
    + [Wrap up template bundles for AWS Proton](ag-wrap-up.md)
    + [Template bundle considerations](template-considerations.md)
    + [AWS Proton templates](ag-templates.md)
@@ -52,6 +52,8 @@ Amazon's trademarks and trade dress may not be used in
    + [Update a service instance](ag-svc-instance-update.md)
    + [Update a service pipeline](ag-svc-pipeline-update.md)
 + [Monitoring AWS Proton](monitoring.md)
+   + [Automate AWS Proton with EventBridge](event-bridge.md)
+   + [EventBridgeTutorial: Send Amazon Simple Notification Service alerts for AWS Proton service status changes](event-tutorial-sns.md)
 + [Security in AWS Proton](ag-security.md)
    + [Identity and Access Management for AWS Proton](security-iam.md)
       + [How AWS Proton works with IAM](security_iam_service-with-iam.md)

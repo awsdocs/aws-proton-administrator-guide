@@ -1,6 +1,10 @@
 # Getting started with the AWS Management Console<a name="ag-getting-started-console"></a>
 
-Take the next step and use the console to get started\.
+**Get started with AWS Proton**
++ Create and view an environment template\.
++ Create, view, and publish a service template that uses the environment template that you just created\.
++ Create an environment and service \(optional\)\.
++ Delete the service template, environment template, environment and service, if created\.
 
 ## Step 1: Open the AWS Proton console<a name="ag-getting-started-step1"></a>
 + Open the [AWS Proton console](https://console.aws.amazon.com/proton/)\.

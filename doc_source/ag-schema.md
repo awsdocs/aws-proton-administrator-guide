@@ -1,6 +1,6 @@
 # Schema file<a name="ag-schema"></a>
 
-As an administrator, when you use the Open API [Data Models \(schemas\) section](https://swagger.io/docs/specification/data-models/) to define a parameter schema file for your template bundle, AWS Proton is able to validate parameter value inputs against the requirements that you defined in your schema\.
+As an administrator, when you use the Open API [Data Models \(schemas\) section](https://swagger.io/docs/specification/data-models/) to define a parameter schema YAML file for your template bundle, AWS Proton is able to validate parameter value inputs against the requirements that you defined in your schema\.
 
 For more information about formats and available keywords, see the [Schema object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#schemaObject) section of the OpenAPI\.
 
@@ -14,18 +14,18 @@ An `environment_input_type` must be included and defined with a name that you pr
 
 To follow the Open API schema model, you must include `types`\. In the following example, this is line 6\.
 
-Following `types`, you must define an `environment_input_type` type\. You define the customization parameters for your environment as properties of the `environment_input_type`\. You must include at least one property with a name that matches at least one parameter that's listed in the environment infrastructure template file that's associated with schema\.
+Following `types`, you must define an `environment_input_type` type\. You define the input parameters for your environment as properties of the `environment_input_type`\. You must include at least one property with a name that matches at least one parameter that's listed in the environment infrastructure as code \(IaC\) file that's associated with schema\.
 
-When you create an environment and provide customized parameter values, AWS Proton uses the schema file to match, validate, and insert them into the moustache bracketed parameters in the associated infrastructure template file\. For each property \(parameter\), provide a `name` and `type`\. Optionally, also provide a `description`, `default`,and `pattern`\.
+When you create an environment and provide customized parameter values, AWS Proton uses the schema file to match, validate, and inject them into the moustache bracketed parameters in the associated CloudFormation IaC file\. For each property \(parameter\), provide a `name` and `type`\. Optionally, also provide a `description`, `default`,and `pattern`\.
 
 The defined parameters for the following example *standard* environment template schema include `vpc_cidr`, `subnet_one_cidr` and `subnet_two_cidr` with the `default` keyword and default values\. When you create an environment with this environment template bundle schema, you can accept the default values or provide your own\. If a parameter *doesn't* have a default value and is listed as a `required` property \(parameter\), you must provide values for it when you create an environment\.
 
-The second example *standard* environment template schema schema lists the `required` parameter `my_other_sample_input`\.
+The second example *standard* environment template schema lists the `required` parameter `my_other_sample_input`\.
 
 You can create a schema for two types of environment templates\. For more information, see [Register and publish templates](template-create.md)\.
 + ***Standard* environment templates**
 
-  In the following example, an environment input type is defined with a description and input properties\. This schema example can be used with the AWS Proton infrastructure template file shown in [Example 3](ag-infrastructure-tmp-files.md#ag-proton-env-cfn-example)\.
+  In the following example, an environment input type is defined with a description and input properties\. This schema example can be used with the AWS Proton CloudFormation IaC file shown in [Example 3](ag-infrastructure-tmp-files.md#ag-proton-env-cfn-example)\.
 
   Example schema for a *standard* environment template:
 
@@ -88,11 +88,11 @@ You can create a schema for two types of environment templates\. For more inform
   ```
 + ***Customer managed* environment templates**
 
-  In the following example, the schema only includes a list of outputs that replicate the outputs from the infrastructure template that you used to provision your *customer managed* infrastructure\. You need to define output value types as *strings only* \(*not* lists, arrays or other types\)\. For example, the next code snippet shows the outputs section of an external AWS CloudFormation template\. This is from the template shown in [Example 1](ag-infrastructure-tmp-files.md#ag-env-cfn-example)\. It can be used to create external *customer managed* infrastructure for an AWS Proton Fargate service created from [Example 4](ag-infrastructure-tmp-files.md#ag-proton-svc-cfn-example)\.
+  In the following example, the schema only includes a list of outputs that replicate the outputs from the IaC that you used to provision your *customer managed* infrastructure\. You need to define output value types as *strings only* \(*not* lists, arrays or other types\)\. For example, the next code snippet shows the outputs section of an external AWS CloudFormation template\. This is from the template shown in [Example 1](ag-infrastructure-tmp-files.md#ag-env-cfn-example)\. It can be used to create external *customer managed* infrastructure for an AWS Proton Fargate service created from [Example 4](ag-infrastructure-tmp-files.md#ag-proton-svc-cfn-example)\.
 **Important**  
 As an administrator, you must ensure that your provisioned and managed infrastructure and all output parameters are compatible with the associated *customer managed* environment templates\. AWS Proton can't account for changes on your behalf because these changes aren't visible to AWS Proton\. Inconsistencies result in failures\.
 
-  Example CloudFormation infrastructure template file outputs for a *customer managed* environment template:
+  Example CloudFormation IaC file outputs for a *customer managed* environment template:
 
   ```
   // Cloudformation Template Outputs
@@ -150,11 +150,11 @@ An AWS Proton service pipeline is included by default when you use the console o
 
 To follow the Open API schema model, you must include `types` In the following example, this is in line 9\.
 
-Following `types`, you must define a `service_input_type` type\. You define the customization parameters for your service as properties of the `service_input_type`\. You must include at least one property with a name that matches at least one parameter listed in the service infrastructure template file that is associated with schema\.
+Following `types`, you must define a `service_input_type` type\. You define the input parameters for your service as properties of the `service_input_type`\. You must include at least one property with a name that matches at least one parameter listed in the service infrastructure as code \(IaC\) file that is associated with schema\.
 
-To define a service pipeline, below your `service_input_type` definition, you must define a `pipeline_input_type`\. As above, you must include at least one property with a name that matches at least one parameter listed in a pipeline infrastructure template file that is associated with schema\. *Don’t* include this definition if you *aren’t* including an AWS Proton service pipeline\.
+To define a service pipeline, below your `service_input_type` definition, you must define a `pipeline_input_type`\. As above, you must include at least one property with a name that matches at least one parameter listed in a pipeline IaC file that is associated with schema\. *Don’t* include this definition if you *aren’t* including an AWS Proton service pipeline\.
 
-When you, as an administrator or developer, create a service and provide customized parameter values, AWS Proton uses the schema file to match, validate and insert them into the associated infrastructure template file’s moustache bracketed parameters\. For each property \(parameter\), provide a `name` and a `type`\. Optionally, also provide a `description`, `default`, and `pattern`\.
+When you, as an administrator or developer, create a service and provide customized parameter values, AWS Proton uses the schema file to match, validate and inject them into the associated CloudFormation IaC file’s moustache bracketed parameters\. For each property \(parameter\), provide a `name` and a `type`\. Optionally, also provide a `description`, `default`, and `pattern`\.
 
 The defined parameters for the example schema include `port`, `desired_count`, `task_size` and `image` with the `default` keyword and default values\. When you create a service with this service template bundle schema, you can accept the default values or provide your own\. The parameter `unique_name` is also included in the example and *doesn't* have a default value\. It is listed as a `required` property \(parameter\)\. You, as administrator or developer, must provide values for `required` parameters when you create services\.
 
@@ -162,7 +162,7 @@ If you want to create a service template with a service pipeline, include the `p
 
 **Example service schema file for a service that includes an AWS Proton service pipeline\.**
 
- This schema example can be used with the AWS Proton infrastructure template files shown in [Example 4](ag-infrastructure-tmp-files.md#ag-proton-svc-cfn-example) and [Example 5](ag-infrastructure-tmp-files.md#ag-proton-pipeline-cfn-example)\. A service pipeline is included\.
+ This schema example can be used with the AWS Proton IaC files shown in [Example 4](ag-infrastructure-tmp-files.md#ag-proton-svc-cfn-example) and [Example 5](ag-infrastructure-tmp-files.md#ag-proton-pipeline-cfn-example)\. A service pipeline is included\.
 
 ```
 schema:                            # required

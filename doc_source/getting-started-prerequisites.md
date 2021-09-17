@@ -1,6 +1,6 @@
 # Prerequisites<a name="getting-started-prerequisites"></a>
 
-Before you start **Getting started Step 1** make sure that the following prerequisites are met\. For more information, see [Setting up](ag-setting-up.md)\.
+Before you start step 1 in [Getting started with the AWS Management Console](ag-getting-started-console.md), make sure that the following prerequisites are met\. For more information, see [Setting up](ag-setting-up.md)\.
 + You have an IAM account with administrator permissions\. For more information, see [Setting up with IAM](ag-setting-up-iam.md)\.
 + You have the AWS Proton service role and the AWS Proton pipeline service role are attached to your account\. For more information, see [Setting up AWS Proton service roles](ag-setting-up-iam.md#setting-up-cicd) and [Service roles for AWS Proton](security_iam_service-with-iam.md#security_iam_service-with-iam-roles-service)\.
 + You have a version control repository connection\. For more information, see [Setting up a repository connection](setting-up-for-service.md#setting-up-vcontrol)\.

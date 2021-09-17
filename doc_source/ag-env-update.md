@@ -34,6 +34,8 @@ When you cancel an update deployment, AWS Proton attempts to cancel the deployme
 + Sets the deployment state to `CANCELLED`\.
 + Reverts the state of the resource to what it was before the deployment was started\.
 
+For more information on cancelling an environment deployment, see [CancelEnvironmentDeployment](https://docs.aws.amazon.com/proton/latest/APIReference/API_CancelEnvironmentDeployment.html) in the *AWS Proton API Reference*\.
+
 **Use the console and AWS CLI to make updates or cancel update deployments\.**
 
 **Update an environment using the console as shown in the following steps\.**
