@@ -4,7 +4,10 @@ Templates can be deleted using the console and AWS CLI\.
 
 You can delete a minor version of an environment template if there are no environments deployed to that version\.
 
-You can delete a minor version of a service template if there are no service instances or pipelines deployed to that version\. Your pipeline can be deployed to a different template version than your service instance\. For example, if your service instance has been updated to version 1\.1 from 1\.0 and your pipeline is still deployed to version 1\.0, you can’t delete service template 1\.0\.
+You can delete a minor version of a service template if there are no service instances or pipelines deployed to that version\. Your pipeline can be deployed to a different template version than your service instance\. For example, if your service instance is updated to version 1\.1 from 1\.0 and your pipeline is still deployed to version 1\.0, you can’t delete service template 1\.0\.
+
+------
+#### [ AWS Management Console ]
 
 You can use the console to delete the entire template or individual minor and major versions of a template\.
 
@@ -59,18 +62,24 @@ When you delete the entire template, you also delete the major and minor version
 
    1. Follow the instructions and choose **Yes, delete**\.
 
+------
+#### [ AWS CLI ]
+
 AWS CLI template delete operations *don't* include the deletion of other versions of a template\. When using the AWS CLI, delete templates with the following conditions\.
 + Delete an entire template if no minor or major versions of the template exist\.
 + Delete a major version when you delete the last remaining minor version\.
 + Delete a minor version of a template if there are no AWS Proton resources deployed to that version\.
 + Delete the recommended minor version of a template if no other minor versions of the template exist and there are no AWS Proton resources deployed to that version\.
 
-The following example commands and responses show how to use the AWS CLI to delete templates\.
+**The following example commands and responses show how to use the AWS CLI to delete templates\.**
 
-Command:
+Run the following command:
 
 ```
-aws proton delete-environment-template-version --template-name "simple-env" --major-version "1" --minor-version "0"
+aws proton delete-environment-template-version \
+    --template-name "simple-env" \
+    --major-version "1" \
+    --minor-version "0"
 ```
 
 Response:
@@ -91,10 +100,11 @@ Response:
 }
 ```
 
-Command:
+Run the following command:
 
 ```
-aws proton delete-environment-template --name "simple-env"
+aws proton delete-environment-template \
+    --name "simple-env"
 ```
 
 Response:
@@ -113,10 +123,13 @@ Response:
 }
 ```
 
-Command:
+Run the following command:
 
 ```
-aws proton delete-service-template-version --template-name "fargate-service" --major-version "1" --minor-version "0"
+aws proton delete-service-template-version \
+    --template-name "fargate-service" \
+    --major-version "1" \
+    --minor-version "0"
 ```
 
 Response:
@@ -136,3 +149,5 @@ Response:
     }
 }
 ```
+
+------

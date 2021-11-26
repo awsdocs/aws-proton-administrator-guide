@@ -1,20 +1,42 @@
-# AWS Proton infrastructure as code files<a name="ag-infrastructure-tmp-files"></a>
+# Infrastructure as code files<a name="ag-infrastructure-tmp-files"></a>
 
 The primary components of the template bundle are *infrastructure as code \(IaC\) YAML files* that define the infrastructure resources and properties that you want to provision\. AWS CloudFormation and other infrastructure as code engines use these types of files to provision infrastructure resources\.
 
-AWS Proton currently supports CloudFormation IaC files\. To learn more about CloudFormation, see [What is AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) in *the AWS CloudFormation User Guide*\.
+AWS Proton currently supports the use of [AWS CloudFormation](#cloudformation) and [Terraform](#terraform) IaC files\.
 
-## Start with your own existing infrastructure as code files<a name="iac-tmp-files"></a>
+You can use two different methods to provision from your IaC files\.
++ **Standard provisioning:** AWS Proton makes direct calls to provision your resources\. You can only use CloudFormation IaC files for standard provisioning\.
++ **Pull request provisioning:** AWS Proton makes pull requests to provide compiled IaC files that your IaC engine uses to provision resources\. You can only use Terraform IaC files with pull request provisioning\.
+
+**With pull request provisioning, AWS Proton:**
+
+  1. Compiles IaC files with console or spec file input values\.
+
+  1. Submits a pull request to merge the compiled files to a [repository that you have defined](ag-create-repo.md)\.
+
+  1. If the request is approved, it waits for provisioning status that you provide\.
+**Important**  
+**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
+
+You *can’t* provision AWS Proton resources using a combination of provisioning methods\. You must use one or the other\. For example, you can’t deploy a standard provisioned service to an environment provisioned with pull requests\. Similarly, you can’t deploy a service provisioned with pull requests to a standard provisioned environment\.
+
+For more information, see [AWS Proton environments](ag-environments.md) and [AWS Proton services](ag-services.md)\.
+
+## AWS CloudFormation IaC files<a name="cloudformation"></a>
+
+Learn how to use AWS CloudFormation infrastructure as code files with AWS Proton\. AWS CloudFormation is an infrastructure as code \(IaC\) service that helps you model and set up your AWS resources\. You define your infrastructure resources in templates\. CloudFormation provisions the defined resources as CloudFormation stack\. For more information, see [What is AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) in *the AWS CloudFormation User Guide*\.
+
+### Start with your own existing infrastructure as code files<a name="iac-tmp-files"></a>
 
 You can build template bundles by adapting *your own existing* infrastructure as code \(IaC\) files for use with AWS Proton\.
 
 The following AWS CloudFormation examples, [Example 1](#ag-env-cfn-example), and [Example 2](#ag-svc-cfn-example), represent *your own existing* CloudFormation IaC files\. CloudFormation can use these files to create two different CloudFormation stacks\.
 
-In [Example 1](#ag-env-cfn-example), the CloudFormation IaC file is configured to provision infrastructure to be shared among container applications\. In this example, input parameters are added so that you can use the same IaC file to create multiple sets of provisioned infrastructure\. Each set can have different names along with a different set of VPC and subnet CIDR values\. As either administrator or a developer, you provide values for these parameters when you use an IaC file to provision infrastructure resources with CloudFormation\. For your convenience, these input parameters are marked with comments and referenced multiple times in the example\. The *outputs* are defined at the end of the template\. They can be referenced in other CloudFormation IaC files\.
+In [Example 1](#ag-env-cfn-example), the CloudFormation IaC file is configured to provision infrastructure to be shared among container applications\. In this example, input parameters are added so that you can use the same IaC file to create multiple sets of provisioned infrastructure\. Each set can have different names along with a different set of VPC and subnet CIDR values\. As either an administrator or a developer, you provide values for these parameters when you use an IaC file to provision infrastructure resources with CloudFormation\. For your convenience, these input parameters are marked with comments and referenced multiple times in the example\. The *outputs* are defined at the end of the template\. They can be referenced in other CloudFormation IaC files\.
 
 In [Example 2](#ag-svc-cfn-example), the CloudFormation IaC file is configured to deploy an application to the infrastructure that's provisioned from *Example 1*\. The parameters are commented for your convenience\.
 
-## Example 1: CloudFormation IaC file<a name="ag-env-cfn-example"></a>
+#### Example 1: CloudFormation IaC file<a name="ag-env-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
@@ -166,7 +188,7 @@ Outputs:
         Fn::Sub: "${AWS::StackName}-ContainerSecurityGroup"
 ```
 
-## Example 2: CloudFormation IaC file<a name="ag-svc-cfn-example"></a>
+#### Example 2: CloudFormation IaC file<a name="ag-svc-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
@@ -525,17 +547,17 @@ Outputs:
 
 You can adapt these files for use with AWS Proton\.
 
-## Bring your infrastructure as code to AWS Proton<a name="proton-tmp-files"></a>
+#### Bring your infrastructure as code to AWS Proton<a name="proton-tmp-files"></a>
 
-With slight modifications, you can use [Example 1](#ag-env-cfn-example) as an infrastructure as code \(IaC\) file for an environment template bundle that AWS Proton uses to deploy an environment as shown in [Example 3](#ag-proton-env-cfn-example)\.
+With slight modifications, you can use [Example 1](#ag-env-cfn-example) as an infrastructure as code \(IaC\) file for an environment template bundle that AWS Proton uses to deploy an environment \(as shown in [Example 3](#ag-proton-env-cfn-example)\)\.
 
-Instead of using the CloudFormation parameters, you use [Jinja](https://jinja.palletsprojects.com/en/2.11.x/) syntax to reference parameters that you have defined in an [Open API](https://swagger.io/docs/specification/data-models/) based [schema file](ag-schema.md)\. These input parameters are commented for your convenience and referenced multiple times in the IaC file\. This way, AWS Proton can audit and check parameter values, as well as match and insert output parameter values in one IaC file to parameters in another IaC file\.
+Instead of using the CloudFormation parameters, you use [Jinja](https://jinja.palletsprojects.com/en/2.11.x/) syntax to reference parameters that you have defined in an [Open API](https://swagger.io/docs/specification/data-models/) based [schema file](ag-schema.md)\. These input parameters are commented for your convenience and referenced multiple times in the IaC file\. This way, AWS Proton can audit and check parameter values\. It can also match and insert output parameter values in one IaC file to parameters in another IaC file\.
 
-As administrator, you can add the AWS Proton `environment.inputs.` namespace to the input parameters\. When you reference environment IaC file outputs in a service IaC file, you can add the `environment.outputs.` namespace to the outputs, such as `environment.outputs.ClusterName` and `environment.outputs.ECSTaskExecutionRole`\. Finally, you surround them with moustache brackets and quotation marks\.
+As administrator, you can add the AWS Proton `environment.inputs.` namespace to the input parameters\. When you reference environment IaC file outputs in a service IaC file, you can add the `environment.outputs.` namespace to the outputs \(for example, `environment.outputs.ClusterName`\)\. Last, you surround them with moustache brackets and quotation marks\.
 
 With these modifications, your CloudFormation IaC files can be used by AWS Proton\.
 
-## Example 3: AWS Proton environment infrastructure as code file<a name="ag-proton-env-cfn-example"></a>
+#### Example 3: AWS Proton environment infrastructure as code file<a name="ag-proton-env-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
@@ -640,14 +662,9 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
 
-<<<<<<< HEAD
 # These output values are available to service infrastructure as code files as outputs, when given the 
-# the 'environment.outputs' namespace, for example, service_instance.environment.outputs.ClusterName.
-=======
-# These output values are available to service infrastructure files as resource parameters, when given the 
-# the 'environment.outputs' namespace, for example, environment.outputs.ClusterName.
-# In a service infrastructure file, resource parameters refer to resources in a related infrastructure template file.
->>>>>>> help
+# the 'service_instance.environment.outputs.' namespace, for example, service_instance.environment.outputs.ClusterName.
+
 Outputs:
   ClusterName:                                            # output
     Description: The name of the ECS cluster
@@ -669,11 +686,11 @@ Outputs:
     Value: !Ref 'ContainerSecurityGroup'
 ```
 
-The IaC files shown in [Example 1](#ag-env-cfn-example) and [Example 3](#ag-proton-env-cfn-example) produce slightly different CloudFormation stacks in the way that parameters are displayed when using the CloudFormation console to view stack templates\. The *Example 1* CloudFormation stack template file displays the parameter labels \(keys\) in the stack template view while the *Example 3* AWS Proton CloudFormation infrastructure stack template file displays the parameter values\. AWS Proton input parameters *don’t* appear in the CloudFormation stack parameters view\.
+The IaC files in [Example 1](#ag-env-cfn-example) and [Example 3](#ag-proton-env-cfn-example) produce slightly different CloudFormation stacks\. Parameters are displayed differently in the stack template files\. The *Example 1* CloudFormation stack template file displays the parameter labels \(keys\) in the stack template view\. The *Example 3* AWS Proton CloudFormation infrastructure stack template file displays the parameter values\. AWS Proton input parameters *don’t* appear in the console CloudFormation stack parameters view\.
 
 In [Example 4](#ag-proton-svc-cfn-example), the AWS Proton service IaC file corresponds with [Example 2](#ag-svc-cfn-example)\.
 
-## Example 4: AWS Proton service instance IaC file<a name="ag-proton-svc-cfn-example"></a>
+#### Example 4: AWS Proton service instance IaC file<a name="ag-proton-svc-cfn-example"></a>
 
 ```
 AWSTemplateFormatVersion: '2010-09-09'
@@ -983,7 +1000,7 @@ Outputs:
 
 In [Example 5](#ag-proton-pipeline-cfn-example), the AWS Proton pipeline IaC file provisions the pipeline infrastructure to support the service instances provisioned by [Example 4](#ag-proton-svc-cfn-example)\.
 
-## Example 5: AWS Proton service pipeline IaC file<a name="ag-proton-pipeline-cfn-example"></a>
+#### Example 5: AWS Proton service pipeline IaC file<a name="ag-proton-pipeline-cfn-example"></a>
 
 ```
 Resources:
@@ -2262,3 +2279,223 @@ Outputs:
     Description: The URL to access the pipeline
     Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/codesuite/codepipeline/pipelines/${Pipeline}/view?region=${AWS::Region}"
 ```
+
+## Terraform IaC files<a name="terraform"></a>
+
+**Important**  
+**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
+
+Learn how to use Terraform infrastructure as code \(IaC\) files with AWS Proton\. [Terraform](https://www.terraform.io/) is a widely used open\-source IaC engine that was developed by [HashiCorp](https://www.hashicorp.com/)\. Terraform modules are developed in HashiCorp's HCL language, and support several backend infrastructures providers, including Amazon Web Services\.
+
+**You must use pull request provisioning with Terraform IaC template bundle files:**
+
+1. When you [create an environment](ag-create-env.md) from Terraform template bundles, AWS Proton compiles your `.tf` files with console or `spec file` input parameters\.
+
+1. It makes a pull request to merge the compiled IaC files to [repository that you have registered with AWS Proton](ag-create-repo.md)\.
+
+1. If the request is approved, AWS Proton waits on provisioning status that you provide\.
+
+1. If the request is rejected, the environment creation is cancelled\.
+
+1. If the pull request times out, environment creation *isn't* complete\.
+
+**AWS Proton with Terraform IaC considerations:**
++ AWS Proton doesn’t manage your Terraform provisioning\.
++ You must [register a provisioning repository](ag-create-repo.md) with AWS Proton\. AWS Proton makes pull requests on this repository\.
++ You must [create a CodeStar connection](setting-up-for-service.md#setting-up-vcontrol) to connect AWS Proton with your provisioning repository\.
++ To provision from AWS Proton compiled IaC files, you must respond to AWS Proton pull requests\. AWS Proton makes pull requests after environment and service create and update actions\. For more information, see [AWS Proton environments](ag-environments.md) and [AWS Proton services](ag-services.md)\.
++ To provision a pipeline from AWS Proton compiled IaC files, you must [create a CI/CD pipeline repository](setting-up-for-service.md#setting-up-pr-repo)\.
++ Your pull request based provisioning automation must include steps to notify AWS Proton of any provisioned AWS Proton resource status changes\. You can use the AWS Proton [NotifyResourceResourceDeploymentStatusChange API](https://docs.aws.amazon.com/proton/latest/APIReference/API_NotifyResourceDeploymentStatusChange.html)\.
++ You can’t deploy services and pipelines created from CloudFormation IaC files to environments created from Terraform IaC files\.
++ You can’t deploy services and pipelines created from Terraform IaC files to environments created from CloudFormation IaC files\.
+
+When preparing your Terraform IaC files for AWS Proton, you attach namespaces to your input variables, as shown in the following examples\. For more information, see [Parameters](parameters.md)\.
+
+### Example 1: AWS Proton environment Terraform IaC file<a name="ag-env-tform-example"></a>
+
+```
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+  // This tells terraform to store the state file in s3 at the location
+  // s3://terraform-state-bucket/tf-os-sample/terraform.tfstate
+  backend "s3" {
+    bucket = "terraform-state-bucket"
+    key    = "tf-os-sample/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+// Configure the AWS Provider
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_ssm_parameter" "my_ssm_parameter" {
+  name  = "my_ssm_parameter"
+  type  = "String"
+  // Use the Proton environment.inputs. namespace
+  value = var.environment.inputs.ssm_parameter_value
+}
+```
+
+### Compiled infrastructure as code<a name="compiled-tform"></a>
+
+When you create an environment or service, AWS Proton compiles your infrastructure as code files with console or `spec file` inputs\. It creates `proton.variables.tf` and `proton.auto.tfvars.json` files for your inputs that can be used by Terraform, as shown in the following examples\. These files are located in a specified repository in a folder that matches the environment or service instance name\.
+
+#### Example: compiled IaC files for an environment named "dev"\.<a name="ag-compiled-example"></a>
+
+**dev/environment\.tf:**
+
+```
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+  // This tells terraform to store the state file in s3 at the location
+  // s3://terraform-state-bucket/tf-os-sample/terraform.tfstate
+  backend "s3" {
+    bucket = "terraform-state-bucket"
+    key    = "tf-os-sample/terraform.tfstate"
+    region = "us-east-1"
+  }
+}
+
+// Configure the AWS Provider
+provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_ssm_parameter" "my_ssm_parameter" {
+  name  = "my_ssm_parameter"
+  type  = "String"
+  // Use the Proton environment.inputs. namespace
+  value = var.environment.inputs.ssm_parameter_value
+}
+```
+
+**dev/proton\.variables\.tf:**
+
+```
+variable "environment" {
+  type = object({
+    inputs = map(string)
+    name = string
+  })
+}
+```
+
+**dev/proton\.auto\.tfvars\.json:**
+
+```
+{
+  "environment": {
+    // environment name
+    "name": "dev",
+    "inputs": {
+      "ssm_parameter_value": "MyNewParamValue"
+    }
+  }
+}
+```
+
+### Repository paths<a name="repo-dir"></a>
+
+AWS Proton uses console or spec inputs from environment or service create actions to find the repository and path where it is to locate the compiled IaC files\. The input values are passed to [namespaced input parameters](parameters.md)\.
+
+AWS Proton supports two repository path layouts\. In the following examples, the paths are named by the namespaced input parameters from two different environments and two different service instances:
++ environment 1: `environment.name` = "env\-prod"
++ environment 2: `environment.name` = "env\-staged"
++ service instance 1: `service_instance.name` = "instance\-one"
++ service instance 2: `service_instance.name` = "instance\-two"
+
+------
+#### [ Layout 1 ]
+
+If AWS Proton finds the specified repository with an `environments` folder, it creates a folder that includes the compiled IaC files and is named with the `environment.name`\.
+
+If AWS Proton finds the specified repository with an `environments` folder that contains a folder name that matches a service instance compatible environment name, it creates a folder that includes the compiled instance IaC files and is named with the `service_instance.name`\.
+
+```
+ /repo
+     /environments
+         /env-prod                          # environment name
+             main.tf
+             proton.variables.tf
+             proton.auto.tfvars.json
+            
+             /instance-one                  # instance name
+                 main.tf
+                 proton.variables.tf
+                 proton.auto.tfvars.json
+                
+             /instance-two                  # instance name
+                 main.tf
+                 proton.variables.tf
+                 proton.auto.tfvars.json
+                
+         /env-staged                        # environment name
+             main.tf
+             proton.variables.tf
+             proton.auto.tfvars.json         
+            
+             /instance-one                  # instance name
+                 main.tf
+                 proton.variables.tf
+                 proton.auto.tfvars.json
+                
+             /instance-two                  # instance name
+                 main.tf
+                 proton.variables.tf
+                 proton.auto.tfvars.json
+```
+
+------
+#### [ Layout 2 ]
+
+If AWS Proton finds the specified repository without an `environments` folder, it creates an `environment.name` folder where it locates the compiled environment IaC files\.
+
+If AWS Proton finds the specified repository with a folder name that matches a service instance compatible environment name, it creates a `service_instance.name` folder where it locates the compiled instance IaC files\.
+
+```
+ /repo-prod
+     /env-prod                               # environment name
+         main.tf
+         proton.variables.tf
+         proton.auto.tfvars.json
+        
+         /instance-one                       # instance name
+             main.tf
+             proton.variables.tf
+             proton.auto.tfvars.json
+            
+         /instance-two                       # instance name
+             main.tf
+             proton.variables.tf
+             proton.auto.tfvars.json
+             
+ /repo-staging              
+     /env-staged                             # environment name
+         main.tf
+         proton.variables.tf
+         proton.auto.tfvars.json         
+        
+         /instance-one                       # instance name
+             main.tf
+             proton.variables.tf
+             proton.auto.tfvars.json
+            
+         /instance-two                       # instance name
+             main.tf
+             proton.variables.tf
+             proton.auto.tfvars.json
+```
+
+------

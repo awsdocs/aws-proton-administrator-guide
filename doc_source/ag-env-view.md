@@ -2,7 +2,10 @@
 
 You can view environment detail data using either the console or the AWS CLI\.
 
-You can view lists of environments with details and individual environments with detail data by using the [AWS Proton console](https://console.aws.amazon.com/proton/)\.
+------
+#### [ AWS Management Console ]
+
+**You can view lists of environments with details and individual environments with detail data by using the [AWS Proton console](https://console.aws.amazon.com/proton/)\.**
 
 1. To view a list of your environments, choose **Environments** in the navigation pane\.
 
@@ -10,12 +13,16 @@ You can view lists of environments with details and individual environments with
 
    View your environment detail data\.
 
-You can also use the AWS CLI for AWS Proton by using the get or list operations as shown in the following example command and response\. You can get or list environments\.
+------
+#### [ AWS CLI ]
 
-Command:
+**Use the AWS CLI *get* or *list* environment details\.**
+
+Run the following command:
 
 ```
-aws proton get-environment --name "MySimpleEnv"
+aws proton get-environment \
+    --name "MySimpleEnv"
 ```
 
 Response:
@@ -37,3 +44,5 @@ Response:
     }
 }
 ```
+
+------

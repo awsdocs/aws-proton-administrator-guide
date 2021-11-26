@@ -1,6 +1,6 @@
 # Schema file<a name="ag-schema"></a>
 
-As an administrator, when you use the Open API [Data Models \(schemas\) section](https://swagger.io/docs/specification/data-models/) to define a parameter schema YAML file for your template bundle, AWS Proton is able to validate parameter value inputs against the requirements that you defined in your schema\.
+As an administrator, when you use the Open API [Data Models \(schemas\) section](https://swagger.io/docs/specification/data-models/) to define a parameter schema YAML file for your template bundle, AWS Proton can validate parameter value inputs against the requirements that you defined in your schema\.
 
 For more information about formats and available keywords, see the [Schema object](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/3.0.3.md#schemaObject) section of the OpenAPI\.
 
@@ -18,7 +18,7 @@ Following `types`, you must define an `environment_input_type` type\. You define
 
 When you create an environment and provide customized parameter values, AWS Proton uses the schema file to match, validate, and inject them into the moustache bracketed parameters in the associated CloudFormation IaC file\. For each property \(parameter\), provide a `name` and `type`\. Optionally, also provide a `description`, `default`,and `pattern`\.
 
-The defined parameters for the following example *standard* environment template schema include `vpc_cidr`, `subnet_one_cidr` and `subnet_two_cidr` with the `default` keyword and default values\. When you create an environment with this environment template bundle schema, you can accept the default values or provide your own\. If a parameter *doesn't* have a default value and is listed as a `required` property \(parameter\), you must provide values for it when you create an environment\.
+The defined parameters for the following example *standard* environment template schema include `vpc_cidr`, `subnet_one_cidr`, and `subnet_two_cidr` with the `default` keyword and default values\. When you create an environment with this environment template bundle schema, you can accept the default values or provide your own\. If a parameter *doesn't* have a default value and is listed as a `required` property \(parameter\), you must provide values for it when you create an environment\.
 
 The second example *standard* environment template schema lists the `required` parameter `my_other_sample_input`\.
 
@@ -154,7 +154,7 @@ Following `types`, you must define a `service_input_type` type\. You define the 
 
 To define a service pipeline, below your `service_input_type` definition, you must define a `pipeline_input_type`\. As above, you must include at least one property with a name that matches at least one parameter listed in a pipeline IaC file that is associated with schema\. *Don’t* include this definition if you *aren’t* including an AWS Proton service pipeline\.
 
-When you, as an administrator or developer, create a service and provide customized parameter values, AWS Proton uses the schema file to match, validate and inject them into the associated CloudFormation IaC file’s moustache bracketed parameters\. For each property \(parameter\), provide a `name` and a `type`\. Optionally, also provide a `description`, `default`, and `pattern`\.
+When you, as an administrator or developer, create a service and provide customized parameter values, AWS Proton uses the schema file to match, validate, and inject them into the associated CloudFormation IaC file’s moustache bracketed parameters\. For each property \(parameter\), provide a `name` and a `type`\. Optionally, also provide a `description`, `default`, and `pattern`\.
 
 The defined parameters for the example schema include `port`, `desired_count`, `task_size` and `image` with the `default` keyword and default values\. When you create a service with this service template bundle schema, you can accept the default values or provide your own\. The parameter `unique_name` is also included in the example and *doesn't* have a default value\. It is listed as a `required` property \(parameter\)\. You, as administrator or developer, must provide values for `required` parameters when you create services\.
 

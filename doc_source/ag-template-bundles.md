@@ -5,8 +5,14 @@ As an administrator, you [create and register templates](template-create.md) wit
 To create and register a template in AWS Proton, you upload a template bundle that contains the infrastructure as code \(IaC\) files that AWS Proton needs to provision and environment or service\.
 
 A *template bundle* contains the following:
-+ [Infrastructure as code \(IaC\) YAML files](ag-infrastructure-tmp-files.md) with a [manifest YAML file](ag-wrap-up.md) that lists the *IaC files*\.
++ An [Infrastructure as code \(IaC\) file](ag-infrastructure-tmp-files.md) with a [manifest YAML file](ag-wrap-up.md) that lists the *IaC file*\.
 + A [schema YAML file](ag-schema.md) for your IaC file input parameter definitions\.
+
+A CloudFormation environment template bundle contains one IaC file\.
+
+A CloudFormation service template bundle contains one IaC file for service instance definitions and another optional IaC file for a pipeline definition\.
+
+Terraform environment and service template bundles can contain multiple IaC files each\.
 
 AWS Proton requires an input parameter schema file\. When you use AWS CloudFormation to create your IaC files, you use [Jinja](https://jinja.palletsprojects.com/en/2.11.x/) syntax to reference your input parameters\. AWS Proton provides parameter namespaces that you can use to reference [parameters](parameters.md) in your IaC files\.
 
@@ -24,7 +30,7 @@ The following diagram shows an example of steps that you can take to create a *t
 
 **Topics**
 + [Parameters](parameters.md)
-+ [AWS Proton infrastructure as code files](ag-infrastructure-tmp-files.md)
++ [Infrastructure as code files](ag-infrastructure-tmp-files.md)
 + [Schema file](ag-schema.md)
 + [Wrap up template bundles for AWS Proton](ag-wrap-up.md)
 + [Template bundle considerations](template-considerations.md)

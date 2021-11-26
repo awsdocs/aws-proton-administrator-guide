@@ -1,30 +1,86 @@
 # Create a service<a name="ag-create-svc"></a>
 
-When you create a service, you can choose from two different types of service templates as shown in the following list\.
+**When you create a service, you can choose from two different types of service templates:**
 + A service template that includes a service pipeline \(default\)\.
 + A service template that *doesn't* include a service pipeline\.
 
-**Create a service using the console\.**
+You must create at least one service instance when you create your service\.
 
-Use the console to deploy a service by following the steps shown in [Step 5: Optional \- Create a service and deploy an application](ag-getting-started-console.md#ag-getting-started-step5)\. When you *don't* want to use an enabled pipeline, choose a template marked with *Excludes pipeline* for your service\.
+A service instance and optional pipeline belong to a service\. You can only create or delete an instance or pipeline within the context of service *create* and *delete* actions\. To learn how to add and remove instances from a service, see [Edit a service](ag-svc-update.md)\.
 
-**Use the AWS CLI for AWS Proton to deploy a service\.**
+**Topics**
++ [Create a service with standard provisioning](#ag-create-svc-std)
 
-When you use the AWS CLI, you specify service inputs in a YAML formatted file, `.aws-proton/service.yaml`, located in your source code directory\. If you want to use a service template that has `pipelineProvisioning: "CUSTOMER_MANAGED"`, *don’t* include the `pipeline:` section in your spec and *don’t* include `--repository-connection-arn`, `--repository-id`, and `--branch-name` parameters in your `create-service` command\.
+## Create a service with standard provisioning<a name="ag-create-svc-std"></a>
 
-You can use the `get-service-template-minor-version` command to view the schema required and optional parameters that you provide values for in your spec file\.
+Use the console or AWS CLI to create a standard service with or without a service pipeline\.
 
-**Create a service with a service pipeline as shown in the following steps\.**
+------
+#### [ AWS Management Console ]
 
-1. Set up the [service role](security_iam_service-role-policy-examples.md#codepipeline-proton-svc-role) for the pipeline as shown in the following example command\.
+**Create a standard service as shown in the following console steps\.**
+
+1. In the [AWS Proton console](https://console.aws.amazon.com/proton/), choose **Services**\.
+
+1. Choose **Create service**\.
+
+1. In the **Choose a service template** page, select a template and choose **Configure**\.
+
+   When you *don't* want to use an enabled pipeline, choose a template marked with *Excludes pipeline* for your service\.
+
+1. In the **Configure service** page, in the **Service settings** section, enter an **Service name**\.
+
+1. \(Optional\) Enter a description for the service\.
+
+1. 
+
+**In the **Service repository settings** section:**
+
+   1. For **CodeStar Connection**, choose your connection from the list\.
+
+   1. For **Repository ID**, choose the name of your source code repository from the list\.
+
+   1. For **Branch name**, choose the name of your source code repository branch from the list\.
+
+1. \(Optional\) In the **Tags** section, choose **Add new tag** and enter a key and value to create a customer managed tag\.
+
+1. Choose **Next**\.
+
+1. In the **Configure custom settings** page, in the **Service instances** section, in the **New instance** section\. You must enter values for the `required` parameters\. You can enter values for the `optional` parameters or use the defaults when given\.
+
+1. In the **Pipeline inputs** section, you must enter values for the `required` parameters\. You can enter values for the `optional` parameters or use the defaults when given\.
+
+1. Choose **Next** and review your inputs\.
+
+1. Choose **Create**\.
+
+   View the service details and status, as well as the AWS managed tags and customer managed tags for your service\.
+
+1. In the navigation pane, choose **Services**\.
+
+   A new page displays a list of your services along with the status and other service details\.
+
+------
+#### [ AWS CLI ]
+
+When you use the AWS CLI, you specify service inputs in a YAML formatted `spec` file, `.aws-proton/service.yaml`, located in your source code directory\.
+
+You can use the CLI `get-service-template-minor-version` command to view the schema required and optional parameters that you provide values for in your spec file\.
+
+If you want to use a service template that has `pipelineProvisioning: "CUSTOMER_MANAGED"`, *don’t* include the `pipeline:` section in your spec and *don’t* include `-repository-connection-arn`, `-repository-id`, and `-branch-name` parameters in your `create-service` command\.
+
+**Create a service with a service pipeline as shown in the following CLI steps\.**
+
+1. **Set up the [service role](security_iam_service-role-policy-examples.md#codepipeline-proton-svc-role) for the pipeline as shown in the following CLI example command\.**
 
    Command:
 
    ```
-   aws proton update-account-settings --pipeline-service-role-arn "arn:aws:iam::123456789012:role/AWSProtonServiceRole"
+   aws proton update-account-settings \
+           -pipeline-service-role-arn "arn:aws:iam::123456789012:role/AWSProtonServiceRole"
    ```
 
-1. The following shows an example spec, based on the service template schema, that includes the service pipeline and instance inputs\.
+1. The following listing shows an example spec, based on the service template schema, that includes the service pipeline and instance inputs\.
 
    Spec:
 
@@ -43,12 +99,19 @@ You can use the `get-service-template-minor-version` command to view the schema 
          my_sample_service_instance_optional_input: "ho"
    ```
 
-   Create a service as defined by a service template by specifying the name, repository connection ARN, repository ID, repository branch, service template ARN, spec, environment name, environment template ARN, the major and minor versions, and description \(optional\) as shown in the following command and response\.
+   **Create a service with a pipeline as shown in the following CLI example command and response\.**
 
    Command:
 
    ```
-   aws proton create-service --name "MySimpleService" --branch-name "mainline" --template-major-version "1" --template-name "fargate-service" --repository-connection-arn "arn:aws:codestar-connections:region-id:123456789012:connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111" --repository-id "myorg/myapp" --spec "file://spec.yaml"
+   aws proton create-service \
+           -name "MySimpleService" \
+           -branch-name "mainline" \
+           -template-major-version "1" \
+           -template-name "fargate-service" \
+           -repository-connection-arn "arn:aws:codestar-connections:region-id:123456789012:connection/a1b2c3d4-5678-90ab-cdef-EXAMPLE11111" \
+           -repository-id "myorg/myapp" \
+           -spec "file://spec.yaml"
    ```
 
    Response:
@@ -68,7 +131,7 @@ You can use the `get-service-template-minor-version` command to view the schema 
    }
    ```
 
-**Create a service without a service pipeline as shown in the following example command and response\.**
+**Create a service without a service pipeline as shown in the following CLI example command and response\.**
 
 The following shows an example spec that *doesn't* include service pipeline inputs\.
 
@@ -85,12 +148,16 @@ instances:
       my_sample_service_instance_optional_input: "ho"
 ```
 
-To create a service *without* a provisioned service pipeline, you provide the path to a `spec.yaml` and you *don't* include repository parameters as shown in the following example command and response\.
+**To create a service *without* a provisioned service pipeline, you provide the path to a `spec.yaml` and you *don't* include repository parameters as shown in the following CLI example command and response\.**
 
 Command:
 
 ```
-aws proton create-service --name "MySimpleServiceNoPipeline" --template-major-version "1" --template-name "fargate-service" --spec "file://spec-no-pipeline.yaml"
+aws proton create-service \
+        -name "MySimpleServiceNoPipeline" \
+        -template-major-version "1" \
+        -template-name "fargate-service" \
+        -spec "file://spec-no-pipeline.yaml"
 ```
 
 Response:
@@ -107,3 +174,5 @@ Response:
     }
 }
 ```
+
+------

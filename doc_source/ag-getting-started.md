@@ -1,9 +1,9 @@
 # Getting started with AWS Proton<a name="ag-getting-started"></a>
 
-Before getting started, get [set up](ag-setting-up.md) to use AWS Proton and verify you have met the [Getting started preqrequisites](getting-started-prerequisites.md)\.
+Before getting started, get [set up](ag-setting-up.md) to use AWS Proton and verify you have met the [Getting started prerequisites](getting-started-prerequisites.md)\.
 
 **Get started with AWS Proton by choosing one or more of the following paths:**
-+ Follow a guided [example console or CLI workflow](ag-admin-workflow.md) through documention links\.
++ Follow a guided [example console or CLI workflow](ag-admin-workflow.md) through documentation links\.
 + Run through a guided [example console workflow](ag-getting-started-console.md)\.
 + Run through a variety of AWS Proton [CLI examples](ag-getting-started-cli.md) that are posted on GitHub\.
 

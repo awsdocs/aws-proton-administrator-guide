@@ -35,7 +35,7 @@ In the navigation pane, choose **Environment templates**\.
 
    You're now on a new page that displays the status and details for your new environment template\. These details include a list of AWS and customer managed tags\. AWS Proton automatically generates AWS managed tags for you when you create AWS Proton resources\. For more information, see [AWS Proton resources and tagging](resources.md)\.
 
-1. Refresh the **Template versions** section and the status of the new version is *Draft*\. The status of a new environment template status starts in the **Draft** state\. You and others with `proton:CreateEnvironment` permissions can view and access it\. Follow the next step to make the template available to others\.
+1. The status of a new environment template status starts in the **Draft** state\. You and others with `proton:CreateEnvironment` permissions can view and access it\. Follow the next step to make the template available to others\.
 
 1. In the **Template versions** section, choose the radio button to the left of the minor version of the template you just created \(1\.0\)\. As an alternative, you can choose **Publish** in the info alert banner and skip the next step\.
 
@@ -81,7 +81,7 @@ In the navigation pane, choose **Environment templates**\.
 
    You're now on a new page that displays the status and details for your new service template, including a list of AWS and customer managed tags\.
 
-1. Refresh the **Template versions** section and the status of the new version is *Draft*\. The status of a new service template status starts in the **Draft** state\. Only administrators can view and access it\. To make the service template available for use by developers, follow the next step\.
+1. The status of a new service template status starts in the **Draft** state\. Only administrators can view and access it\. To make the service template available for use by developers, follow the next step\.
 
 1. In the **Template versions** section, choose the radio button to the left of the minor version of the template you just created \(1\.0\)\. As an alternative, you can choose **Publish** in the info alert banner and skip the next step\.
 
@@ -103,9 +103,11 @@ In the navigation pane, choose **Environments**\.
 
 1. In the **Choose an environment template** page, select the template that you just created\. It's named **My Fargate Environment**\. Then, choose **Configure**\.
 
-1. In the **Configure environment** page, in the **Deployment account** section, select **This AWS account**\.
+1. In the **Configure environment** page, in the **Provisioning** section, choose **Provision through AWS Proton**\.
 
-1. Enter the environment name as **my\-fargate\-environment**\.
+1. In the **Deployment account** section, select **This AWS account**\.
+
+1. In **Environment Settings**, enter the environment name as **my\-fargate\-environment**\.
 
 1. In the **Environment roles** section, select **New service role** or, if you have already created an AWS Proton service role, select **Existing service role**\.
 

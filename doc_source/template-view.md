@@ -1,6 +1,6 @@
 # View template data<a name="template-view"></a>
 
-You can view lists of templates with details and view individual templates with detail data by using the [AWS Proton console](https://console.aws.amazon.com/proton/)\.
+You can view lists of templates with details and view individual templates with detail data by using the [AWS Proton console](https://console.aws.amazon.com/proton/) and AWS CLI\.
 
 *Customer managed* environment template data includes the `provisioned` parameter with the value `CUSTOMER_MANAGED`\.
 
@@ -8,7 +8,12 @@ If a service template *doesn't* include a service pipeline, the service template
 
 For more information, see [Register and publish templates](template-create.md)\.
 
-**View templates**
+You can use the console or the AWS CLI to list and view template data\.
+
+------
+#### [ AWS Management Console ]
+
+**Use the console to list and view templates\.**
 
 1. To view a list of templates, choose **\(Environment or Service\) templates**\.
 
@@ -16,14 +21,20 @@ For more information, see [Register and publish templates](template-create.md)\.
 
    View the detail data of the template, a list of the major and minor versions of the template, a list of the AWS Proton resources that were deployed using template versions and template tags\.
 
-   The recommended major version and minor version is labelled as **Recommended**\.
+   The recommended major version and minor version is labeled as **Recommended**\.
 
-You can also use the AWS CLI for AWS Proton by using the get or list operations as shown in the following example commands and responses\. You can get or list templates and major or minor versions of a template\.
+------
+#### [ AWS CLI ]
 
-Command:
+**Use the AWS CLI to list and view templates\.**
+
+Run the following commmand:
 
 ```
-aws proton get-environment-template-version --template-name "simple-env" --major-version "1" --minor-version "0"
+aws proton get-environment-template-version \
+    --template-name "simple-env" \
+    --major-version "1" \
+    --minor-version "0"
 ```
 
 Response:
@@ -46,7 +57,7 @@ Response:
 }
 ```
 
-Command:
+Run the following command:
 
 ```
 aws proton list-environment-templates
@@ -79,12 +90,15 @@ Response:
 }
 ```
 
-View a minor version of a service template as shown in the first example command and response\.
+View a minor version of a service template\.
 
-Command:
+Run the following command:
 
 ```
-aws proton get-service-template-version --template-name "fargate-service" --major-version "1" --minor-version "0"
+aws proton get-service-template-version \
+    --template-name "fargate-service" \
+    --major-version "1" \
+    --minor-version "0"
 ```
 
 Response:
@@ -114,10 +128,11 @@ Response:
 
 View a service template without a service pipeline as shown in the next example command and response\.
 
-Command:
+Run the following command:
 
 ```
-aws proton get-service-template --name "simple-svc-template-cli"
+aws proton get-service-template \
+    --name "simple-svc-template-cli"
 ```
 
 Response:
@@ -135,3 +150,5 @@ Response:
     }
 }
 ```
+
+------

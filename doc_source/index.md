@@ -1,7 +1,7 @@
 # AWS Proton Administrator Guide
 
 -----
-*****Copyright &copy; 2021 Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
+*****Copyright &copy; Amazon Web Services, Inc. and/or its affiliates. All rights reserved.*****
 
 -----
 Amazon's trademarks and trade dress may not be used in 
@@ -15,6 +15,7 @@ Amazon's trademarks and trade dress may not be used in
 -----
 ## Contents
 + [What is AWS Proton?](Welcome.md)
++ [AWS Proton GA API Migration](ga-api-migration.md)
 + [Setting up](ag-setting-up.md)
    + [Setting up with IAM](ag-setting-up-iam.md)
    + [Setting up with AWS Proton](setting-up-for-service.md)
@@ -26,7 +27,7 @@ Amazon's trademarks and trade dress may not be used in
 + [How AWS Proton works](ag-works.md)
 + [Template bundles](ag-template-bundles.md)
    + [Parameters](parameters.md)
-   + [AWS Proton infrastructure as code files](ag-infrastructure-tmp-files.md)
+   + [Infrastructure as code files](ag-infrastructure-tmp-files.md)
    + [Schema file](ag-schema.md)
    + [Wrap up template bundles for AWS Proton](ag-wrap-up.md)
    + [Template bundle considerations](template-considerations.md)
@@ -36,6 +37,11 @@ Amazon's trademarks and trade dress may not be used in
       + [View template data](template-view.md)
       + [Update a template](template-update.md)
       + [Delete templates](template-delete.md)
+      + [Template sync configurations](ag-template-sync-configs.md)
+         + [Create a template sync configuration](create-template-sync.md)
+         + [View template sync configuration details](view-template-sync.md)
+         + [Edit a template sync configuration](update-template-sync.md)
+         + [Delete a template sync configuration](delete-template-sync.md)
 + [AWS Proton environments](ag-environments.md)
    + [IAM Roles](env-permissions.md)
    + [Create an environment](ag-create-env.md)
@@ -51,6 +57,10 @@ Amazon's trademarks and trade dress may not be used in
    + [View service instance data](ag-svc-instance-view.md)
    + [Update a service instance](ag-svc-instance-update.md)
    + [Update a service pipeline](ag-svc-pipeline-update.md)
++ [AWS Proton repositories](ag-repositories.md)
+   + [Create and register a link to your repository](ag-create-repo.md)
+   + [View repository data](ag-repo-view.md)
+   + [Delete a repository](ag-repo-delete.md)
 + [Monitoring AWS Proton](monitoring.md)
    + [Automate AWS Proton with EventBridge](event-bridge.md)
    + [EventBridgeTutorial: Send Amazon Simple Notification Service alerts for AWS Proton service status changes](event-tutorial-sns.md)
@@ -62,6 +72,7 @@ Amazon's trademarks and trade dress may not be used in
          + [Condition-key based policy examples for AWS Proton](security_iam_condition-key-based-policy-examples.md)
          + [AWS Proton IAM service role policy examples](security_iam_service-role-policy-examples.md)
       + [AWS managed policies for AWS Proton](security-iam-awsmanpol.md)
+      + [Using service-linked roles for AWS Proton](using-service-linked-roles.md)
       + [Troubleshooting AWS Proton identity and access](security_iam_troubleshoot.md)
    + [Configuration and vulnerability analysis in AWS Proton](vulnerability-analysis-and-management.md)
    + [Data protection in AWS Proton](data-protection.md)
@@ -70,6 +81,7 @@ Amazon's trademarks and trade dress may not be used in
    + [Resilience in AWS Proton](disaster-recovery-resiliency.md)
    + [Security best practices for AWS Proton](security-best-practices.md)
 + [AWS Proton resources and tagging](resources.md)
++ [Troubleshooting AWS Proton](ag-troubleshooting.md)
 + [AWS Proton quotas](ag-limits.md)
 + [Document history](doc-history.md)
 + [AWS glossary](glossary.md)

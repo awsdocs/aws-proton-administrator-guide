@@ -4,7 +4,7 @@ Learn to create template bundles, create and register templates, and create envi
 
 Before starting, verify that you created an [AWS Proton service role](ag-setting-up-iam.md#setting-up-cicd)\.
 
-If your service template includes an AWS Proton service pipeline, verify that you created a [repository connection](setting-up-for-service.md#setting-up-vcontrol) and a [AWS Proton pipeline service role](ag-setting-up-iam.md#setting-up-cicd)\.
+If your service template includes an AWS Proton service pipeline, verify that you created an [AWS CodeStar connection](setting-up-for-service.md#setting-up-vcontrol) and a [AWS Proton pipeline service role](ag-setting-up-iam.md#setting-up-cicd)\.
 
 For more information, see [The AWS Proton service API Reference](https://docs.aws.amazon.com/proton/latest/APIReference/Welcome.html)\.
 

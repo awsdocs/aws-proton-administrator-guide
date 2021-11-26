@@ -2,7 +2,10 @@
 
 You can delete an environment by using the console or the AWS CLI\.
 
-Delete an environment using the console as described in the following two options\.
+------
+#### [ AWS Management Console ]
+
+**Delete an environment using the console as described in the following two options\.**
 
 **In the list of environments\.**
 
@@ -28,12 +31,18 @@ Delete an environment using the console as described in the following two option
 
 1. Follow the instructions and choose **Yes, delete**\.
 
-Use the AWS CLI to delete an environment as shown in following example command and response\. *Don't* delete an environment if services or service instances are deployed to the environment\.
+------
+#### [ AWS CLI ]
 
-Command:
+**Use the AWS CLI to delete an environment\.**
+
+*Don't* delete an environment if services or service instances are deployed to the environment\.
+
+Run the following command:
 
 ```
-aws proton delete-environment --name "MySimpleEnv"
+aws proton delete-environment \
+    --name "MySimpleEnv"
 ```
 
 Response:
@@ -54,3 +63,5 @@ Response:
     }
 }
 ```
+
+------

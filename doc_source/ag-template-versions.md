@@ -1,6 +1,6 @@
 # Versioned templates<a name="ag-template-versions"></a>
 
-As an administrator or a member of a platform team, you define, create and manage a library of versioned templates that are used to provision infrastructure resources\.
+As an administrator or a member of a platform team, you define, create, and manage a library of versioned templates that are used to provision infrastructure resources\.
 
 You register and propagate minor versions in AWS Proton\. You can do this without involving developers\. Minor versions must be backward compatible\. AWS Proton fails a new minor version registration if it’s not backward compatible\.
 

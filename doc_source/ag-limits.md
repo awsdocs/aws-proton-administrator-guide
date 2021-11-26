@@ -15,5 +15,5 @@ The following table lists AWS Proton quotas\.
 | Maximum number of template versions registered per template | 500 | 
 | Maximum number of environments per account | 100 | 
 | Maximum number of services per account | 1000 | 
-| Maximum number of service instances per service | 100 | 
+| Maximum number of service instances per service | 20 | 
 | Maximum number of environment account connections per environment account | 5 | 

@@ -6,6 +6,11 @@ You can make the following edits to a service\.
 
 ## Edit service description<a name="svc-update-metada"></a>
 
+You can use the console or the AWS CLI to edit a service description\.
+
+------
+#### [ AWS Management Console ]
+
 **Edit a service using the console as described in the following steps\.**
 
 **In the list of services\.**
@@ -36,12 +41,17 @@ You can make the following edits to a service\.
 
 1. Review your edits and choose **Save changes**\.
 
-**You can also use the AWS CLI to edit a description as shown in the next example command and response\.**
+------
+#### [ AWS CLI ]
+
+**Edit a description as shown in the following CLI example command and response\.**
 
 Command:
 
 ```
-aws proton update-service --name "MySimpleService" --description "Edit by updating description"
+aws proton update-service \
+    --name "MySimpleService" \
+    --description "Edit by updating description"
 ```
 
 Response:
@@ -62,6 +72,8 @@ Response:
     }
 }
 ```
+
+------
 
 ## Edit by adding or removing service instances<a name="ag-svc-update-instances"></a>
 
@@ -86,7 +98,7 @@ After you submit a service edit to delete and add service instances, AWS Proton 
 + Attempts to remove deletion\-failed instances\.
 + After additions and deletions are complete, re\-provisions the service pipeline \(if there is one\), sets your service to `ACTIVE` and enables service and pipeline actions\.
 
-AWS Proton attempts to remediate failure modes as follows\.
+AWS Proton attempts to re\-mediate failure modes as follows\.
 + If one or more service instances *failed to be created*, AWS Proton tries to de\-provision all of the newly created service instances and reverts the `spec` to the previous state\. It *doesn't* delete any service instances and it *doesn't* modify the pipeline in any way\.
 + If one or more service instances *failed to be deleted*, AWS Proton re\-provisions the pipeline without the deleted instances\. The `spec` is updated to include the added instances and to exclude the instances that were marked for deletion\.
 + If the *pipeline fails provisioning*, a rollback *isn't* attempted and both the service and pipeline reflect a failed update state\.
@@ -97,7 +109,10 @@ When you add service instances as part of your service edit, AWS managed tags pr
 
 #### Use the console or AWS CLI to edit a service<a name="ag-svc-update-console-cli"></a>
 
-You can use the AWS Proton console and AWS CLI to edit a service by adding and removing instances\.
+You can edit a service by adding and removing instances using the console or CLI\.
+
+------
+#### [ AWS Management Console ]
 
 **Edit your service by adding or removing an instance using the console\.**
 
@@ -121,7 +136,10 @@ In the [AWS Proton console](https://console.aws.amazon.com/proton/)
 
 1. In the service detail page, view the status details for your service\.
 
-**The following is an example of using the AWS CLI with an edited `spec` to add and delete service instances\.**
+------
+#### [ AWS CLI ]
+
+**Add and delete service instances with an edited `spec` as shown in the following AWS CLI example commands and responses\.**
 
 When you use the CLI, your `spec` must *exclude* the service instances to delete and *include* both the service instances to add and the existing service instances that you *haven't* marked for deletion\.
 
@@ -148,12 +166,13 @@ instances:
       my_sample_service_instance_required_input: "789"
 ```
 
-The following example `list-service-instances` command and response shows the active instances prior to adding or deleting a service instance\.
+The following example CLI `list-service-instances` command and response shows the active instances prior to adding or deleting a service instance\.
 
 Command:
 
 ```
-aws proton list-service-instances --service-name "MySimpleService"
+aws proton list-service-instances \
+    --service-name "MySimpleService"
 ```
 
 Response:
@@ -214,12 +233,39 @@ instances:
       my_sample_service_instance_required_input: "789"
 ```
 
+You can use `"${Proton::CURRENT_VAL}"` to indicate which parameter values to preserve from the original `spec`, if the values exist in the `spec`\. Use `get-service` to view the original `spec` for a service, as described in [View service data](ag-svc-view.md)\.
+
+The following listing shows how you can use `"${Proton::CURRENT_VAL}"` to ensure that your `spec` *doesn't* include parameter values changes for the existing services instances to remain\.
+
+Spec:
+
+```
+proton: ServiceSpec
+
+pipeline:
+  my_sample_pipeline_optional_input: "${Proton::CURRENT_VAL}"
+  my_sample_pipeline_required_input: "${Proton::CURRENT_VAL}"
+
+instances:
+  - name: "my-other-instance"
+    environment: "simple-env"
+    spec:
+      my_sample_service_instance_required_input: "${Proton::CURRENT_VAL}"
+  - name: "yet-another-instance"
+    environment: "simple-env"
+    spec:
+      my_sample_service_instance_required_input: "789"
+```
+
 The next listing shows the CLI command and response to edit the service\.
 
 Command:
 
 ```
-aws proton update-service --name "MySimpleService" --description "Edit by adding and deleting a service instance" --spec "file://spec.yaml"
+aws proton update-service 
+    --name "MySimpleService" \
+    --description "Edit by adding and deleting a service instance" \
+    --spec "file://spec.yaml"
 ```
 
 Response:
@@ -246,7 +292,8 @@ The following `list-service-instances` command and response confirms that the ex
 Command:
 
 ```
-aws proton list-service-instances --service-name "MySimpleService"
+aws proton list-service-instances \
+    --service-name "MySimpleService"
 ```
 
 Response:
@@ -283,3 +330,5 @@ Response:
     ]
 }
 ```
+
+------
