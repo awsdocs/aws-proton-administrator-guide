@@ -25,6 +25,10 @@ When you create an environment account connection in an environment account, in 
 + You need an environment account connection for each environment that you want to provision in an environment account\.
 + For information about environment account connection quotas, see [AWS Proton quotas](ag-limits.md)\.
 
+**Tagging**
+
+In the environment account, use the console or the AWS CLI to view and manage environment account connection customer managed tags\. AWS managed tags *aren't* generated for environment account connections\. For more information, see [AWS Proton tagging](https://docs.aws.amazon.com/proton/latest/adminguide/resources.html)\.
+
 ## Create an environment in one account and provision its infrastructure in another account<a name="ag-env-account-connections-create-env"></a>
 
 To create and provision an environment from a single management account, set up an environment account for an environment that you plan to create\. 
@@ -71,13 +75,17 @@ You can use the console or CLI to create and manage environment account connecti
 **Note**  
 Verify the account ID that's listed in the **Environment account connection** page heading\. Make sure that it matches the account ID of the environment account that you want your named environment to provision in\.
 
-1. In the **Request to connect** page, in the **Environment role** section, choose **New service role** and AWS Proton automatically creates a new role for you\. Or, select **Existing service role** and the name of the service role that you created previously\.
+1. In the **Request to connect** page:
+
+   1. In the **Connect to management account** section, enter the **Management account ID** and the **Environment name** that you entered in step 1\.
+
+   1. In the **Environment role** section, choose **New service role** and AWS Proton automatically creates a new role for you\. Or, select **Existing service role** and the name of the service role that you created previously\.
 **Note**  
 The role that AWS Proton automatically creates for you has broad permissions\. We recommend that you scope down the role to the permissions required to provision your environment infrastructure resources\. For more information, see [AWS Proton service role](security_iam_service-role-policy-examples.md#proton-svc-role)\.
 
-1. In the **Connect to management account** section, enter the **Management account ID** and the **Environment name** that you entered in step 1\.
+   1. \(Optional\) In the **Tags** section, choose **Add new tag** to create a customer managed tag for your environment account connection\.
 
-1. Choose **Request to connect** at the lower right corner of the page\.
+   1. Choose **Request to connect**\.
 
 1. Your request shows as pending in the **Environment connections sent to a management account** table and a modal lets you know how to accept the request from the management account\.
 

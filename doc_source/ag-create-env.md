@@ -8,7 +8,7 @@ Learn to create environments with AWS Proton\.
 
 **You can use three different environment provisioning methods when you create environments\.**
 + Use standard provisioning and create, manage, and provision an environment in a single account\. This method only supports CloudFormation infrastructure as code \(IaC\)\.
-+ In a single management account, create and manage an environment that is provisioned in another account with environment account connections\. For more information, see [Create an environment in one account and provision in another account](#ag-create-env-deploy-other) and [Environment account connections](ag-env-account-connections.md) This method only supports CloudFormation IaC\.
++ In a single management account, create and manage an environment that is provisioned in another account with environment account connections\. For more information, see [Create an environment in one account and provision in another account](#ag-create-env-deploy-other) and [Environment account connections](ag-env-account-connections.md)\. This method only supports CloudFormation IaC\.
 + Use pull request provisioning\. This method only supports Terraform IaC\.
 **Important**  
 **Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
