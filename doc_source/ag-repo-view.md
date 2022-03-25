@@ -21,7 +21,7 @@ You can view and list repository detail data using the console or the AWS CLI\. 
 Run the following command:
 
 ```
-aws proton get-repository \
+$ aws proton get-repository \
     --name myrepos/templates \
     --provider "GITHUB"
 ```
@@ -43,7 +43,7 @@ Response:
 Run the following command:
 
 ```
-aws proton list-repositories
+$ aws proton list-repositories
 ```
 
 Response:
@@ -70,7 +70,7 @@ Response:
 Run the following command:
 
 ```
-aws proton list-repository-sync-definitions \
+$ aws proton list-repository-sync-definitions \
     --branch "main" \
     --repository-name myrepos/templates \
     --repository-provider "GITHUB" \
@@ -82,7 +82,7 @@ aws proton list-repository-sync-definitions \
 Run the following command:
 
 ```
-aws proton get-repository-sync-status \
+$ aws proton get-repository-sync-status \
     --branch "main" \
     --repository-name myrepos/templates \
     --repository-provider "GITHUB" \

@@ -5,7 +5,7 @@ For AWS Proton, an environment represents the set of shared resources and polici
 This section describes how to manage environments using create, view, update, and delete operations\. For additional information, see the [https://docs.aws.amazon.com/proton/latest/APIReference/Welcome.html](https://docs.aws.amazon.com/proton/latest/APIReference/Welcome.html)\.
 
 **Topics**
-+ [IAM Roles](env-permissions.md)
++ [IAM Roles](ag-environment-roles.md)
 + [Create an environment](ag-create-env.md)
 + [View environment data](ag-env-view.md)
 + [Update an environment](ag-env-update.md)

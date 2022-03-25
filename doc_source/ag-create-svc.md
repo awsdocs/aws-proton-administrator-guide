@@ -1,6 +1,6 @@
 # Create a service<a name="ag-create-svc"></a>
 
-**When you create a service, you can choose from two different types of service templates:**
+**When you create an AWS Proton service, you can choose from two different types of service templates:**
 + A service template that includes a service pipeline \(default\)\.
 + A service template that *doesn't* include a service pipeline\.
 
@@ -8,17 +8,16 @@ You must create at least one service instance when you create your service\.
 
 A service instance and optional pipeline belong to a service\. You can only create or delete an instance or pipeline within the context of service *create* and *delete* actions\. To learn how to add and remove instances from a service, see [Edit a service](ag-svc-update.md)\.
 
-**Topics**
-+ [Create a service with standard provisioning](#ag-create-svc-std)
+**Note**  
+Your environment is configured for either AWS\- or self\-managed provisioning\. AWS Proton provisions services in an environment using the same provisioning method as the environment uses\. The developer creating or updating service instances doesn't see the difference and their experience is the same in both case\.  
+For more information about provisioning methods, see [How AWS Proton provisions infrastructure](ag-works-prov-methods.md)\.
 
-## Create a service with standard provisioning<a name="ag-create-svc-std"></a>
-
-Use the console or AWS CLI to create a standard service with or without a service pipeline\.
+The following procedures show how to use the AWS Proton console or AWS CLI to create a service with or without a service pipeline\.
 
 ------
 #### [ AWS Management Console ]
 
-**Create a standard service as shown in the following console steps\.**
+**Create a service as shown in the following console steps\.**
 
 1. In the [AWS Proton console](https://console.aws.amazon.com/proton/), choose **Services**\.
 
@@ -76,7 +75,7 @@ If you want to use a service template that has `pipelineProvisioning: "CUSTOMER_
    Command:
 
    ```
-   aws proton update-account-settings \
+   $ aws proton update-account-settings \
            -pipeline-service-role-arn "arn:aws:iam::123456789012:role/AWSProtonServiceRole"
    ```
 
@@ -104,7 +103,7 @@ If you want to use a service template that has `pipelineProvisioning: "CUSTOMER_
    Command:
 
    ```
-   aws proton create-service \
+   $ aws proton create-service \
            -name "MySimpleService" \
            -branch-name "mainline" \
            -template-major-version "1" \
@@ -153,7 +152,7 @@ instances:
 Command:
 
 ```
-aws proton create-service \
+$ aws proton create-service \
         -name "MySimpleServiceNoPipeline" \
         -template-major-version "1" \
         -template-name "fargate-service" \
@@ -169,8 +168,8 @@ Response:
         "createdAt": "2020-11-18T19:50:27.460000+00:00",
         "lastModifiedAt": "2020-11-18T19:50:27.460000+00:00",
         "name": "MySimpleServiceNoPipeline",
-        "templateName": "fargate-service-no-pipeline",
-        "status": "CREATE_IN_PROGRESS"
+        "status": "CREATE_IN_PROGRESS",
+        "templateName": "fargate-service-no-pipeline"
     }
 }
 ```

@@ -16,10 +16,10 @@ Delete a template sync configuration using the console or CLI\.
 
 **The following example commands and responses show how to use the AWS CLI to delete synced template configurations\.**
 
-Run the following command:
+Run the following command\.
 
 ```
-aws proton delete-template-sync-config \
+$ aws proton delete-template-sync-config \
     --template-name "env-template" \
     --template-type "ENVIRONMENT"
 ```

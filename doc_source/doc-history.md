@@ -5,6 +5,8 @@ The following table describes the important changes to the documentation related
 
 | Change | Description | Date | 
 | --- |--- |--- |
+| [Terraform General availability \(GA\)](#doc-history) | Renames *pull request provisioning* to *self\-managed provisioning*\. Adds [Provisioning methods](ag-works-prov-methods.html) topic\. | March 23, 2022 | 
+| [Repository tagging](#doc-history) | Adds support for tagging Repository resources\. See [Create and register a link to your repository](ag-create-repo.html) topic\. | March 23, 2022 | 
 | [Documentation update](#doc-history) | Adds environment account connection tagging\. | November 26, 2021 | 
 | [Template syncs and Terraform preview](#doc-history) | Adds automated template versioning with the [template sync](ag-template-sync-configs.html) feature for general availability and [pull request provisioning with Terraform](ag-infrastructure-tmp-files.html) in preview\. API migration guide back in\. | November 24, 2021 | 
 | [Documentation updates](#doc-history) | Adds [EventBridge](event-tutorial-sns.html) tutorial, [Getting started workflow](ag-admin-workflow.html), [How AWS Proton works](ag-works.html), and [Template bundle](ag-template-bundles.html) section enhancements\. | September 17, 2021 | 

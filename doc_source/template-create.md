@@ -121,7 +121,7 @@ For more information, see [Versioned templates](ag-template-versions.md)\.
       Run the following command:
 
       ```
-      aws proton create-environment-template \
+      $ aws proton create-environment-template \
           --name "simple-env" \
           --display-name "Fargate" \
           --description "VPC with public access"
@@ -147,7 +147,7 @@ For more information, see [Versioned templates](ag-template-versions.md)\.
       Run the following command:
 
       ```
-      aws proton create-environment-template \
+      $ aws proton create-environment-template \
           --name "simple-env" \
           --display-name "Fargate" \
           --description "VPC with public access" \
@@ -181,7 +181,7 @@ For more information, see [Versioned templates](ag-template-versions.md)\.
    Run the following command:
 
    ```
-   aws proton create-environment-template-version \
+   $ aws proton create-environment-template-version \
        --template-name "simple-env" \
        --description "Version 1" \
        --source s3="{bucket=your_s3_bucket, key=your_s3_key}"
@@ -209,7 +209,7 @@ For more information, see [Versioned templates](ag-template-versions.md)\.
    Run the following command:
 
    ```
-   aws proton get-environment-template-version \
+   $ aws proton get-environment-template-version \
        --template-name "simple-env" \
        --major-version "1" \
        --minor-version "0"
@@ -240,7 +240,7 @@ For more information, see [Versioned templates](ag-template-versions.md)\.
    Run the following command:
 
    ```
-   aws proton update-environment-template-version \
+   $ aws proton update-environment-template-version \
        --template-name "simple-env" \
        --major-version "1" \
        --minor-version "0" \
@@ -272,7 +272,7 @@ After creating a new template using the AWS CLI, you can view a list of AWS and 
 Run the following command:
 
 ```
-aws proton list-tags-for-resource \
+$ aws proton list-tags-for-resource \
     --resource-arn "arn:aws:proton:region-id:123456789012:environment-template/simple-env"
 ```
 
@@ -407,7 +407,7 @@ You can't modify `pipelineProvisioning` after the service template is created\.
       Run the following command:
 
       ```
-      aws proton create-service-template \
+      $ aws proton create-service-template \
           --name "fargate-service" \
           --display-name "Fargate" \
           --description "Fargate-based Service"
@@ -437,7 +437,7 @@ You can't modify `pipelineProvisioning` after the service template is created\.
       Run the folllowing command:
 
       ```
-      aws proton create-service-template \
+      $ aws proton create-service-template \
           --name "fargate-service" \
           --display-name "Fargate" \
           --description "Fargate-based Service" \
@@ -469,7 +469,7 @@ You can't modify `pipelineProvisioning` after the service template is created\.
    Run the following command:
 
    ```
-   aws proton create-service-template-version \
+   $ aws proton create-service-template-version \
        --template-name "fargate-service" \
        --description "Version 1" \
        --source s3="{bucket=your_s3_bucket, key=your_s3_key}" \
@@ -506,7 +506,7 @@ You can't modify `pipelineProvisioning` after the service template is created\.
    Run the folllowing command:
 
    ```
-   aws proton get-service-template-version \
+   $ aws proton get-service-template-version \
        --template-name "fargate-service" \
        --major-version "1" \
        --minor-version "0"
@@ -542,7 +542,7 @@ You can't modify `pipelineProvisioning` after the service template is created\.
    Run the following command:
 
    ```
-   aws proton update-service-template-version \
+   $ aws proton update-service-template-version \
        --template-name "fargate-service" \
        --description "Version 1" \
        --major-version "1" \
@@ -581,7 +581,7 @@ You can't modify `pipelineProvisioning` after the service template is created\.
    Run the following command:
 
    ```
-   aws proton get-service-template-version \
+   $ aws proton get-service-template-version \
        --template-name "fargate-service" \
        --major-version "1" \
        --minor-version "0"

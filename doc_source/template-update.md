@@ -40,7 +40,7 @@ The following example command and response shows how you can edit the descriptio
 Run the following command\.
 
 ```
-aws proton update-environment-template \
+$ aws proton update-environment-template \
     --name "simple-env" \
     --description "A single VPC with public access"
 ```

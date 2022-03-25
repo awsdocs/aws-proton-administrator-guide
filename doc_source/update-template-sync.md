@@ -26,10 +26,10 @@ Edit a template sync configuration `branch` using the console\.
 
 **The following example command and response shows how you can edit a template sync configuration `branch` using the CLI\.**
 
-Run the following command:
+Run the following command\.
 
 ```
-aws proton update-template-sync-config \
+$ aws proton update-template-sync-config \
     --template-name "env-template" \
     --template-type "ENVIRONMENT" \
     --repository-provider "GITHUB" \
@@ -38,7 +38,7 @@ aws proton update-template-sync-config \
     --subdirectory "env-template"
 ```
 
-Response:
+The response is as follows\.
 
 ```
 {

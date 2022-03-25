@@ -1,6 +1,6 @@
 # Update a service instance<a name="ag-svc-instance-update"></a>
 
-Learn to update a service instance and cancel the update\.
+Learn to update an AWS Proton service instance and cancel the update\.
 
 A service instance belongs to a service\. You can only create or delete an instance within the context of service [edit](ag-svc-update.md), [create](ag-create-svc.md) and [delete](ag-svc-delete.md) actions\. To learn how to add and remove instances from a service, see [Edit a service](ag-svc-update.md)\.
 
@@ -82,7 +82,7 @@ instances:
 Command: to update
 
 ```
-aws proton update-service-instance \
+$ aws proton update-service-instance \
     --name "instance-one" \
     --service-name "simple-svc" \
     --spec file://service-spec.yaml \
@@ -114,7 +114,7 @@ Response:
 Command: to get and confirm status
 
 ```
-aws proton get-service-instance \
+$ aws proton get-service-instance \
     --name "instance-one" \
     --service-name "simple-svc"
 ```
@@ -167,7 +167,7 @@ A wait condition is included in the template used for this example so that the c
 Command: to cancel
 
 ```
-aws proton cancel-service-instance-deployment \
+$ aws proton cancel-service-instance-deployment \
     --service-instance-name "instance-one" \
     --service-name "simple-svc"
 ```
@@ -196,7 +196,7 @@ Response:
 Command: to get and confirm status
 
 ```
-aws proton get-service-instance \
+$ aws proton get-service-instance \
     --name "instance-one" \
     --service-name "simple-svc"
 ```

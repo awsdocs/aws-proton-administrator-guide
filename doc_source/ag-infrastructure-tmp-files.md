@@ -1,30 +1,20 @@
 # Infrastructure as code files<a name="ag-infrastructure-tmp-files"></a>
 
-The primary components of the template bundle are *infrastructure as code \(IaC\) YAML files* that define the infrastructure resources and properties that you want to provision\. AWS CloudFormation and other infrastructure as code engines use these types of files to provision infrastructure resources\.
+The primary components of the template bundle are *infrastructure as code \(IaC\) files* that define the infrastructure resources and properties that you want to provision\. AWS CloudFormation and other infrastructure as code engines use these types of files to provision infrastructure resources\.
 
-AWS Proton currently supports the use of [AWS CloudFormation](#cloudformation) and [Terraform](#terraform) IaC files\.
+AWS Proton currently supports two types of IaC files:
++ *[CloudFormation](#cloudformation) files* – Used for *AWS\-managed provisioning*\. AWS Proton uses Jinja on top of the CloudFormation template file format for parametrization\.
++ *[Terraform HCL](#terraform) files* – Used for *Self\-managed provisioning*\. HCL natively supports parametrization\.
 
-You can use two different methods to provision from your IaC files\.
-+ **Standard provisioning:** AWS Proton makes direct calls to provision your resources\. You can only use CloudFormation IaC files for standard provisioning\.
-+ **Pull request provisioning:** AWS Proton makes pull requests to provide compiled IaC files that your IaC engine uses to provision resources\. You can only use Terraform IaC files with pull request provisioning\.
+You can’t provision AWS Proton resources using a combination of provisioning methods\. You must use one or the other\. You can’t deploy an AWS\-managed provisioning service to a self\-managed provisioning environment, or vice versa\.
 
-**With pull request provisioning, AWS Proton:**
-
-  1. Compiles IaC files with console or spec file input values\.
-
-  1. Submits a pull request to merge the compiled files to a [repository that you have defined](ag-create-repo.md)\.
-
-  1. If the request is approved, it waits for provisioning status that you provide\.
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
-
-You *can’t* provision AWS Proton resources using a combination of provisioning methods\. You must use one or the other\. For example, you can’t deploy a standard provisioned service to an environment provisioned with pull requests\. Similarly, you can’t deploy a service provisioned with pull requests to a standard provisioned environment\.
-
-For more information, see [AWS Proton environments](ag-environments.md) and [AWS Proton services](ag-services.md)\.
+For more information, see [How AWS Proton provisions infrastructure](ag-works-prov-methods.md), [AWS Proton environments](ag-environments.md), and [AWS Proton services](ag-services.md)\.
 
 ## AWS CloudFormation IaC files<a name="cloudformation"></a>
 
-Learn how to use AWS CloudFormation infrastructure as code files with AWS Proton\. AWS CloudFormation is an infrastructure as code \(IaC\) service that helps you model and set up your AWS resources\. You define your infrastructure resources in templates\. CloudFormation provisions the defined resources as CloudFormation stack\. For more information, see [What is AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) in *the AWS CloudFormation User Guide*\.
+Learn how to use AWS CloudFormation infrastructure as code files with AWS Proton\. AWS CloudFormation is an infrastructure as code \(IaC\) service that helps you model and set up your AWS resources\. You define your infrastructure resources in templates, using Jinja on top of the CloudFormation template file format for parametrization\. AWS Proton expands parameters and renders the full CloudFormation template\. CloudFormation provisions the defined resources as CloudFormation stack\. For more information, see [What is AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html) in *the AWS CloudFormation User Guide*\.
+
+AWS Proton supports [AWS\-managed provisioning](ag-works-prov-methods.md#ag-works-prov-methods-direct) for CloudFormation IaC\.
 
 ### Start with your own existing infrastructure as code files<a name="iac-tmp-files"></a>
 
@@ -432,12 +422,12 @@ Resources:
         Fn::Join:
           - '-'
           - - low-cpu
-            - !Ref 'ContainerPortInput'
+            - !Ref 'TaskNameInput'
       AlarmDescription:
         Fn::Join:
           - ' '
           - - "Low CPU utilization for service"
-            - !Ref 'ContainerPortInput'
+            - !Ref 'TaskNameInput'
       MetricName: CPUUtilization
       Namespace: AWS/ECS
       Dimensions:
@@ -547,7 +537,7 @@ Outputs:
 
 You can adapt these files for use with AWS Proton\.
 
-#### Bring your infrastructure as code to AWS Proton<a name="proton-tmp-files"></a>
+### Bring your infrastructure as code to AWS Proton<a name="proton-tmp-files"></a>
 
 With slight modifications, you can use [Example 1](#ag-env-cfn-example) as an infrastructure as code \(IaC\) file for an environment template bundle that AWS Proton uses to deploy an environment \(as shown in [Example 3](#ag-proton-env-cfn-example)\)\.
 
@@ -2282,12 +2272,11 @@ Outputs:
 
 ## Terraform IaC files<a name="terraform"></a>
 
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
-
 Learn how to use Terraform infrastructure as code \(IaC\) files with AWS Proton\. [Terraform](https://www.terraform.io/) is a widely used open\-source IaC engine that was developed by [HashiCorp](https://www.hashicorp.com/)\. Terraform modules are developed in HashiCorp's HCL language, and support several backend infrastructures providers, including Amazon Web Services\.
 
-**You must use pull request provisioning with Terraform IaC template bundle files:**
+AWS Proton supports [self\-managed provisioning](ag-works-prov-methods.md#ag-works-prov-methods-self) for Terraform IaC\.
+
+**How self\-managed provisioning works with Terraform IaC template bundle files:**
 
 1. When you [create an environment](ag-create-env.md) from Terraform template bundles, AWS Proton compiles your `.tf` files with console or `spec file` input parameters\.
 

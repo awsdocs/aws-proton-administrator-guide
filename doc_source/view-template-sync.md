@@ -7,7 +7,7 @@ View template sync configuration detail data using the console or CLI\.
 
 **Use the console to view template sync configuration details\.**
 
-1. Choose **\(Environment or Service\) templates** from the navigation pane\.
+1. In the navigation pane, choose **\(Environment or Service\) templates**\.
 
 1. To view detail data, choose the name of a template that you created a template sync configuration for\.
 
@@ -18,22 +18,22 @@ View template sync configuration detail data using the console or CLI\.
 
 **Use the AWS CLI to view a synced template\.**
 
-Run the following command:
+Run the following command\.
 
 ```
-aws proton get-template-sync-config \
+$ aws proton get-template-sync-config \
     --template-name "svc-template" \
     --template-type "SERVICE"
 ```
 
-Response:
+The response is as follows\.
 
 ```
 {
     "templateSyncConfigDetails": {
         "branch": "main",
         "repositoryProvider": "GITHUB",
-        "repositoryName": "myrepos/templates",
+        "repositoryName": "myrepos/myrepo",
         "subdirectory": "svc-template",
         "templateName": "svc-template",
         "templateType": "SERVICE"
@@ -45,10 +45,10 @@ Response:
 
 For `template-version`, enter the template major version\.
 
-Run the following command:
+Run the following command\.
 
 ```
-aws proton get-template-sync-status \
+$ aws proton get-template-sync-status \
     -template-name "env-template" \
     -template-type "ENVIRONMENT" \
     -template-version "1"

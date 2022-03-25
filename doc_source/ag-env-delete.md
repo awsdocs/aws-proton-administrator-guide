@@ -1,6 +1,6 @@
 # Delete an environment<a name="ag-env-delete"></a>
 
-You can delete an environment by using the console or the AWS CLI\.
+You can delete an AWS Proton environment by using the AWS Proton console or the AWS CLI\.
 
 ------
 #### [ AWS Management Console ]
@@ -41,7 +41,7 @@ You can delete an environment by using the console or the AWS CLI\.
 Run the following command:
 
 ```
-aws proton delete-environment \
+$ aws proton delete-environment \
     --name "MySimpleEnv"
 ```
 

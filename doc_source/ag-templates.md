@@ -11,7 +11,7 @@ You can create and register environment templates to create two different types 
 You can create and register service templates with AWS Proton to deploy services to environments\. An AWS Proton environment must be created before a service can be deployed to it\.
 
 The following list describes how you create and manage templates with AWS Proton\.
-+ \(Optional\) Prepare an IAM role to control developer access to AWS Proton API calls and AWS Proton IAM service roles\. For more information, see [IAM Roles](env-permissions.md)\.
++ \(Optional\) Prepare an IAM role to control developer access to AWS Proton API calls and AWS Proton IAM service roles\. For more information, see [IAM Roles](ag-environment-roles.md)\.
 + Compose a template bundle\. For more information, see [Template bundles](ag-template-bundles.md)\.
 + Create and register a template with AWS Proton after the template bundle is composed, compressed, and saved in an Amazon S3 bucket\. You can do this either in the console or by using the AWS CLI\.
 + Test and use the template to create and manage AWS Proton provisioned resources after it's registered with AWS Proton\.

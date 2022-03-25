@@ -13,4 +13,4 @@ Before getting started, get [set up](ag-setting-up.md) to use AWS Proton and ver
 + [Prerequisites](getting-started-prerequisites.md)
 + [Getting started workflow](ag-admin-workflow.md)
 + [Getting started with the AWS Management Console](ag-getting-started-console.md)
-+ [Getting started with the AWS Proton AWS CLI](ag-getting-started-cli.md)
++ [Getting started with the AWS Proton​ AWS CLI](ag-getting-started-cli.md)

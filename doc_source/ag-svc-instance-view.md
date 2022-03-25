@@ -1,6 +1,6 @@
 # View service instance data<a name="ag-svc-instance-view"></a>
 
-Learn to view service instance detail data\. You can use the console or the AWS CLI\.
+Learn to view AWS Proton service instance detail data\. You can use the console or the AWS CLI\.
 
 A service instance belongs to a service\. You can only create or delete an instance within the context of service [edit](ag-svc-update.md), [create](ag-create-svc.md) and [delete](ag-svc-delete.md) actions\. To learn how to add and remove instances from a service, see [Edit a service](ag-svc-update.md)\.
 
@@ -23,7 +23,7 @@ A service instance belongs to a service\. You can only create or delete an insta
 Command:
 
 ```
-aws proton list-service-instances
+$ aws proton list-service-instances
 ```
 
 Response:
@@ -51,7 +51,7 @@ Response:
 Command:
 
 ```
-aws proton get-service-instance \
+$ aws proton get-service-instance \
     --name "instance-one" \
     --service-name "simple-svc"
 ```

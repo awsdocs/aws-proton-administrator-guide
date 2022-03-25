@@ -2,7 +2,11 @@
 
 **Overview**
 
-Learn how to create and manage an environment in one account and provision its infrastructure resources in another account\. This can help improve visibility and efficiency at scale\. Environment account connections only support standard provisioning with AWS CloudFormation infrastructure as code\.
+Learn how to create and manage an AWS Proton environment in one account and provision its infrastructure resources in another account\. This can help improve visibility and efficiency at scale\. Environment account connections only support standard provisioning with AWS CloudFormation infrastructure as code\.
+
+**Note**  
+The information provided in this topic is relevant to environments configured with *AWS\-managed provisioning*\. With environments configured with *self\-managed provisioning*, AWS Proton doesn't directly provision your infrastructure\. Instead, it sends pull requests \(PRs\) to your repository for provisioning\. It's your responsibility to ensure that your automation code assumes the right identity and role\.  
+For more information about provisioning methods, see [How AWS Proton provisions infrastructure](ag-works-prov-methods.md)\.
 
 **Terminology**
 
@@ -121,7 +125,7 @@ Decide on a name for the environment that you plan to create in your management 
 Run the following command:
 
 ```
-aws proton create-environment-account-connection \
+$ aws proton create-environment-account-connection \
     --environment-name "simple-env-connected" \
     --role-arn "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role" \
     --management-account-id "123456789111"
@@ -157,7 +161,7 @@ If you specify **Accept**, the status changes from *pending* to *connected*\.
 Run the following command to accept the environment account connection:
 
 ```
-aws proton accept-environment-account-connection \
+$ aws proton accept-environment-account-connection \
     --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
@@ -182,7 +186,7 @@ Response:
 Run the following command to reject the environment account connection:
 
 ```
-aws proton reject-environment-account-connection \
+$ aws proton reject-environment-account-connection \
     --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
@@ -209,7 +213,7 @@ Response:
 Run the following get command:
 
 ```
-aws proton get-environment-account-connection \
+$ aws proton get-environment-account-connection \
     --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
@@ -239,7 +243,7 @@ If you delete this environment account connection, AWS Proton *won’t* be able 
 Run the following command:
 
 ```
-aws proton delete-environment-account-connection \
+$ aws proton delete-environment-account-connection \
     --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 

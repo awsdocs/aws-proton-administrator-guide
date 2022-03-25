@@ -1,8 +1,5 @@
 # Wrap up template bundles for AWS Proton<a name="ag-wrap-up"></a>
 
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
-
 After preparing your environment and service infrastructure as code \(IaC\) files and their respective schema files, you must organize them in directories\. You must also create a manifest YAML file\.
 
 The manifest file lists the IaC files in a directory and needs to adhere to the format and content shown in the following example\.
@@ -21,12 +18,15 @@ infrastructure:
 
 **Terraform manifest file format:**
 
-With terraform, you can explicitly list a single file or use the wildcard, `*.tf`, to list each of the files in a directory\.
+With terraform, you can explicitly list a single file or use the wildcard `*` to list each of the files in a directory\.
+
+**Note**  
+The wildcard only includes files whose names end with `.tf`\. Other files are ignored\.
 
 ```
 infrastructure:
   templates:
-    - file: "*.tf"
+    - file: "*"
       rendering_engine: hcl
       template_language: terraform
 ```
@@ -36,9 +36,6 @@ infrastructure:
 When you create a minor version of an environment or a service template that you registered with AWS Proton, you provide the path to your environment or service template bundle tar ball that's located in your S3 bucket\. AWS Proton saves it with the new template minor version\. You can select the new template minor version to create or update environments or services with AWS Proton\.
 
 ## Environment template bundle wrap up<a name="environment-wrap-up"></a>
-
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
 
 There are two types of environment template bundles that you create for AWS Proton\.
 + To create an environment template bundle for a *standard* environment template, organize the schema, infrastructure as code \(IaC\) files and manifest file in directories as shown in the following environment template bundle directory structure\.
@@ -67,9 +64,6 @@ Terraform environment template bundle directory structure:
 ```
 
 ## Service template bundle wrap up<a name="service-wrap-up"></a>
-
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
 
 To create a service template bundle, you must organize the schema, infrastructure as code \(IaC\) files, and manifest files into directories as shown in the service template bundle directory structure example\.
 

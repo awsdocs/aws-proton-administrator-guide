@@ -55,9 +55,31 @@ For example, suppose you have a template that's called `my-env-template` configu
  /templates/my-env-template/v2/schema/
 ```
 
-AWS Proton syncs the contents of `/tmpls/my-env-template/v1/` to `my-env-template:1` and the contents of `/tmpls/my-env-template/v2/` to `my-env-template:2`\. It creates these major versions if they don’t already exist\.
+AWS Proton syncs the contents of `/templates/my-env-template/v1/` to `my-env-template:1` and the contents of `/templates/my-env-template/v2/` to `my-env-template:2`\. If they don’t already exist, it creates these major versions\.
 
 AWS Proton found the first directory that matched the template name\. You can limit the directories AWS Proton searches by specifying a `subdirectoryPath` when you create or edit a template sync configuration\. For example, you can specify `/production-templates/` for `subdirectoryPath`\.
+
+## Syncing service templates<a name="create-template-sync-service-templates"></a>
+
+The preceding examples show how you can sync environment templates\. Service templates are similar\. However, they also require an additional file that's called the `.compatible-envs` file\. This file contains a line\-separated list of environment templates and major versions that are compatible with the service template\. 
+
+```
+./templates/                                      # subdirectory (optional)
+ /templates/my-svc-template/                      # service template name
+ /templates/my-svc-template/v1/                   # service template version
+ /templates/my-svc-template/v1/.compatible-envs   # service template's compatible envs file
+ /templates/my-svc-template/v1/infrastructure/    # template bundle
+ /templates/my-svc-template/v1/schema/
+```
+
+The `.compatible-envs` file contains the names and major versions of the environment templates that are compatible with this service template\.
+
+```
+my-env-template:1
+my-env-template:2
+```
+
+This file indicates that the major version 1 of the `my-svc-template` service template is compatible with major versions 1 and 2 of the `my-env-template` environment template\.
 
 You can create a template sync configuration using the console or CLI\.
 
@@ -80,7 +102,7 @@ You can create a template sync configuration using the console or CLI\.
 
    1. Enter the name of the repository branch to sync from\.
 
-   1. \(Optional\) Enter name of a directory to limit the search for your template bundle\.
+   1. \(Optional\) Enter the name of a directory to limit the search for your template bundle\.
 
 1. In the **Template details** section\.
 
@@ -96,7 +118,7 @@ You can create a template sync configuration using the console or CLI\.
 
 1. Choose **Create Environment template**\.
 
-   You're now on a new page that displays the status and details for your new environment template\. These details include a list of AWS and customer managed tags\. AWS Proton automatically generates AWS managed tags for you when you create AWS Proton resources\. For more information, see [AWS Proton resources and tagging](resources.md)\.
+   You're now on a new page that displays the status and details for your new environment template\. These details include a list of AWS managed and customer managed tags\. AWS Proton automatically generates AWS managed tags for you when you create AWS Proton resources\. For more information, see [AWS Proton resources and tagging](resources.md)\.
 
 1. In the template detail page, choose the **Sync** tab to view template sync configuration detail data\.
 
@@ -108,7 +130,7 @@ You can create a template sync configuration using the console or CLI\.
 
 1. In the **Template versions** section, choose **Publish**\.
 
-1. The template status changes to **Published**\. Because it's the latest version of the template, it's also the **Recommended** version\.
+1. The template status changes to **Published**\. It's the latest and **Recommended** version of the template\.
 
 1. In the navigation pane, select **Environment templates** to view a list of your environment templates and details\.
 
@@ -123,19 +145,19 @@ The procedure for creating a service template and template sync configuration is
 
 **Create a template\. In this example, an environment template is created\.**
 
-   Run the following command:
+   Run the following command\.
 
    ```
-   aws proton create-environment-template \
+   $ aws proton create-environment-template \
        --name "env-template"
    ```
 
-   Response:
+   The response is as follows\.
 
    ```
    {
        "environmentTemplate": {
-           "arn": "arn:aws:proton:region-id:123456789012:environment-template/env-template",
+           "arn": "arn:aws:proton:us-east-2:123456789012:environment-template/env-template",
            "createdAt": "2021-11-07T23:32:43.045000+00:00",
            "displayName": "env-template",
            "lastModifiedAt": "2021-11-07T23:32:43.045000+00:00",
@@ -148,19 +170,19 @@ The procedure for creating a service template and template sync configuration is
 
 1. 
 
-**Create your template sync configuration with AWS CLI by providing:**
-   + The template you want to sync to\. After you have created the template sync configuration, you can still create new versions from it manually in the console or with the AWS CLI\.
+**Create your template sync configuration with AWS CLI by providing the following:**
+   + The template that you want to sync to\. After you have created the template sync configuration, you can still create new versions from it manually in the console or with the AWS CLI\.
    + The template name\.
    + The template type\.
-   + The repository you want to sync from\.
+   + The repository that you want to sync from\.
    + The repository provider type\.
    + The branch where the template bundle is located\.
-   + \(Optional\) The directory path to your template bundle\. By default, AWS Proton looks for the first directory that matches your template name\.
+   + \(Optional\) The path to the directory containing your template bundle\. By default, AWS Proton looks for the first directory that matches your template name\.
 
-   Run the following command:
+   Run the following command\.
 
    ```
-   aws proton create-template-sync-config \
+   $ aws proton create-template-sync-config \
        --template-name "env-template" \
        --template-type "ENVIRONMENT" \
        --repository-name "myrepos/templates" \
@@ -169,13 +191,13 @@ The procedure for creating a service template and template sync configuration is
        --subdirectory "env-template/"
    ```
 
-   Response:
+   The response is as follows\.
 
    ```
    {
        "templateSyncConfigDetails": {
            "branch": "main",
-           "repositoryName": "myrepos/myrepo",
+           "repositoryName": "myrepos/templates",
            "repositoryProvider": "GITHUB",
            "subdirectory": "templates",
            "templateName": "env-template",

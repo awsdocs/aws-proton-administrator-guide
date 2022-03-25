@@ -2,19 +2,17 @@
 
 If you want to use the AWS CLI to run AWS Proton APIs, verify that you have installed it\. If you haven’t installed it, see [Setting up with the AWS CLI](#ag-setting-up-cli)\.
 
-**AWS Proton specific configurations:**
+**AWS Proton specific configuration:**
 + **To create and manage templates:**
   + If you're using [template sync configurations](ag-template-sync-configs.md), set up an [AWS CodeStar connection](#setting-up-vcontrol)\.
   + Otherwise, set up an [Amazon S3 bucket\.](#setting-up-bucket)
 + **To provision infrastructure:**
-  + For [pull request provisioning](ag-infrastructure-tmp-files.md#terraform), you must set up an [AWS CodeStar connection](#setting-up-vcontrol)\.
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
+  + For [self\-managed provisioning](ag-works-prov-methods.md#ag-works-prov-methods-self), you must set up an [AWS CodeStar connection](#setting-up-vcontrol)\.
 + **\(Optional\) To provision pipelines:**
-  + For standard provisioning, set up an [AWS CodeStar connection](#setting-up-vcontrol)\.
-  + For [pull request provisioning](ag-infrastructure-tmp-files.md#terraform), set up [CI/CD pipeline repository](#setting-up-pr-repo)\. 
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
+  + For [AWS\-managed provisioning](ag-works-prov-methods.md#ag-works-prov-methods-direct), set up an [AWS CodeStar connection](#setting-up-vcontrol)\.
+  + For [self\-managed provisioning](ag-works-prov-methods.md#ag-works-prov-methods-self), set up [CI/CD pipeline repository](#setting-up-pr-repo)\. 
+
+For more information about provisioning methods, see [How AWS\-managed provisioning works](ag-works-prov-methods.md#ag-works-prov-methods-direct)\.
 
 ## Setting up an Amazon S3 bucket<a name="setting-up-bucket"></a>
 
@@ -27,8 +25,6 @@ To connect AWS Proton to a repository, you create an AWS CodeStar connection tha
 **AWS Proton uses the connection to:**
 + Activate a service pipeline when a new commit is made on your repository source code\.
 + Make a pull request on an infrastructure as code repository\.
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
 + Create a new template minor or major version whenever a commit is pushed to a template repository that changes one of your templates, if the version doesn’t already exist\.
 
 You can connect to Bitbucket, GitHub, GitHub Enterprise and GitHub Enterprise Server repositories with AWS CodeStar connections\. For more information, see [AWS CodeStar connections](https://docs.aws.amazon.com/codepipeline/latest/userguide/action-reference-CodestarConnectionSource.html) in the *AWS CodePipeline User Guide*\.
@@ -37,16 +33,13 @@ You can connect to Bitbucket, GitHub, GitHub Enterprise and GitHub Enterprise Se
 
 1. In the [AWS Proton console](https://console.aws.amazon.com/proton/)\.
 
-1. In the navigation pane, select **Settings** and then **Source connections** to take you to the **Connections** page in **Developer Tools** **Settings**\. The page displays a list of connections\.
+1. In the navigation pane, select **Settings** and then **Repository connections** to take you to the **Connections** page in **Developer Tools** **Settings**\. The page displays a list of connections\.
 
 1. Choose **Create connection** and follow the instructions\.
 
 ## Setting up a CI/CD pipeline repository<a name="setting-up-pr-repo"></a>
 
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
-
-To provision a pipeline with pull request provisioning, you must define a CI/CD pipeline repository as shown in the following steps\.
+To provision a pipeline with self\-managed provisioning, you must define a CI/CD pipeline repository as shown in the following steps\.
 
 **Create a CI/CD pipeline repository role if you haven't yet created one for your new service\.**
 

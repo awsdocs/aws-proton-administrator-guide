@@ -1,8 +1,5 @@
 # Parameters<a name="parameters"></a>
 
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
-
 To work with different types of infrastructure as code \(IaC\) files, AWS Proton uses parameter *namespaces* and a [schema file](ag-schema.md) for handling parameters\. AWS Proton checks input parameter values against your schema file\. It matches the input parameter values with the parameters that are referenced in your IaC files to inject the input values\. AWS Proton uses [Jinja](https://jinja.palletsprojects.com/en/2.11.x/) to process AWS CloudFormation IaC parameters\. It processes Terraform IaC variables internally and *doesn’t* use Jinja\.
 
 AWS Proton automatically creates AWS Proton resource parameters\. You can reference these resource parameters in all of your template bundle IaC files\. An example of a resource parameter is `environment.name`\.
@@ -29,9 +26,6 @@ The following tables list AWS Proton resource parameters and the namespaces that
 
 **Parameters and namespaces for CloudFormation IaC**  
 [\[See the AWS documentation website for more details\]](http://docs.aws.amazon.com/proton/latest/adminguide/parameters.html)
-
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
 
 
 **Parameters and namespaces for Terraform IaC**  
@@ -255,9 +249,6 @@ Outputs:
 ```
 
 ## Terraform infrastructure as code \(IaC\) file parameter details and examples<a name="env-parameters-tform"></a>
-
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
 
 You can include Terraform input variables in `variable.tf` files in your template bundle\. You can also create a schema to create AWS Proton managed variables\. AWS Proton creates variable `.tf files` from your schema file\. For for information, see [Terraform IaC files](ag-infrastructure-tmp-files.md#terraform)\.
 

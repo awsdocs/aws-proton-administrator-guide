@@ -15,23 +15,23 @@ If your CLI commands are using the old API, you’ll get notified via exception\
 First, you’ll want to update the Proton model in your CLI:
 
 ```
-aws s3 cp s3://aws-proton-preview-public-files/model/proton-2020-07-20.normal.json .
-aws s3 cp s3://aws-proton-preview-public-files/model/waiters2.json .
-aws configure add-model --service-model file://proton-2020-07-20.normal.json --service-name proton-preview
-mv waiters2.json ~/.aws/models/proton-preview/2020-07-20/waiters-2.json
-rm proton-2020-07-20.normal.json
+$ aws s3 cp s3://aws-proton-preview-public-files/model/proton-2020-07-20.normal.json .
+$ aws s3 cp s3://aws-proton-preview-public-files/model/waiters2.json .
+$ aws configure add-model --service-model file://proton-2020-07-20.normal.json --service-name proton-preview
+$ mv waiters2.json ~/.aws/models/proton-preview/2020-07-20/waiters-2.json
+$ rm proton-2020-07-20.normal.json
 ```
 
 Then you’ll need to start using the new parameters and APIs\. Generally, the CLI does a good job of letting you know which parameters are now required\. For example, the command:
 
 ```
-aws proton-preview create-environment-template --template-name "my-template"
+$ aws proton-preview create-environment-template --template-name "my-template"
 ```
 
 becomes:
 
 ```
-aws proton-preview create-environment-template --name "my-template"
+$ aws proton-preview create-environment-template --name "my-template"
 ```
 
 For a complete list of the changes, see the next section\.

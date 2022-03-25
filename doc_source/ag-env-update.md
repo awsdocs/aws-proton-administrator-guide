@@ -1,6 +1,6 @@
 # Update an environment<a name="ag-env-update"></a>
 
-If the environment is associated with an environment account connection, *don't* update or include the `protonServiceRoleArn` parameter to update or connect to an environment account connection\.
+If the AWS Proton environment is associated with an environment account connection, *don't* update or include the `protonServiceRoleArn` parameter to update or connect to an environment account connection\.
 
 You can only update to a new environment account connection if both of the following is true:
 + It was created in the same environment account that the current environment account connection was created in\.
@@ -10,7 +10,7 @@ If the environment *isn’t* associated with an environment account connection, 
 
 You can update either the `environmentAccountConnectionId` or `protonServiceRoleArn` parameter and value\. You can’t update both\.
 
-If your environment uses pull request provisioning, *don't* update the `provisioning-repository` parameter and *omit* the `environmentAccountConnectionId` and `protonServiceRoleArn` parameters\.
+If your environment uses self\-managed provisioning, *don't* update the `provisioning-repository` parameter and *omit* the `environmentAccountConnectionId` and `protonServiceRoleArn` parameters\.
 
 There are four modes for updating an environment as described in the following list\. When using the AWS CLI, the `deployment-type` field defines the mode\. When using the console, these modes map to the **Edit**, **Update**, **Update minor**, and **Update major** actions that drop down from **Actions**\.
 
@@ -31,11 +31,11 @@ In this mode, the environment is deployed and updated with the published, recomm
 In this mode, the environment is deployed and updated with the published, recommended \(latest\) major and minor version of the current template by default\. You can also specify a different major version that is higher than the major version in use and a minor version \(optional\)\.
 
 **Topics**
-+ [Update a standard provisioning environment](#ag-env-std-update)
-+ [Update a pull request provisioning environment](#ag-env-pr-update)
++ [Update an AWS\-managed provisioning environment](#ag-env-std-update)
++ [Update a self\-managed provisioning environment](#ag-env-pr-update)
 + [Cancel an environment deployment in progress](#ag-env-cancel)
 
-## Update a standard provisioning environment<a name="ag-env-std-update"></a>
+## Update an AWS\-managed provisioning environment<a name="ag-env-std-update"></a>
 
 Standard provisioning is only supported by environments that provision with AWS CloudFormation\.
 
@@ -126,7 +126,7 @@ Standard provisioning is only supported by environments that provision with AWS 
 Run the following command to update your environment:
 
 ```
-aws proton update-environment \
+$ aws proton update-environment \
         --name "MySimpleEnv" \
         --deployment-type "MINOR_VERSION" \
         --template-major-version "1" \
@@ -157,7 +157,7 @@ Response:
 Run the following command to get and confirm the status:
 
 ```
-aws proton get-environment \
+$ aws proton get-environment \
         --name "MySimpleEnv"
 ```
 
@@ -183,12 +183,9 @@ Response:
 
 ------
 
-## Update a pull request provisioning environment<a name="ag-env-pr-update"></a>
+## Update a self\-managed provisioning environment<a name="ag-env-pr-update"></a>
 
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
-
-Pull request provisioning is only supported by environments that provision with Terraform\.
+Self\-managed provisioning is only supported by environments that provision with Terraform\.
 
 **Use the console or AWS CLI to update your environment\.**
 
@@ -272,12 +269,12 @@ Pull request provisioning is only supported by environments that provision with 
 ------
 #### [ AWS CLI ]
 
-**Use the AWS CLI to update a Terraform environment to a new minor version with pull request provisioning\.**
+**Use the AWS CLI to update a Terraform environment to a new minor version with self\-managed provisioning\.**
 
 1. Run the following command to update your environment:
 
    ```
-   aws proton update-environment \
+   $ aws proton update-environment \
        --name "pr-environment" \
        --deployment-type "MINOR_VERSION" \
        --template-major-version "1" \
@@ -313,7 +310,7 @@ Pull request provisioning is only supported by environments that provision with 
 1. Run the following command to get and confirm the status:
 
    ```
-   aws proton get-environment \
+   $ aws proton get-environment \
        --name "pr-environment"
    ```
 
@@ -350,7 +347,7 @@ Pull request provisioning is only supported by environments that provision with 
 1. Provide provisioning status to AWS Proton\.
 
    ```
-   aws proton notify-resource-deployment-status-change \
+   $ aws proton notify-resource-deployment-status-change \
        --resource-arn "arn:aws:proton:region-id:123456789012:environment/pr-environment" \
        --status "SUCCEEDED"
    ```
@@ -363,17 +360,15 @@ You can attempt to cancel an environment update deployment if the `deploymentSta
 
 When you cancel an update deployment, AWS Proton attempts to cancel the deployment as listed in the following steps\.
 
-**With standard provisioning, AWS Proton:**
+**With AWS\-managed provisioning, AWS Proton:**
 + Sets the deployment state to `CANCELLING`\.
 + Stops the deployment in progress and deletes any new resources that were created by the deployment when `IN_PROGRESS`\.
 + Sets the deployment state to `CANCELLED`\.
 + Reverts the state of the resource to what it was before the deployment was started\.
 
-**With pull request provisioning, AWS Proton:**
+**With self\-managed provisioning, AWS Proton:**
 + Attempts to close the pull request to prevent merging the changes to your repository\.
 + Sets the deployment state to `CANCELLED` if the pull request was successfully closed\.
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
 
 For instructions on how to cancel an environment deployment, see [CancelEnvironmentDeployment](https://docs.aws.amazon.com/proton/latest/APIReference/API_CancelEnvironmentDeployment.html) in the *AWS Proton API Reference*\.
 
@@ -404,7 +399,7 @@ A wait condition is included in the template used for this example so that the c
 Run the following command to cancel the update:
 
 ```
-aws proton cancel-environment-deployment \
+$ aws proton cancel-environment-deployment \
         --environment-name "MySimpleEnv"
 ```
 
@@ -431,7 +426,7 @@ Response:
 Run the following command to get and confirm the status:
 
 ```
-aws proton get-environment \
+$ aws proton get-environment \
         --name "MySimpleEnv"
 ```
 

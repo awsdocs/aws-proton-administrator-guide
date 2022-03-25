@@ -1,6 +1,6 @@
 # View environment data<a name="ag-env-view"></a>
 
-You can view environment detail data using either the console or the AWS CLI\.
+You can view environment detail data using either the AWS Proton console or the AWS CLI\.
 
 ------
 #### [ AWS Management Console ]
@@ -21,7 +21,7 @@ You can view environment detail data using either the console or the AWS CLI\.
 Run the following command:
 
 ```
-aws proton get-environment \
+$ aws proton get-environment \
     --name "MySimpleEnv"
 ```
 

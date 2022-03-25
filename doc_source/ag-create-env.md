@@ -1,43 +1,36 @@
 # Create an environment<a name="ag-create-env"></a>
 
-Learn to create environments with AWS Proton\.
+Learn to create AWS Proton environments\.
 
 **You can create two types of environments:**
-+ Create, manage, and provision a standard environment by using a *standard* environment template to create an environment\.
-+ Connect AWS Proton to customer managed infrastructure by using a *customer managed* environment template to create an environment\.
++ Create, manage, and provision a standard environment by using a *standard environment template*\. AWS Proton provisions infrastructure for your environment\.
++ Connect AWS Proton to customer\-managed infrastructure by using a *customer\-managed environment template*\. You provision your own shared resources outside of AWS Proton, and then you provide provisioning outputs that AWS Proton can use\.
 
-**You can use three different environment provisioning methods when you create environments\.**
-+ Use standard provisioning and create, manage, and provision an environment in a single account\. This method only supports CloudFormation infrastructure as code \(IaC\)\.
-+ In a single management account, create and manage an environment that is provisioned in another account with environment account connections\. For more information, see [Create an environment in one account and provision in another account](#ag-create-env-deploy-other) and [Environment account connections](ag-env-account-connections.md)\. This method only supports CloudFormation IaC\.
-+ Use pull request provisioning\. This method only supports Terraform IaC\.
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
+**You can choose one of several provisioning approaches when you create an environment\.**
++ *AWS\-managed provisioning* – Create, manage, and provision an environment in a single account\. AWS Proton provisions your environment\.
 
-With standard and environment account connection provisioning, AWS Proton makes direct calls to provision your resources\.
+  This method only supports CloudFormation infrastructure as code \(IaC\) templates\.
++ *AWS\-managed provisioning to another account* – In a single management account, create and manage an environment that is provisioned in another account with environment account connections\. AWS Proton provisions your environment in the other account\. For more information, see [Create an environment in one account and provision in another account](#ag-create-env-deploy-other) and [Environment account connections](ag-env-account-connections.md)\.
 
-With pull request provisioning, AWS Proton makes pull requests to provide compiled IaC files that your IaC engine uses to provision resources\.
+  This method only supports CloudFormation IaC templates\.
++ *Self\-managed provisioning* – AWS Proton submits provisioning pull requests to a registered repository with your own provisioning infrastructure\.
 
-**AWS Proton pull request provisioning**
-+ 
+  This method only supports Terraform IaC templates\.
 
-**AWS Proton:**
+With AWS\-managed provisioning \(both in the same account and to another account\), AWS Proton makes direct calls to provision your resources\.
 
-  1. Compiles template IaC with input values from the console or spec file\.
+With self\-managed provisioning, AWS Proton makes pull requests to provide compiled IaC files that your IaC engine uses to provision resources\.
 
-  1. Submits a pull request to merge compiled files to a repository that you define\.
-
-  1. Waits on customer provided provisioning status\.
-
-See [Template bundles](ag-template-bundles.md) and [Schema requirements for environment template bundles](ag-schema.md#schema-req-env) for additional requirements\.
+For more information, see [How AWS Proton provisions infrastructure](ag-works-prov-methods.md), [Template bundles](ag-template-bundles.md), and [Schema requirements for environment template bundles](ag-schema.md#schema-req-env)\.
 
 **Topics**
 + [Create and provision a standard environment in the same account](#ag-create-env-same-account)
 + [Create an environment in one account and provision in another account](#ag-create-env-deploy-other)
-+ [Create and provision with pull requests](#ag-create-env-pull-request)
++ [Create and provision an environment using self\-managed provisioning](#ag-create-env-pull-request)
 
 ## Create and provision a standard environment in the same account<a name="ag-create-env-same-account"></a>
 
-Use the console or AWS CLI to create and provision an environment in a single account\.
+Use the console or AWS CLI to create and provision an environment in a single account\. Provisioning is managed by AWS\.
 
 ------
 #### [ AWS Management Console ]
@@ -50,7 +43,7 @@ Use the console or AWS CLI to create and provision an environment in a single ac
 
 1. In the **Choose an environment template** page, select a template and choose **Configure**\.
 
-1. In the **Configure environment** page, in the **Provisioning** section, choose **Provision through AWS Proton**\.
+1. In the **Configure environment** page, in the **Provisioning** section, choose **AWS\-managed provisioning**\.
 
 1. In the **Deployment account** section, choose **This AWS account**\.
 
@@ -99,7 +92,7 @@ Create an environment\.
 Run the following command:
 
 ```
-aws proton create-environment \
+$ aws proton create-environment \
     --name "MySimpleEnv" \
     --template-name simple-env \
     --template-major-version 1 \
@@ -128,7 +121,7 @@ After you create a new environment, you can view a list of AWS and customer mana
 Command:
 
 ```
-aws proton list-tags-for-resource \
+$ aws proton list-tags-for-resource \
     --resource-arn "arn:aws:proton:region-id:123456789012:environment/MySimpleEnv"
 ```
 
@@ -136,7 +129,7 @@ aws proton list-tags-for-resource \
 
 ## Create an environment in one account and provision in another account<a name="ag-create-env-deploy-other"></a>
 
-Use the console or AWS CLI to create a standard environment in a management account that provisions environment infrastructure in another account\.
+Use the console or AWS CLI to create a standard environment in a management account that provisions environment infrastructure in another account\. Provisioning is managed by AWS\.
 
 **Before using the console or CLI, complete the following steps\.**
 
@@ -189,7 +182,7 @@ Verify that the account ID listed in the **Environment account connection** page
 
    1. In the **Choose an environment template** page, choose an environment template\.
 
-   1. In the **Configure environment** page, in the **Provisioning** section, choose **Provision through AWS Proton**\.
+   1. In the **Configure environment** page, in the **Provisioning** section, choose **AWS\-managed provisioning**\.
 
    1. In the **Deployment account** section, choose **Another AWS account**\.
 
@@ -211,7 +204,7 @@ In the environment account, create an environment account connection and request
 Run the following command:
 
 ```
-aws proton create-environment-account-connection \
+$ aws proton create-environment-account-connection \
     --environment-name "simple-env-connected" \
     --role-arn "arn:aws:iam::123456789222:role/service-role/env-account-proton-service-role" \
     --management-account-id "123456789111"
@@ -240,7 +233,7 @@ In the management account, accept the environment account connection request\.
 Run the following command:
 
 ```
-aws proton accept-environment-account-connection \
+$ aws proton accept-environment-account-connection \
     --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
@@ -267,7 +260,7 @@ View your environment account connection by using get\.
 Run the following command:
 
 ```
-aws proton get-environment-account-connection \
+$ aws proton get-environment-account-connection \
     --id "a1b2c3d4-5678-90ab-cdef-EXAMPLE11111"
 ```
 
@@ -294,7 +287,7 @@ In the management account, create an environment\.
 Run the following command:
 
 ```
-aws proton create-environment \
+$ aws proton create-environment \
     --name "simple-env-connected" \
     --template-name simple-env-template \
     --template-major-version "1" \
@@ -322,27 +315,24 @@ Response:
 
 ------
 
-## Create and provision with pull requests<a name="ag-create-env-pull-request"></a>
+## Create and provision an environment using self\-managed provisioning<a name="ag-create-env-pull-request"></a>
 
-**Important**  
-**Provisioning by pull request** is currently in **feature preview** and is only usable with Terraform based AWS Proton Templates\. To learn more about [AWS Feature Preview terms](https://aws.amazon.com/service-terms), see section 2 on Beta and Previews\.
+When you use self\-managed provisioning, AWS Proton submits provisioning pull requests to a registered repository with your own provisioning infrastructure\. The pull requests trigger your own workflow, which calls AWS services to provision infrastructure\.
 
-Learn how to use pull requests to provision resources\. You can only use pull request provisioning with Terraform IaC\.
-
-**Pull request provisioning prerequisites:**
+**Self\-managed provisioning prerequisites:**
 + You have [registered a repository with AWS Proton](ag-create-repo.md)\.
-+ You have set up a repository resource directory for pull request provisioning\. For more information, see [Infrastructure as code files](ag-infrastructure-tmp-files.md)\.
++ You have set up a repository resource directory for self\-managed provisioning\. For more information, see [Infrastructure as code files](ag-infrastructure-tmp-files.md)\.
 + You have an [AWS CodeStar connection](setting-up-for-service.md) for your repository\.
 
 **Considerations:**
-+ After you create the environment, AWS Proton waits on the receipt of asynchronous notifications regarding provisioning status\.
++ After you create the environment, AWS Proton waits to receive asynchronous notifications regarding the status of your infrastructure provisioning\. Your provisioning code must use the AWS Proton `NotifyResourceStateChange` API to send these asynchronous notifications to AWS Proton\.
 
-You can use pull request provisioning in the console or with the AWS CLI\. The following examples show how you can use pull request provisioning with Terraform\.
+You can use self\-managed provisioning in the console or with the AWS CLI\. The following examples show how you can use self\-managed provisioning with Terraform\.
 
 ------
 #### [ AWS Management Console ]
 
-**Use the console to create a Terraform environment using pull request provisioning\.**
+**Use the console to create a Terraform environment using self\-managed provisioning\.**
 
 1. In the [AWS Proton console](https://console.aws.amazon.com/proton/), choose **Environments**\.
 
@@ -350,7 +340,7 @@ You can use pull request provisioning in the console or with the AWS CLI\. The f
 
 1. In the **Choose an environment template** page, select a Terraform template and choose **Configure**\.
 
-1. In the **Configure environment** page, in the **Provisioning** section, choose **Provision through pull request**\.
+1. In the **Configure environment** page, in the **Provisioning** section, choose **Self\-managed provisioning**\.
 
 1. In the **Repository details** section:
 
@@ -388,9 +378,9 @@ You can use pull request provisioning in the console or with the AWS CLI\. The f
 ------
 #### [ AWS CLI ]
 
-When you create an environment to provision with pull requests, you *add* the `provisioningRepository` parameter and omit the `ProtonServiceRoleArn` and `environmentAccountConnectionId` parameters\.
+When you create an environment using self\-managed provisioning, you *add* the `provisioningRepository` parameter and omit the `ProtonServiceRoleArn` and `environmentAccountConnectionId` parameters\.
 
-**Use the AWS CLI to create a Terraform environment with pull request provisioning\.**
+**Use the AWS CLI to create a Terraform environment with self\-managed provisioning\.**
 
 1. Create an environment and send a pull request to the repository for review and approval\.
 
@@ -409,7 +399,7 @@ When you create an environment to provision with pull requests, you *add* the `p
    Command:
 
    ```
-   aws proton create-environment \
+   $ aws proton create-environment \
        --name "pr-environment" \
        --template-name "pr-env-template" \
        --template-major-version "1" \
@@ -440,12 +430,12 @@ When you create an environment to provision with pull requests, you *add* the `p
 1. Review the request\.
    + If you approve the request, provisioning is in progress\.
    + If you reject the request, the environment creation is cancelled\.
-   + If the pull request times out, environment creation is not complete\.
+   + If the pull request times out, environment creation *isn't* complete\.
 
-1. Provide provisioning status to AWS Proton\.
+1. Asynchronously provide provisioning status to AWS Proton\. The following example notifies AWS Proton of a successful provisioning\.
 
    ```
-   aws proton notify-resource-deployment-status-change \
+   $ aws proton notify-resource-deployment-status-change \
        --resource-arn "arn:aws:proton:region-id:123456789012:environment/pr-environment" \
        --status "SUCCEEDED"
    ```

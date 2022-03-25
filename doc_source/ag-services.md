@@ -1,6 +1,6 @@
 # AWS Proton services<a name="ag-services"></a>
 
-An AWS Proton service is an instantiation of a service template, normally including several service instances and a pipeline\. An AWS Proton service instance is an instantiation of a service template in a specific [environment](ag-environments.md)\. A service template is a complete definition of the infrastructure and optional service pipeline for a AWS Proton service\.
+An AWS Proton service is an instantiation of a service template, normally including several service instances and a pipeline\. An AWS Proton service instance is an instantiation of a service template in a specific [environment](ag-environments.md)\. A service template is a complete definition of the infrastructure and optional service pipeline for an AWS Proton service\.
 
 This section shows how to manage services by using create, view, update and delete operations\. For additional information, see the [https://docs.aws.amazon.com/proton/latest/APIReference/Welcome.html](https://docs.aws.amazon.com/proton/latest/APIReference/Welcome.html)\.
 

@@ -68,7 +68,7 @@ You can create the IAM service roles that AWS Proton needs to make API calls on 
 **Note**  
 Because we don't know which resources you will define in your AWS Proton templates, the role that you create using the console has broad permissions and can be used to act as both the AWS Proton pipeline service role and the AWS Proton service role\. For production deployments, we recommend that you scope down the permissions to the specific resources that will be deployed by creating customized policies for both the AWS Proton pipeline service role and the AWS Proton service role\. You can create and customize these roles by using the AWS CLI or IAM\. For more information, see [Service roles for AWS Proton](security_iam_service-with-iam.md#security_iam_service-with-iam-roles-service) and [Create a service](ag-create-svc.md)\.
 
-**To set up IAM AWS Proton service roles using the console\.**
+**To set up IAM​ AWS Proton service roles using the console\.**
 
 1. Open the [AWS Proton console](https://console.aws.amazon.com/proton/)\.
 

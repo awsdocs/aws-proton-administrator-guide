@@ -49,7 +49,7 @@ You can create a schema for two types of environment templates\. For more inform
           subnet_one_cidr:            # parameter
             type: string
             description: "The CIDR range for subnet one"
-            default: 10.0.0.0/2
+            default: 10.0.0.0/24
             pattern: ([0-9]{1,3}\.){3}[0-9]{1,3}($|/(16|24))
           subnet_two_cidr:            # parameter
             type: string

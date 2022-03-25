@@ -27,7 +27,7 @@ You can delete a repository, by using the console or the AWS CLI\.
 Run the following command:
 
 ```
-aws proton delete-repository \
+$ aws proton delete-repository \
     --name myrepos/templates \
     --provider"GITHUB"
 ```

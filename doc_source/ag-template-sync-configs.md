@@ -1,6 +1,6 @@
 # Template sync configurations<a name="ag-template-sync-configs"></a>
 
-Learn how to configure a template to let AWS Proton sync from template bundles located in registered `git` repositories that you define\. When a commit is pushed to your repository, AWS Proton checks for changes to your repository template bundles\. If it detects a template bundle change, a new minor or major version of its template is created, if the version doesn’t already exist\. 
+Learn how to configure a template to let AWS Proton sync from template bundles located in registered git repositories that you define\. When a commit is pushed to your repository, AWS Proton checks for changes to your repository template bundles\. If it detects a template bundle change, a new minor or major version of its template is created, if the version doesn’t already exist\. 
 
 ## Pushing a commit to a synced template bundle<a name="ag-commits"></a>
 
@@ -14,17 +14,33 @@ After the template bundle is registered, AWS Proton monitors the registration st
 
 Only one sync can occur to a particular template minor and major version at a single given time\. Any commits that might have been pushed while a sync was in progress are batched\. The batched commits are synced after the previous sync attempt is complete\.
 
+## Syncing service templates<a name="syncing-service-templates"></a>
+
+AWS Proton can sync both environment and service templates from your git repository\. To enable AWS Proton to sync your service templates, you must add an additional file to your template bundle—specifically a `.compatible-envs` file\. This file contains an additional line\-separated list of compatible environment templates and major versions\.
+
+The following is an example to the file `service-template-name/major-version/.compatible-envs`:
+
+```
+vpc-environment:1
+vpc-environment:2
+lambda-environment:1
+lambda-environment:2
+lambda-environment:3
+```
+
+This file indicates that this service template is compatible with major versions 1 and 2 of the `vpc-environment` environment template\. It's also compatible with the major versions 1, 2, and 3 of the `lambda-environment` environment template\.
+
 ## Template sync configuration considerations<a name="sync-considerations"></a>
 
 Review the following considerations for using template sync configurations\.
-+ Repositories must be no larger than 250MB\.
++ Repositories must be no larger than 250 MB\.
 + When a new template version is created from a synced template, it's in the `DRAFT` state\.
 + A new minor version of a template is created if one of the following is true:
   + The template bundle contents are different from those of the last synced template minor version\.
   + The last previously synced template minor version was deleted\.
 + Syncing can’t be paused\.
 + Both new minor or major versions are automatically synced\.
-+ New top level templates can’t be created by template sync configurations\.
++ New top\-level templates can’t be created by template sync configurations\.
 + You can’t sync to one template from multiple repositories with a template sync configuration\.
 + You can’t use tags instead of branches\.
 + When you [create a service template](template-create.md#svc-template-v1), you specify compatible environment templates\.
@@ -37,6 +53,7 @@ For more information, see the [https://docs.aws.amazon.com/proton/latest/APIRefe
 
 **Topics**
 + [Pushing a commit to a synced template bundle](#ag-commits)
++ [Syncing service templates](#syncing-service-templates)
 + [Template sync configuration considerations](#sync-considerations)
 + [Create a template sync configuration](create-template-sync.md)
 + [View template sync configuration details](view-template-sync.md)
