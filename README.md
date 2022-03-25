@@ -1,6 +1,6 @@
-## AWS Proton Administration Guide
+## AWS Proton Administrator Guide
 
-The open source version of the AWS Proton Administration Guide. You can submit feedback & requests for changes by submitting issues in this repo or by making proposed changes & submitting a pull request. See the [index](doc_source/index.md) for a summary of content.
+The open source version of the AWS Proton Administrator Guide. You can submit feedback & requests for changes by submitting issues in this repo or by making proposed changes & submitting a pull request. See the [index](doc_source/index.md) for a summary of content.
 
 ## Security
 
