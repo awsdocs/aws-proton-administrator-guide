@@ -1,12 +1,9 @@
-## AWS Proton Administrator Guide
+## AWS Proton Administrator Guide (*replaced*)
 
-The open source version of the AWS Proton Administrator Guide. You can submit feedback & requests for changes by submitting issues in this repo or by making proposed changes & submitting a pull request. See the [index](doc_source/index.md) for a summary of content.
+We've merged the Proton administrator and user guides into a single guide, the [AWS Proton  User Guide](https://github.com/awsdocs/aws-proton-user-guide).
 
-## Security
+This former guide's entire content is now in the user guide.
 
-See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more information.
+## License Summary
 
-## License
-
-This library is licensed under the MIT-0 License. See the LICENSE file.
-
+The documentation is made available under the Creative Commons Attribution-ShareAlike 4.0 International License. See the LICENSE file.
